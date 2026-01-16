@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5970553496887137154}
   - component: {fileID: 44106133000574464}
-  - component: {fileID: 402465769190813456}
-  - component: {fileID: 6514549196754398134}
   - component: {fileID: 5335728808347190695}
+  - component: {fileID: 6514549196754398134}
+  - component: {fileID: 6791714445952641060}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -63,8 +63,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &402465769190813456
-BoxCollider2D:
+--- !u!114 &5335728808347190695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5516165619438796703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e66f7bde0d845c0baaaa385913f72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  _playerCamera: {fileID: 0}
+  _playerTransform: {fileID: 5970553496887137154}
+  _cameraOffset: {x: 0, y: 5.5, z: -60}
+  _xMinMax: {x: -12, y: 20}
+  _smoothTime: 0.3
+--- !u!114 &6514549196754398134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5516165619438796703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6d30681db7659919a62229e1087b1d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  _rigidbody: {fileID: 44106133000574464}
+  _spriteRenderer: {fileID: 6408443035476060962}
+  _animator: {fileID: 4303807382255849820}
+  _movementSpeed: 10
+--- !u!70 &6791714445952641060
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -97,51 +130,9 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &6514549196754398134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5516165619438796703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6d30681db7659919a62229e1087b1d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _rigidbody: {fileID: 44106133000574464}
-  _spriteRenderer: {fileID: 6408443035476060962}
-  _animator: {fileID: 4303807382255849820}
-  _movementSpeed: 10
---- !u!114 &5335728808347190695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5516165619438796703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e66f7bde0d845c0baaaa385913f72c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  _playerCamera: {fileID: 0}
-  _playerTransform: {fileID: 5970553496887137154}
-  _cameraOffset: {x: 0, y: 5.5, z: -60}
-  _xMinMax: {x: -12, y: 20}
-  _smoothTime: 0.3
+  m_Offset: {x: -0.25, y: 3}
+  m_Size: {x: 4, y: 7}
+  m_Direction: 0
 --- !u!1 &9057262340498317308
 GameObject:
   m_ObjectHideFlags: 0
