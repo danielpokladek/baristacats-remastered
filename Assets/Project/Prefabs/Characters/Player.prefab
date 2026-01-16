@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5970553496887137154}
   - component: {fileID: 44106133000574464}
+  - component: {fileID: 402465769190813456}
   - component: {fileID: 6514549196754398134}
+  - component: {fileID: 5335728808347190695}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -61,6 +63,52 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &402465769190813456
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5516165619438796703}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &6514549196754398134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,6 +125,23 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 6408443035476060962}
   _animator: {fileID: 4303807382255849820}
   _movementSpeed: 10
+--- !u!114 &5335728808347190695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5516165619438796703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e66f7bde0d845c0baaaa385913f72c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  _playerCamera: {fileID: 0}
+  _playerTransform: {fileID: 5970553496887137154}
+  _cameraOffset: {x: 0, y: 5.5, z: -60}
+  _xMinMax: {x: -12, y: 20}
+  _smoothTime: 0.3
 --- !u!1 &9057262340498317308
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +222,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: ece0f4685bcd7ac3c9887773917966a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
