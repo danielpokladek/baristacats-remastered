@@ -67,5 +67,8 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "baristacats-remastered.slnx"
+    "dotnet.defaultSolution": "baristacats-remastered.slnx",
+    "cSpell.words": [
+        "Rigidbody"
+    ]
 }

@@ -1,0 +1,10 @@
+public static class ControlsManager
+{
+    private static readonly InputSystem_Actions _inputActions = new();
+
+    public static InputSystem_Actions.PlayerActions PlayerActions => _inputActions.Player;
+
+    public static void EnablePlayerControls() => _inputActions.Player.Enable();
+
+    public static void DisablePlayerControls() => _inputActions.Player.Disable();
+}
