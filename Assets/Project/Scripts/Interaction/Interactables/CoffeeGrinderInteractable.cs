@@ -29,7 +29,6 @@ public class CoffeeGrinderInteractable : Interactable
             );
 
         _beanIconSequence.isPaused = true;
-        _beanIconSequence.progressTotal = 0;
 
         _beanCanvas.SetActive(false);
     }
@@ -51,7 +50,6 @@ public class CoffeeGrinderInteractable : Interactable
 
             _beanCanvas.SetActive(true);
 
-            _beanIconSequence.progressTotal = 0;
             _beanIconSequence.isPaused = false;
 
             IsBusy = false;
