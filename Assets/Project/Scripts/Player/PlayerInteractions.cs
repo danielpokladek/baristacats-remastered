@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem.Interactions;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteractions : MonoBehaviour
@@ -22,6 +23,9 @@ public class PlayerInteractions : MonoBehaviour
             // TODO DP: For some reason this causes `infinity`.
             // var holdInteraction = ctx.interaction as HoldInteraction;
 
+            if (_currentInteractable.IsBusy)
+                return;
+
             _interactionDuration = 0.4f;
             _interactionTimer = 0;
             _currentInteractable.UpdateInteractionTimerFill(0);
@@ -31,6 +35,9 @@ public class PlayerInteractions : MonoBehaviour
 
         _playerActions.Interact.canceled += _ =>
         {
+            if (_currentInteractable.IsBusy)
+                return;
+
             _isInteracting = false;
             _interactionDuration = 0;
             _interactionTimer = 0;
@@ -40,6 +47,9 @@ public class PlayerInteractions : MonoBehaviour
 
         _playerActions.Interact.performed += _ =>
         {
+            if (_currentInteractable.IsBusy)
+                return;
+
             _isInteracting = false;
             _interactionDuration = 0;
             _interactionTimer = 0;
@@ -56,8 +66,6 @@ public class PlayerInteractions : MonoBehaviour
 
         _interactionTimer += Time.deltaTime;
         _currentInteractable.UpdateInteractionTimerFill(_interactionTimer / _interactionDuration);
-
-        Debug.Log(_interactionTimer / _interactionDuration);
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

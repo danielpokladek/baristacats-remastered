@@ -5,11 +5,16 @@ public abstract class Interactable : MonoBehaviour
     [SerializeField]
     protected InteractionPrompt _interactionPrompt;
 
-    public abstract void Interact();
+    public bool IsBusy { get; set; }
 
-    public void ShowInteractionPrompt() => _interactionPrompt.Show();
+    public virtual void Interact()
+    {
+        _interactionPrompt.HidePrompt();
+    }
 
-    public void HideInteractionPrompt() => _interactionPrompt.Hide();
+    public void ShowInteractionPrompt() => _interactionPrompt.ShowBoth();
+
+    public void HideInteractionPrompt() => _interactionPrompt.HideBoth();
 
     public void UpdateInteractionTimerFill(float fillValue)
     {

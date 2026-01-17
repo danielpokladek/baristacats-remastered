@@ -19,18 +19,37 @@ public class InteractionPrompt : MonoBehaviour
         _interactionTimerIcon.fillAmount = 0;
     }
 
-    public void Show()
+    public void ShowPrompt()
+    {
+        _promptIcon.CrossFadeAlpha(1f, InteractionPrompt.PROMPT_FADE_DURATION, false);
+    }
+
+    public void ShowCircleFill()
     {
         _interactionTimerIcon.fillAmount = 0;
-
-        _promptIcon.CrossFadeAlpha(1f, InteractionPrompt.PROMPT_FADE_DURATION, false);
         _interactionTimerIcon.CrossFadeAlpha(1f, InteractionPrompt.PROMPT_FADE_DURATION, false);
     }
 
-    public void Hide()
+    public void ShowBoth()
+    {
+        ShowPrompt();
+        ShowCircleFill();
+    }
+
+    public void HidePrompt()
     {
         _promptIcon.CrossFadeAlpha(0f, InteractionPrompt.PROMPT_FADE_DURATION, false);
+    }
+
+    public void HideCircleFill()
+    {
         _interactionTimerIcon.CrossFadeAlpha(0f, InteractionPrompt.PROMPT_FADE_DURATION, false);
+    }
+
+    public void HideBoth()
+    {
+        HidePrompt();
+        HideCircleFill();
     }
 
     public void UpdateTimerFill(float fillValue) => _interactionTimerIcon.fillAmount = fillValue;
