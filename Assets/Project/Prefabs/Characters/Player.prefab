@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 44106133000574464}
   - component: {fileID: 5335728808347190695}
   - component: {fileID: 6514549196754398134}
+  - component: {fileID: 5042047099469150311}
   - component: {fileID: 6791714445952641060}
   m_Layer: 0
   m_Name: Player
@@ -77,7 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   _playerCamera: {fileID: 0}
   _playerTransform: {fileID: 5970553496887137154}
-  _cameraOffset: {x: 0, y: 5.5, z: -60}
+  _cameraOffset: {x: 0, y: 6.5, z: -90}
   _xMinMax: {x: -12, y: 20}
   _smoothTime: 0.3
 --- !u!114 &6514549196754398134
@@ -96,6 +97,18 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 6408443035476060962}
   _animator: {fileID: 4303807382255849820}
   _movementSpeed: 10
+--- !u!114 &5042047099469150311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5516165619438796703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 635c8fa6340e6547eb37fd409280e95e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractions
 --- !u!70 &6791714445952641060
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -213,7 +226,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 10
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: ece0f4685bcd7ac3c9887773917966a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

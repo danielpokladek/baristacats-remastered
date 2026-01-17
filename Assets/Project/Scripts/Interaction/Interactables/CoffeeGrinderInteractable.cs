@@ -14,13 +14,11 @@ public class CoffeeGrinderInteractable : Interactable
     private bool _isGrinding = false;
     private bool _hasBeans = false;
 
-    private Sequence _beansSequence;
+    private Sequence _beanIconSequence;
 
     private void Start()
     {
-        _beanCanvas.SetActive(false);
-
-        _beansSequence = Sequence
+        _beanIconSequence = Sequence
             .Create(-1, Sequence.SequenceCycleMode.Yoyo, Ease.InOutSine)
             .Group(
                 Tween.PositionY(
@@ -30,7 +28,10 @@ public class CoffeeGrinderInteractable : Interactable
                 )
             );
 
-        _beansSequence.isPaused = true;
+        _beanIconSequence.isPaused = true;
+        _beanIconSequence.progressTotal = 0;
+
+        _beanCanvas.SetActive(false);
     }
 
     private void Update()
@@ -50,8 +51,8 @@ public class CoffeeGrinderInteractable : Interactable
 
             _beanCanvas.SetActive(true);
 
-            _beansSequence.progressTotal = 0;
-            _beansSequence.isPaused = false;
+            _beanIconSequence.progressTotal = 0;
+            _beanIconSequence.isPaused = false;
 
             IsBusy = false;
 
