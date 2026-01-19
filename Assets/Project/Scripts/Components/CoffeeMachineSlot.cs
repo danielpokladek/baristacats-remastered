@@ -64,6 +64,7 @@ public class CoffeeMachineSlot : MonoBehaviour
         _progressImage.fillAmount = 1;
         _progressImage.enabled = true;
 
+        gameObject.SetActive(true);
         enabled = true;
     }
 
@@ -79,7 +80,7 @@ public class CoffeeMachineSlot : MonoBehaviour
 
         _brewTimer = 0;
 
-        enabled = false;
+        gameObject.SetActive(false);
     }
 
     private void CompleteBrewing()
@@ -93,5 +94,7 @@ public class CoffeeMachineSlot : MonoBehaviour
 
         IsBrewing = false;
         IsDone = true;
+
+        enabled = false;
     }
 }

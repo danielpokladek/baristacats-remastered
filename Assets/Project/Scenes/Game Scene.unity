@@ -9560,7 +9560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2009822337677706662, guid: 5d9bbec2bc05b4567883c2c510147b0f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8539995497793133973, guid: 5d9bbec2bc05b4567883c2c510147b0f, type: 3}
       propertyPath: m_Name
@@ -9568,7 +9568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8539995497793133973, guid: 5d9bbec2bc05b4567883c2c510147b0f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11142,9 +11142,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1929795802}
   - component: {fileID: 1929795804}
+  - component: {fileID: 1929795805}
   m_Layer: 0
   m_Name: Cash Register
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11212,6 +11213,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3, y: 10}
   m_EdgeRadius: 0
+--- !u!114 &1929795805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929795801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b38d94e819e8718a3a94b942617745, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CashRegisterInteractable
+  _interactionPrompt: {fileID: 2028029767}
 --- !u!1 &1932814320
 GameObject:
   m_ObjectHideFlags: 0
@@ -12275,6 +12289,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2028029767 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7743162010436177308, guid: 5d9bbec2bc05b4567883c2c510147b0f, type: 3}
+  m_PrefabInstance: {fileID: 1702763185}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe7bede5faf98180b5c574a639addb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionPrompt
 --- !u!1 &2030263547
 GameObject:
   m_ObjectHideFlags: 0

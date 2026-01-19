@@ -54,6 +54,7 @@ public class CoffeeMachineInteractable : Interactable
                 };
 
                 completedSlot.Reset();
+                _brewedCoffee--;
                 return;
             }
         }
