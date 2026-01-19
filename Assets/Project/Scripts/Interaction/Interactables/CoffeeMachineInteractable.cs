@@ -14,6 +14,8 @@ public class CoffeeMachineInteractable : Interactable
     [SerializeField]
     private float _brewDuration = 3f;
 
+    private int _brewedCoffee = 0;
+
     protected override void Start()
     {
         base.Start();
@@ -23,6 +25,7 @@ public class CoffeeMachineInteractable : Interactable
         foreach (var slot in _slots)
         {
             slot.BrewDuration = _brewDuration;
+            slot.OnCoffeeBrewed.AddListener(() => _brewedCoffee++);
         }
     }
 
@@ -35,21 +38,49 @@ public class CoffeeMachineInteractable : Interactable
     {
         base.Interact(player);
 
+        var inventory = player.Inventory;
+        var isAnyCoffeeReady = _brewedCoffee > 0;
+
+        if (!inventory.IsHoldingItem && isAnyCoffeeReady)
+        {
+            var completedSlot = GetBrewedSlot();
+
+            if (completedSlot)
+            {
+                player.Inventory.CoffeeInHand = new CoffeeData
+                {
+                    Milk = MilkType.NONE,
+                    Quality = 0,
+                };
+
+                completedSlot.Reset();
+                return;
+            }
+        }
+
+        if (inventory.IsHoldingBeans)
+        {
+            CoffeeMachineSlot? emptySlot = GetEmptySlot();
+
+            if (emptySlot)
+            {
+                emptySlot.StartBrewing();
+                player.Inventory.IsHoldingBeans = false;
+            }
+            else
+            {
+                // TODO DP: Show a 'no empty slot' image here.
+                Debug.LogWarning("No empty slots in coffee machine");
+            }
+
+            return;
+        }
+
         if (!player.Inventory.IsHoldingBeans)
         {
             ShowNoBeans();
             return;
         }
-
-        CoffeeMachineSlot? emptySlot = GetEmptySlot();
-
-        // TODO DP: Handle this better.
-        if (!emptySlot)
-            return;
-
-        emptySlot.StartBrewing();
-
-        player.Inventory.IsHoldingBeans = false;
     }
 
     private CoffeeMachineSlot? GetEmptySlot()
@@ -57,6 +88,17 @@ public class CoffeeMachineInteractable : Interactable
         foreach (CoffeeMachineSlot slot in _slots)
         {
             if (slot.IsFree)
+                return slot;
+        }
+
+        return null;
+    }
+
+    private CoffeeMachineSlot? GetBrewedSlot()
+    {
+        foreach (CoffeeMachineSlot slot in _slots)
+        {
+            if (!slot.IsFree && slot.IsDone)
                 return slot;
         }
 

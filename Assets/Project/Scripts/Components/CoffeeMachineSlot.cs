@@ -1,8 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CoffeeMachineSlot : MonoBehaviour
 {
+    [HideInInspector]
+    public UnityEvent OnCoffeeBrewed;
+
     [HideInInspector]
     public float BrewDuration;
 
@@ -31,18 +35,11 @@ public class CoffeeMachineSlot : MonoBehaviour
         }
     }
     public bool IsFree { get; set; }
+    public bool IsDone { get; set; }
 
     private void Start()
     {
-        IsBrewing = false;
-        IsFree = true;
-
-        _completeImage.enabled = false;
-
-        _progressImage.fillAmount = 0;
-        _brewTimer = 0;
-
-        gameObject.SetActive(false);
+        Reset();
     }
 
     private void Update()
@@ -51,7 +48,7 @@ public class CoffeeMachineSlot : MonoBehaviour
             return;
 
         _brewTimer += Time.deltaTime;
-        _progressImage.fillAmount = _brewTimer / BrewDuration;
+        _progressImage.fillAmount = 1 - (_brewTimer / BrewDuration);
 
         if (_brewTimer >= BrewDuration)
         {
@@ -64,16 +61,37 @@ public class CoffeeMachineSlot : MonoBehaviour
         IsFree = false;
         IsBrewing = true;
 
-        gameObject.SetActive(true);
+        _progressImage.fillAmount = 1;
+        _progressImage.enabled = true;
+
+        enabled = true;
+    }
+
+    public void Reset()
+    {
+        IsBrewing = false;
+        IsFree = true;
+
+        _completeImage.enabled = false;
+
+        _progressImage.enabled = false;
+        _progressImage.fillAmount = 1;
+
+        _brewTimer = 0;
+
+        enabled = false;
     }
 
     private void CompleteBrewing()
     {
-        IsBrewing = false;
-
         _progressImage.fillAmount = 0;
 
         _completeImage.sprite = _cupSprite;
         _completeImage.enabled = true;
+
+        OnCoffeeBrewed.Invoke();
+
+        IsBrewing = false;
+        IsDone = true;
     }
 }

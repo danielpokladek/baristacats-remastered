@@ -35,11 +35,11 @@ public class PlayerInventory
 
             if (value == null)
             {
-                IsHoldingItem = true;
+                IsHoldingItem = false;
             }
             else
             {
-                IsHoldingItem = false;
+                IsHoldingItem = true;
             }
         }
     }

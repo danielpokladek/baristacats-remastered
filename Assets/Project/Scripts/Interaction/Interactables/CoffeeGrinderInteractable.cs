@@ -24,12 +24,7 @@ public class CoffeeGrinderInteractable : Interactable
     {
         base.Start();
 
-        _beanIconSequence = Sequence
-            .Create(-1, Sequence.SequenceCycleMode.Yoyo, Ease.InOutSine)
-            .Group(
-                Tween.PositionY(_beanImage.transform, _beanImage.transform.position.y + 0.5f, 1.5f)
-            );
-
+        _beanIconSequence = GetItemReadySequence(_beanImage.transform);
         _beanIconSequence.isPaused = true;
 
         _beanImage.gameObject.SetActive(false);

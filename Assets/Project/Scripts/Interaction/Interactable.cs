@@ -1,3 +1,4 @@
+using PrimeTween;
 using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
@@ -29,5 +30,12 @@ public abstract class Interactable : MonoBehaviour
     public void UpdateInteractionTimerFill(float fillValue)
     {
         _interactionPrompt.UpdateTimerFill(fillValue);
+    }
+
+    protected Sequence GetItemReadySequence(Transform item)
+    {
+        return Sequence
+            .Create(-1, Sequence.SequenceCycleMode.Yoyo, Ease.InOutSine)
+            .Group(Tween.PositionY(item.transform, item.transform.position.y + 0.5f, 1.5f));
     }
 }
