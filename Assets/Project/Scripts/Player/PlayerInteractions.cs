@@ -1,10 +1,11 @@
 using UnityEngine;
-using UnityEngine.InputSystem.Interactions;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteractions : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerController _playerController;
+
     private Interactable _currentInteractable;
     private InputSystem_Actions.PlayerActions _playerActions;
 
@@ -23,7 +24,7 @@ public class PlayerInteractions : MonoBehaviour
             // TODO DP: For some reason this causes `infinity`.
             // var holdInteraction = ctx.interaction as HoldInteraction;
 
-            if (_currentInteractable.IsBusy)
+            if (!_currentInteractable.CanInteract)
                 return;
 
             _interactionDuration = 0.4f;
@@ -35,7 +36,7 @@ public class PlayerInteractions : MonoBehaviour
 
         _playerActions.Interact.canceled += _ =>
         {
-            if (_currentInteractable.IsBusy)
+            if (!_currentInteractable.CanInteract)
                 return;
 
             _isInteracting = false;
@@ -47,7 +48,7 @@ public class PlayerInteractions : MonoBehaviour
 
         _playerActions.Interact.performed += _ =>
         {
-            if (_currentInteractable.IsBusy)
+            if (!_currentInteractable.CanInteract)
                 return;
 
             _isInteracting = false;
@@ -55,7 +56,7 @@ public class PlayerInteractions : MonoBehaviour
             _interactionTimer = 0;
 
             _currentInteractable.UpdateInteractionTimerFill(0);
-            _currentInteractable.Interact();
+            _currentInteractable.Interact(_playerController);
         };
     }
 
@@ -85,6 +86,7 @@ public class PlayerInteractions : MonoBehaviour
         }
 
         _currentInteractable = interactable;
+        _currentInteractable.PlayerInRange = true;
         _currentInteractable.ShowInteractionPrompt();
 
         _playerActions.Interact.Enable();
@@ -98,6 +100,7 @@ public class PlayerInteractions : MonoBehaviour
         _playerActions.Interact.Disable();
 
         _currentInteractable.HideInteractionPrompt();
+        _currentInteractable.PlayerInRange = false;
         _currentInteractable = null;
     }
 }

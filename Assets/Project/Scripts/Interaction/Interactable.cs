@@ -5,12 +5,22 @@ public abstract class Interactable : MonoBehaviour
     [SerializeField]
     protected InteractionPrompt _interactionPrompt;
 
-    public bool IsBusy { get; set; }
+    public bool CanInteract { get; set; }
 
-    public virtual void Interact()
+    public bool PlayerInRange { get; set; }
+
+    protected virtual void Start()
+    {
+        CanInteract = true;
+        PlayerInRange = false;
+    }
+
+    public virtual void Interact(PlayerController player)
     {
         _interactionPrompt.HidePrompt();
     }
+
+    public abstract InteractionTypeEnum GetNextInteractionType();
 
     public void ShowInteractionPrompt() => _interactionPrompt.ShowBoth();
 

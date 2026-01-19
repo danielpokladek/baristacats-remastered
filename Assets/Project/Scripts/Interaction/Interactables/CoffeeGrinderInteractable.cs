@@ -1,10 +1,14 @@
 using PrimeTween;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CoffeeGrinderInteractable : Interactable
 {
     [SerializeField]
-    private GameObject _beanCanvas;
+    private Image _beanImage;
+
+    [SerializeField]
+    private Image _timerImage;
 
     [SerializeField]
     private float _grindDuration = 2f;
@@ -16,21 +20,20 @@ public class CoffeeGrinderInteractable : Interactable
 
     private Sequence _beanIconSequence;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         _beanIconSequence = Sequence
             .Create(-1, Sequence.SequenceCycleMode.Yoyo, Ease.InOutSine)
             .Group(
-                Tween.PositionY(
-                    _beanCanvas.transform,
-                    _beanCanvas.transform.position.y + 0.5f,
-                    1.5f
-                )
+                Tween.PositionY(_beanImage.transform, _beanImage.transform.position.y + 0.5f, 1.5f)
             );
 
         _beanIconSequence.isPaused = true;
 
-        _beanCanvas.SetActive(false);
+        _beanImage.gameObject.SetActive(false);
+        _timerImage.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -42,42 +45,83 @@ public class CoffeeGrinderInteractable : Interactable
 
         if (_grindTimer >= _grindDuration)
         {
-            _isGrinding = false;
-            _hasBeans = true;
-
-            _interactionPrompt.UpdateTimerFill(0);
-            _interactionPrompt.ShowPrompt();
-
-            _beanCanvas.SetActive(true);
-
-            _beanIconSequence.isPaused = false;
-
-            IsBusy = false;
-
-            Debug.Log("Grind completed!");
+            CompleteGrind();
             return;
         }
 
-        _interactionPrompt.UpdateTimerFill(1 - (_grindTimer / _grindDuration));
+        _timerImage.fillAmount = 1 - (_grindTimer / _grindDuration);
     }
 
-    public override void Interact()
+    public override InteractionTypeEnum GetNextInteractionType()
     {
         if (_hasBeans)
+            return InteractionTypeEnum.COLLECT;
+
+        return InteractionTypeEnum.INTERACT;
+    }
+
+    public override void Interact(PlayerController player)
+    {
+        var playerHasItem = player.Inventory.IsHoldingItem;
+        var grinderHasBeans = _hasBeans;
+
+        if (playerHasItem && grinderHasBeans)
+            return;
+
+        base.Interact(player);
+
+        if (!grinderHasBeans && playerHasItem)
+        {
+            StartGrinding();
+            return;
+        }
+
+        if (grinderHasBeans && !playerHasItem)
         {
             _hasBeans = false;
-            _beanCanvas.SetActive(false);
+            _beanImage.gameObject.SetActive(false);
+
+            player.Inventory.IsHoldingBeans = true;
+
+            Debug.Log("Collected ground beans.");
 
             return;
         }
 
-        base.Interact();
+        StartGrinding();
+    }
 
-        IsBusy = true;
+    private void StartGrinding()
+    {
+        if (_isGrinding)
+            return;
+
+        CanInteract = false;
+
+        _timerImage.fillAmount = 1;
+        _timerImage.gameObject.SetActive(true);
 
         _grindTimer = 0;
         _isGrinding = true;
+    }
 
-        Debug.Log("Interacted with coffee grinder.");
+    private void CompleteGrind()
+    {
+        _timerImage.gameObject.SetActive(false);
+        _timerImage.fillAmount = 1;
+
+        _isGrinding = false;
+        _hasBeans = true;
+
+        if (PlayerInRange)
+        {
+            _interactionPrompt.UpdateTimerFill(0);
+            _interactionPrompt.ShowPrompt();
+        }
+
+        _beanImage.gameObject.SetActive(true);
+        _beanIconSequence.isPaused = false;
+
+        CanInteract = true;
     }
 }

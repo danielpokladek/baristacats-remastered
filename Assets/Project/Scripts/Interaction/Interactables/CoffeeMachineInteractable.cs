@@ -1,7 +1,7 @@
 #nullable enable
 
+using PrimeTween;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CoffeeMachineInteractable : Interactable
 {
@@ -9,25 +9,37 @@ public class CoffeeMachineInteractable : Interactable
     private CoffeeMachineSlot[] _slots;
 
     [SerializeField]
+    private CanvasGroup _noBeansCanvasGroup;
+
+    [SerializeField]
     private float _brewDuration = 3f;
 
-    private int _brewingCount;
-
-    private bool _isBrewing;
-
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
+        _noBeansCanvasGroup.alpha = 0;
+
         foreach (var slot in _slots)
         {
             slot.BrewDuration = _brewDuration;
         }
-
-        _brewingCount = 0;
     }
 
-    public override void Interact()
+    public override InteractionTypeEnum GetNextInteractionType()
     {
-        base.Interact();
+        return InteractionTypeEnum.INTERACT;
+    }
+
+    public override void Interact(PlayerController player)
+    {
+        base.Interact(player);
+
+        if (!player.Inventory.IsHoldingBeans)
+        {
+            ShowNoBeans();
+            return;
+        }
 
         CoffeeMachineSlot? emptySlot = GetEmptySlot();
 
@@ -37,7 +49,7 @@ public class CoffeeMachineInteractable : Interactable
 
         emptySlot.StartBrewing();
 
-        _brewingCount += 1;
+        player.Inventory.IsHoldingBeans = false;
     }
 
     private CoffeeMachineSlot? GetEmptySlot()
@@ -49,5 +61,27 @@ public class CoffeeMachineInteractable : Interactable
         }
 
         return null;
+    }
+
+    private void ShowNoBeans()
+    {
+        CanInteract = false;
+
+        Sequence
+            .Create()
+            .ChainCallback(() => _interactionPrompt.HideBoth())
+            .Chain(Tween.Alpha(_noBeansCanvasGroup, 1, 0.5f))
+            .Chain(Tween.Delay(1.5f))
+            .Chain(Tween.Alpha(_noBeansCanvasGroup, 0, 0.5f))
+            .ChainCallback(() =>
+            {
+                if (!PlayerInRange)
+                    return;
+
+                _interactionPrompt.UpdateTimerFill(0);
+                _interactionPrompt.ShowBoth();
+            });
+
+        CanInteract = true;
     }
 }
