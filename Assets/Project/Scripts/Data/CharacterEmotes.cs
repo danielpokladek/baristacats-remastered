@@ -11,6 +11,8 @@ public struct MilkEmote
 
 public class CharacterEmotes : MonoBehaviour
 {
+    public static CharacterEmotes Instance { get; private set; }
+
     [SerializeField]
     private Sprite _blankEmote;
 
@@ -28,8 +30,18 @@ public class CharacterEmotes : MonoBehaviour
 
     private Dictionary<MilkType, Sprite> _milkEmotesDictionary;
 
-    private void Start()
+    private void Awake()
     {
+        if (Instance != null)
+        {
+            Debug.LogWarning("Multiple instances of `CharacterEmotes` found in scene!");
+            return;
+        }
+        else
+        {
+            Instance = this;
+        }
+
         _milkEmotesDictionary = new();
 
         foreach (var data in _milkEmotes)
@@ -37,4 +49,7 @@ public class CharacterEmotes : MonoBehaviour
             _milkEmotesDictionary.Add(data.MilkType, data.MilkImage);
         }
     }
+
+    public Sprite PlainEmote => _blankEmote;
+    public Sprite PlainCoffeeEmote => _coffeeCupEmote;
 }

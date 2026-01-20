@@ -23,7 +23,13 @@ public abstract class Interactable : MonoBehaviour
 
     public abstract InteractionTypeEnum GetNextInteractionType();
 
-    public void ShowInteractionPrompt() => _interactionPrompt.ShowBoth();
+    public void ShowInteractionPrompt()
+    {
+        if (!CanInteract)
+            return;
+
+        _interactionPrompt.ShowBoth();
+    }
 
     public void HideInteractionPrompt() => _interactionPrompt.HideBoth();
 

@@ -1,9 +1,16 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class QueueManager : MonoBehaviour
 {
+    [HideInInspector]
+    public UnityEvent OnOrderQueueUpdated;
+
+    [HideInInspector]
+    public UnityEvent OnPayQueueUpdated;
+
     [SerializeField]
     private Vector3 _spawnPosition;
 
@@ -25,6 +32,10 @@ public class QueueManager : MonoBehaviour
     private Queue<CustomerController> _orderQueue;
     private Queue<CustomerController> _payQueue;
 
+    public bool HasCustomersAtOrderDesk => _orderQueue.Count > 0;
+
+    public bool HasCustomersAtPayDesk => _payQueue.Count > 0;
+
     private void Start()
     {
         _orderQueue = new();
@@ -34,7 +45,7 @@ public class QueueManager : MonoBehaviour
     }
 
     [ContextMenu("Handle Order Placed")]
-    public void HandleOrderPlaced()
+    public async void HandleOrderPlaced()
     {
         if (_orderQueue.Count == 0)
         {
@@ -43,6 +54,12 @@ public class QueueManager : MonoBehaviour
         }
 
         var customer = _orderQueue.Dequeue();
+
+        await customer.ShowOrder();
+
+        OnOrderQueueUpdated.Invoke();
+
+        customer.Movement.OnArrived.AddListener(NotifyPayQueueUpdated);
         customer.Movement.MoveTo(_payPosition);
 
         _payQueue.Enqueue(customer);
@@ -74,6 +91,8 @@ public class QueueManager : MonoBehaviour
         var customerInstance = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
 
         var destination = AdjustXPositionForSpacing(_orderPosition, _orderQueue.Count);
+
+        customerInstance.Movement.OnArrived.AddListener(NotifyOrderQueueUpdated);
         customerInstance.Movement.MoveTo(destination);
 
         _orderQueue.Enqueue(customerInstance);
@@ -96,6 +115,18 @@ public class QueueManager : MonoBehaviour
             Vector3 orderPos = AdjustXPositionForSpacing(_orderPosition, index++);
             customer.Movement.MoveTo(orderPos);
         }
+    }
+
+    private void NotifyOrderQueueUpdated(CustomerController customer)
+    {
+        customer.Movement.OnArrived.RemoveListener(NotifyOrderQueueUpdated);
+        OnOrderQueueUpdated.Invoke();
+    }
+
+    private void NotifyPayQueueUpdated(CustomerController customer)
+    {
+        customer.Movement.OnArrived.RemoveListener(NotifyPayQueueUpdated);
+        OnPayQueueUpdated.Invoke();
     }
 
     private void OnDrawGizmosSelected()
