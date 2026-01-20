@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PrimeTween;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(AudioSource))]
 public class QueueManager : MonoBehaviour
 {
     public static QueueManager Instance { get; private set; }
@@ -33,10 +34,15 @@ public class QueueManager : MonoBehaviour
     [SerializeField]
     private CustomerController[] _customerPrefabs;
 
+    [Header("Audio")]
+    [SerializeField]
+    private AudioClip _doorSound;
+
     private Queue<CustomerController> _orderQueue;
     private Queue<CustomerController> _payQueue;
 
     private GameManager _game;
+    private AudioSource _audioSource;
 
     public bool HasCustomersAtOrderDesk => _orderQueue.Count > 0;
     public bool HasCustomersAtPayDesk => _payQueue.Count > 0;
@@ -62,6 +68,7 @@ public class QueueManager : MonoBehaviour
     private void Start()
     {
         _game = GameManager.Instance;
+        _audioSource = GetComponent<AudioSource>();
 
 #if UNITY_EDITOR
         ControlsManager.PlayerActions.Jump.performed += _ =>
@@ -113,7 +120,7 @@ public class QueueManager : MonoBehaviour
     }
 
     [ContextMenu("Spawn Customer")]
-    private void SpawnCustomer()
+    private async Task SpawnCustomer()
     {
         var randomIndex = Random.Range(0, _customerPrefabs.Length);
         var customerPrefab = _customerPrefabs[randomIndex];
@@ -121,6 +128,11 @@ public class QueueManager : MonoBehaviour
 
         var customer = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
         customer.Init();
+
+        _audioSource.PlayOneShot(_doorSound);
+
+        await Tween.Delay(5.2f);
+
         customer.Movement.OnArrived.AddListener(NotifyOrderQueueUpdated);
         customer.Movement.MoveTo(destination);
 

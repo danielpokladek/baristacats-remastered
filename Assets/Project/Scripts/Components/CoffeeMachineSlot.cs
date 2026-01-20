@@ -22,8 +22,14 @@ public class CoffeeMachineSlot : MonoBehaviour
     [SerializeField]
     private Image _completeImage;
 
+    [Header("Audio")]
+    [SerializeField]
+    private AudioClip _brewingSound;
+
     private float _brewTimer;
     private bool _isBrewing;
+
+    private AudioSource _audioSource;
 
     public bool IsBrewing
     {
@@ -39,6 +45,8 @@ public class CoffeeMachineSlot : MonoBehaviour
 
     private void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
+
         Reset();
     }
 
@@ -66,6 +74,8 @@ public class CoffeeMachineSlot : MonoBehaviour
 
         gameObject.SetActive(true);
         enabled = true;
+
+        _audioSource.PlayOneShot(_brewingSound);
     }
 
     public void Reset()

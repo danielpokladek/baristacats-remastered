@@ -11,18 +11,26 @@ public class CoffeeGrinderInteractable : Interactable
     private Image _timerImage;
 
     [SerializeField]
-    private float _grindDuration = 2f;
+    private float _grindDuration = 5f;
+
+    [Header("Audio")]
+    [SerializeField]
+    private AudioClip _grinderSound;
 
     private float _grindTimer = 0;
 
     private bool _isGrinding = false;
     private bool _hasBeans = false;
 
+    private AudioSource _audioSource;
+
     private Sequence _beanIconSequence;
 
     protected override void Start()
     {
         base.Start();
+
+        _audioSource = GetComponent<AudioSource>();
 
         _beanIconSequence = GetItemReadySequence(_beanImage.transform);
         _beanIconSequence.isPaused = true;
@@ -98,6 +106,8 @@ public class CoffeeGrinderInteractable : Interactable
 
         _grindTimer = 0;
         _isGrinding = true;
+
+        _audioSource.PlayOneShot(_grinderSound);
     }
 
     private void CompleteGrind()
