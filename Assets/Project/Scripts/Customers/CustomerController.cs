@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Video;
 
 [RequireComponent(typeof(CustomerMovement))]
 public class CustomerController : MonoBehaviour
@@ -13,7 +12,9 @@ public class CustomerController : MonoBehaviour
     [SerializeField]
     private Image _coffeeImage;
 
-    public CoffeeData CoffeeData { get; private set; }
+    public CoffeeData DesiredCoffee { get; private set; }
+    public CoffeeData ServedCoffee { get; private set; }
+
     public CustomerMovement Movement { get; private set; }
 
     private void Awake()
@@ -22,6 +23,12 @@ public class CustomerController : MonoBehaviour
 
         _emoteImage.color = new(1, 1, 1, 0);
         _coffeeImage.color = new(1, 1, 1, 0);
+    }
+
+    public void GenerateOrder()
+    {
+        var order = new CoffeeData();
+        order.Milk = MilkType.NONE;
     }
 
     public async Task ShowOrder()

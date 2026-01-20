@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class QueueManager : MonoBehaviour
 {
+    public static QueueManager Instance { get; private set; }
+
     [HideInInspector]
     public UnityEvent OnOrderQueueUpdated;
 
@@ -32,16 +35,39 @@ public class QueueManager : MonoBehaviour
     private Queue<CustomerController> _orderQueue;
     private Queue<CustomerController> _payQueue;
 
-    public bool HasCustomersAtOrderDesk => _orderQueue.Count > 0;
+    private GameManager _game;
 
+    public bool HasCustomersAtOrderDesk => _orderQueue.Count > 0;
     public bool HasCustomersAtPayDesk => _payQueue.Count > 0;
 
-    private void Start()
+    private void Awake()
     {
+        if (Instance != null)
+        {
+            Debug.LogWarning("Multiple instances of `QueueController` found in scene!");
+            return;
+        }
+        else
+        {
+            Instance = this;
+        }
+
         _orderQueue = new();
         _payQueue = new();
 
         SpawnCustomer();
+    }
+
+    private void Start()
+    {
+        _game = GameManager.Instance;
+
+#if UNITY_EDITOR
+        ControlsManager.PlayerActions.Jump.performed += _ =>
+        {
+            SpawnCustomer();
+        };
+#endif
     }
 
     [ContextMenu("Handle Order Placed")]
@@ -54,6 +80,7 @@ public class QueueManager : MonoBehaviour
         }
 
         var customer = _orderQueue.Dequeue();
+        customer.GenerateOrder();
 
         await customer.ShowOrder();
 
@@ -80,6 +107,8 @@ public class QueueManager : MonoBehaviour
         customer.Movement.MoveTo(_exitPosition);
 
         HandleQueueCustomerMoved(_payQueue);
+
+        _game.ProcessCustomerServed(customer);
     }
 
     [ContextMenu("Spawn Customer")]
