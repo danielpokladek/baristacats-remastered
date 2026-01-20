@@ -61,8 +61,6 @@ public class QueueManager : MonoBehaviour
 
         _orderQueue = new();
         _payQueue = new();
-
-        SpawnCustomer();
     }
 
     private void Start()
@@ -73,9 +71,15 @@ public class QueueManager : MonoBehaviour
 #if UNITY_EDITOR
         ControlsManager.PlayerActions.Jump.performed += _ =>
         {
+#pragma warning disable CS4014
+            // Disabling the warning here, as we don't need to await the animation.
             SpawnCustomer();
         };
 #endif
+
+        // Disabling the warning here, as we don't need to await the animation.
+        SpawnCustomer();
+#pragma warning restore
     }
 
     [ContextMenu("Handle Order Placed")]
@@ -88,6 +92,10 @@ public class QueueManager : MonoBehaviour
         }
 
         var customer = _orderQueue.Dequeue();
+        var pos = GetPositionWithSpacing(_payPosition, _payQueue.Count);
+
+        _payQueue.Enqueue(customer);
+
         customer.GenerateOrder();
 
         await customer.ShowOrderEmote();
@@ -95,9 +103,7 @@ public class QueueManager : MonoBehaviour
         OnOrderQueueUpdated.Invoke();
 
         customer.Movement.OnArrived.AddListener(NotifyPayQueueUpdated);
-        customer.Movement.MoveTo(_payPosition);
-
-        _payQueue.Enqueue(customer);
+        customer.Movement.MoveTo(pos);
 
         HandleQueueCustomerMoved(_orderQueue);
     }
@@ -124,10 +130,12 @@ public class QueueManager : MonoBehaviour
     {
         var randomIndex = Random.Range(0, _customerPrefabs.Length);
         var customerPrefab = _customerPrefabs[randomIndex];
-        var destination = AdjustXPositionForSpacing(_orderPosition, _orderQueue.Count);
+        var destination = GetPositionWithSpacing(_orderPosition, _orderQueue.Count);
 
         var customer = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
         customer.Init();
+
+        _orderQueue.Enqueue(customer);
 
         _audioSource.PlayOneShot(_doorSound);
 
@@ -135,11 +143,9 @@ public class QueueManager : MonoBehaviour
 
         customer.Movement.OnArrived.AddListener(NotifyOrderQueueUpdated);
         customer.Movement.MoveTo(destination);
-
-        _orderQueue.Enqueue(customer);
     }
 
-    private Vector2 AdjustXPositionForSpacing(Vector2 destination, int customerCount)
+    private Vector2 GetPositionWithSpacing(Vector2 destination, int customerCount)
     {
         var newPos = destination;
         newPos.x += _customerGap * customerCount;
@@ -153,7 +159,7 @@ public class QueueManager : MonoBehaviour
 
         foreach (var customer in queue)
         {
-            Vector3 orderPos = AdjustXPositionForSpacing(_orderPosition, index++);
+            Vector3 orderPos = GetPositionWithSpacing(_orderPosition, index++);
             customer.Movement.MoveTo(orderPos);
         }
     }
