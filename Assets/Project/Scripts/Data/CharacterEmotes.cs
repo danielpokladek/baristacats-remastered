@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
+[System.Serializable]
 public struct MilkEmote
 {
     public MilkType MilkType;
@@ -52,4 +51,11 @@ public class CharacterEmotes : MonoBehaviour
 
     public Sprite PlainEmote => _blankEmote;
     public Sprite PlainCoffeeEmote => _coffeeCupEmote;
+
+    public Sprite GetHappyEmote()
+    {
+        var index = Random.Range(0, _happyEmotes.Length);
+
+        return _happyEmotes[index];
+    }
 }

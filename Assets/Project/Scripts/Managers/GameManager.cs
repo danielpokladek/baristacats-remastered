@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -26,10 +27,12 @@ public class GameManager : MonoBehaviour
 
     public int CoffeeCompleted { get; private set; }
 
-    public void ProcessCustomerServed(CustomerController customer)
+    public async Task ProcessCustomerServed(CustomerController customer)
     {
         CoffeeCompleted++;
 
         _gameUI.UpdateCompletedCoffeeText(CoffeeCompleted);
+
+        await customer.ShowEmote(true);
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -82,7 +83,7 @@ public class QueueManager : MonoBehaviour
         var customer = _orderQueue.Dequeue();
         customer.GenerateOrder();
 
-        await customer.ShowOrder();
+        await customer.ShowOrderEmote();
 
         OnOrderQueueUpdated.Invoke();
 
@@ -95,7 +96,7 @@ public class QueueManager : MonoBehaviour
     }
 
     [ContextMenu("Handle Order Paid")]
-    public void HandleOrderPaid()
+    public async Task HandleOrderPaid()
     {
         if (_payQueue.Count == 0)
         {
@@ -104,11 +105,11 @@ public class QueueManager : MonoBehaviour
         }
 
         var customer = _payQueue.Dequeue();
+
+        await _game.ProcessCustomerServed(customer);
+
         customer.Movement.MoveTo(_exitPosition);
-
         HandleQueueCustomerMoved(_payQueue);
-
-        _game.ProcessCustomerServed(customer);
     }
 
     [ContextMenu("Spawn Customer")]
@@ -116,15 +117,14 @@ public class QueueManager : MonoBehaviour
     {
         var randomIndex = Random.Range(0, _customerPrefabs.Length);
         var customerPrefab = _customerPrefabs[randomIndex];
-
-        var customerInstance = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
-
         var destination = AdjustXPositionForSpacing(_orderPosition, _orderQueue.Count);
 
-        customerInstance.Movement.OnArrived.AddListener(NotifyOrderQueueUpdated);
-        customerInstance.Movement.MoveTo(destination);
+        var customer = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
+        customer.Init();
+        customer.Movement.OnArrived.AddListener(NotifyOrderQueueUpdated);
+        customer.Movement.MoveTo(destination);
 
-        _orderQueue.Enqueue(customerInstance);
+        _orderQueue.Enqueue(customer);
     }
 
     private Vector2 AdjustXPositionForSpacing(Vector2 destination, int customerCount)

@@ -17,8 +17,12 @@ public class CustomerController : MonoBehaviour
 
     public CustomerMovement Movement { get; private set; }
 
-    private void Awake()
+    private CharacterEmotes _emotes;
+
+    public void Init()
     {
+        _emotes = CharacterEmotes.Instance;
+
         Movement = GetComponent<CustomerMovement>();
 
         _emoteImage.color = new(1, 1, 1, 0);
@@ -31,7 +35,7 @@ public class CustomerController : MonoBehaviour
         order.Milk = MilkType.NONE;
     }
 
-    public async Task ShowOrder()
+    public async Task ShowOrderEmote()
     {
         _emoteImage.sprite = CharacterEmotes.Instance.PlainEmote;
         _coffeeImage.sprite = CharacterEmotes.Instance.PlainCoffeeEmote;
@@ -47,5 +51,16 @@ public class CustomerController : MonoBehaviour
             .Create()
             .Group(Tween.Alpha(_emoteImage, 0f, 0.5f))
             .Group(Tween.Alpha(_coffeeImage, 0f, 0.5f));
+    }
+
+    public async Task ShowEmote(bool isHappy)
+    {
+        _emoteImage.sprite = _emotes.GetHappyEmote();
+
+        await Sequence.Create().Group(Tween.Alpha(_emoteImage, 1f, 0.5f));
+
+        await Tween.Delay(1.5f);
+
+        await Sequence.Create().Group(Tween.Alpha(_emoteImage, 0f, 0.5f));
     }
 }

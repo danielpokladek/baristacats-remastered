@@ -26,7 +26,10 @@ public class CashRegisterInteractable : Interactable
 
         inventory.CoffeeInHand = null;
 
+#pragma warning disable CS4014
+        // Disabling the warning here, as we don't need to await the animation.
         _queueManager.HandleOrderPaid();
+#pragma warning restore
     }
 
     public override InteractionTypeEnum GetNextInteractionType()
