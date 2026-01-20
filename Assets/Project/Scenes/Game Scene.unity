@@ -7641,7 +7641,7 @@ GameObject:
   - component: {fileID: 1438742533}
   - component: {fileID: 1438742534}
   m_Layer: 0
-  m_Name: Emojis
+  m_Name: Emotes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7674,9 +7674,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7cc156af20dba628af8ac6352abd8a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterEmojis
-  _blankEmoji: {fileID: 21300000, guid: 9ae72a0e329615d7da0e9c394e948cd2, type: 3}
-  _coffeeCupEmoji: {fileID: 21300000, guid: 6d5c2592e93f19b35963f7af13a90023, type: 3}
-  _milkEmojis:
+  _blankEmote: {fileID: 21300000, guid: 9ae72a0e329615d7da0e9c394e948cd2, type: 3}
+  _coffeeCupEmote: {fileID: 21300000, guid: 6d5c2592e93f19b35963f7af13a90023, type: 3}
+  _milkEmotes:
   - MilkType: 1
     MilkImage: {fileID: 21300000, guid: 139d14a8fb6603415954d37d6cf881f4, type: 3}
   - MilkType: 2
@@ -7685,11 +7685,12 @@ MonoBehaviour:
     MilkImage: {fileID: 21300000, guid: 24e8efcb0e996b24d92ed30d53f32bcd, type: 3}
   - MilkType: 4
     MilkImage: {fileID: 21300000, guid: f7636749884c9f2608febed5fd83de01, type: 3}
-  _sadEmojis:
-  - {fileID: 21300000, guid: 2cd2c6edd5f528828a81494f7b8ec7b9, type: 3}
+  _sadEmotes:
   - {fileID: 21300000, guid: 724c1c4255f038e15b5068a42c563c63, type: 3}
+  - {fileID: 21300000, guid: 2cd2c6edd5f528828a81494f7b8ec7b9, type: 3}
+  - {fileID: 21300000, guid: d8c314a15ce6901b191d848d25a05489, type: 3}
   - {fileID: 21300000, guid: 7f98e2b4cd5cc9c8281c1a13eac06300, type: 3}
-  _happyEmoji:
+  _happyEmotes:
   - {fileID: 21300000, guid: 1cf790c12b226fa14b121206785b1ed4, type: 3}
   - {fileID: 21300000, guid: 388e3fb8e70c67178955a2fe575cd8f5, type: 3}
 --- !u!1 &1472390478

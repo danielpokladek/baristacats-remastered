@@ -177,6 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ef2dfd0393e394b8b907f6e4a103c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerController
+  _emoteImage: {fileID: 1123035972857123522}
+  _coffeeImage: {fileID: 5008829028051220936}
 --- !u!1 &2475140546101533460
 GameObject:
   m_ObjectHideFlags: 0
