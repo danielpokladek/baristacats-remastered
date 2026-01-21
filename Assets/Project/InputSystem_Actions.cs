@@ -89,6 +89,54 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     ""name"": ""InputSystem_Actions"",
     ""maps"": [
         {
+            ""name"": ""Frothing"",
+            ""id"": ""c12d7bc9-7c2c-4bfc-940f-6cdee6041f86"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""296396b1-fadb-4d2b-a6e6-7827127fcda0"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Complete"",
+                    ""type"": ""Button"",
+                    ""id"": ""4fcc8cdf-030e-4537-87b7-12781bf38401"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a08a5b4e-6c31-4521-8965-c648315c9150"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c161b327-dc12-42c4-94c6-3d0dbd9e7bc3"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Complete"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Player"",
             ""id"": ""df70fa95-8a34-4494-b137-73ab6b9c7d37"",
             ""actions"": [
@@ -1142,6 +1190,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         }
     ]
 }");
+        // Frothing
+        m_Frothing = asset.FindActionMap("Frothing", throwIfNotFound: true);
+        m_Frothing_Move = m_Frothing.FindAction("Move", throwIfNotFound: true);
+        m_Frothing_Complete = m_Frothing.FindAction("Complete", throwIfNotFound: true);
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
@@ -1169,6 +1221,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
 
     ~@InputSystem_Actions()
     {
+        UnityEngine.Debug.Assert(!m_Frothing.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Frothing.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputSystem_Actions.UI.Disable() has not been called.");
     }
@@ -1242,6 +1295,113 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     {
         return asset.FindBinding(bindingMask, out action);
     }
+
+    // Frothing
+    private readonly InputActionMap m_Frothing;
+    private List<IFrothingActions> m_FrothingActionsCallbackInterfaces = new List<IFrothingActions>();
+    private readonly InputAction m_Frothing_Move;
+    private readonly InputAction m_Frothing_Complete;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Frothing".
+    /// </summary>
+    public struct FrothingActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public FrothingActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Frothing/Move".
+        /// </summary>
+        public InputAction @Move => m_Wrapper.m_Frothing_Move;
+        /// <summary>
+        /// Provides access to the underlying input action "Frothing/Complete".
+        /// </summary>
+        public InputAction @Complete => m_Wrapper.m_Frothing_Complete;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Frothing; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="FrothingActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(FrothingActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="FrothingActions" />
+        public void AddCallbacks(IFrothingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_FrothingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_FrothingActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Complete.started += instance.OnComplete;
+            @Complete.performed += instance.OnComplete;
+            @Complete.canceled += instance.OnComplete;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="FrothingActions" />
+        private void UnregisterCallbacks(IFrothingActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Complete.started -= instance.OnComplete;
+            @Complete.performed -= instance.OnComplete;
+            @Complete.canceled -= instance.OnComplete;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="FrothingActions.UnregisterCallbacks(IFrothingActions)" />.
+        /// </summary>
+        /// <seealso cref="FrothingActions.UnregisterCallbacks(IFrothingActions)" />
+        public void RemoveCallbacks(IFrothingActions instance)
+        {
+            if (m_Wrapper.m_FrothingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="FrothingActions.AddCallbacks(IFrothingActions)" />
+        /// <seealso cref="FrothingActions.RemoveCallbacks(IFrothingActions)" />
+        /// <seealso cref="FrothingActions.UnregisterCallbacks(IFrothingActions)" />
+        public void SetCallbacks(IFrothingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_FrothingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_FrothingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="FrothingActions" /> instance referencing this action map.
+    /// </summary>
+    public FrothingActions @Frothing => new FrothingActions(this);
 
     // Player
     private readonly InputActionMap m_Player;
@@ -1685,6 +1845,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             if (m_XRSchemeIndex == -1) m_XRSchemeIndex = asset.FindControlSchemeIndex("XR");
             return asset.controlSchemes[m_XRSchemeIndex];
         }
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Frothing" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="FrothingActions.AddCallbacks(IFrothingActions)" />
+    /// <seealso cref="FrothingActions.RemoveCallbacks(IFrothingActions)" />
+    public interface IFrothingActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Complete" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnComplete(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.

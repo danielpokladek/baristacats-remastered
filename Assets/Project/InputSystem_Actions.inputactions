@@ -3,6 +3,54 @@
     "name": "InputSystem_Actions",
     "maps": [
         {
+            "name": "Frothing",
+            "id": "c12d7bc9-7c2c-4bfc-940f-6cdee6041f86",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "296396b1-fadb-4d2b-a6e6-7827127fcda0",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Complete",
+                    "type": "Button",
+                    "id": "4fcc8cdf-030e-4537-87b7-12781bf38401",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a08a5b4e-6c31-4521-8965-c648315c9150",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c161b327-dc12-42c4-94c6-3d0dbd9e7bc3",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Complete",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "Player",
             "id": "df70fa95-8a34-4494-b137-73ab6b9c7d37",
             "actions": [

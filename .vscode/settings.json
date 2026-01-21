@@ -69,7 +69,9 @@
     },
     "dotnet.defaultSolution": "baristacats-remastered.slnx",
     "cSpell.words": [
+        "Frother",
         "Interactable",
+        "Lerp",
         "Mathf",
         "Rigidbody",
         "Yoyo"
