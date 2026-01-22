@@ -1,3 +1,4 @@
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,7 +67,7 @@ public class MilkFrothingManager : MonoBehaviour
         _frothingActions = ControlsManager.FrothingActions;
         _frothingActions.Complete.performed += _ => HandleFrothingCompleted();
 
-        Events.FrothingEvents.OnFrothingStart.AddListener(HandleFrothingStart);
+        Events.MiniGameEvents.OnFrothingStart.AddListener(HandleFrothingStart);
     }
 
     private void Update()
@@ -99,7 +100,7 @@ public class MilkFrothingManager : MonoBehaviour
     [ContextMenu("Start Mini-Game")]
     private void DEBUG_StartFrothing()
     {
-        Events.FrothingEvents.OnFrothingStart.Invoke();
+        Events.MiniGameEvents.OnFrothingStart.Invoke();
     }
 #endif
 
@@ -136,7 +137,7 @@ public class MilkFrothingManager : MonoBehaviour
         return Mathf.RoundToInt((diff / step) * 10);
     }
 
-    private void HandleFrothingCompleted()
+    private async void HandleFrothingCompleted()
     {
         _frothingActions.Disable();
 
@@ -163,6 +164,10 @@ public class MilkFrothingManager : MonoBehaviour
             0.1f
         );
 
-        Events.FrothingEvents.OnFrothingEnd.Invoke(qualityDeduction);
+        Events.MiniGameEvents.OnFrothingEnd.Invoke(qualityDeduction);
+
+        await Tween.Delay(2f);
+
+        Events.MiniGameEvents.OnFrothingTransitionOut.Invoke();
     }
 }
