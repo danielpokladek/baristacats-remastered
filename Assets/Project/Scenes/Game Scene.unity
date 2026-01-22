@@ -5654,6 +5654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f9fb0c60a1e223c487b7a4d9232275f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiniGameManager
+  _transitionDuration: 0.25
   _frothingCamera: {fileID: 512069454}
   _frothingCameraHiddenPosition: {x: 0, y: -3, z: -10}
   _frothingCameraShownPosition: {x: 0, y: 0, z: -10}
@@ -15811,17 +15812,17 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 512069455}
   - {fileID: 2014968119}
-  - {fileID: 619394802}
+  - {fileID: 512069455}
+  - {fileID: 519420032}
   - {fileID: 2702398655701819701}
   - {fileID: 1057519998}
   - {fileID: 1411782876}
   - {fileID: 1181529002}
-  - {fileID: 519420032}
   - {fileID: 2840401628207775996}
   - {fileID: 939067437}
   - {fileID: 1806041800}
   - {fileID: 430752427}
   - {fileID: 1532010191}
   - {fileID: 693277744}
+  - {fileID: 619394802}

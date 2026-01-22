@@ -8,6 +8,9 @@ public class MilkFrothingManager : MonoBehaviour
     [SerializeField]
     private FrotherNozzle _nozzle;
 
+    [SerializeField]
+    private CanvasGroup _canvasGroup;
+
     [Header("Foam Properties")]
     [SerializeField]
     private Image _foamProgressBar;
@@ -65,9 +68,13 @@ public class MilkFrothingManager : MonoBehaviour
         _nozzle.OnJugDepthChange.AddListener((newDepth) => _currentJugDepth = newDepth);
 
         _frothingActions = ControlsManager.FrothingActions;
-        _frothingActions.Complete.performed += _ => HandleFrothingCompleted();
+        _frothingActions.Complete.performed += _ => HandleCompleted();
 
-        Events.MiniGameEvents.OnFrothingStart.AddListener(HandleFrothingStart);
+        Events.MiniGameEvents.OnFrothingStart.AddListener(HandleStart);
+        Events.MiniGameEvents.OnFrothingEnd.AddListener(HandleEnd);
+
+        _canvasGroup.alpha = 0;
+        _canvasGroup.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -104,13 +111,6 @@ public class MilkFrothingManager : MonoBehaviour
     }
 #endif
 
-    private void HandleFrothingStart()
-    {
-        ResetProgress();
-
-        _frothingActions.Enable();
-    }
-
     private void ResetProgress()
     {
         _temperatureProgress = 0.1f;
@@ -137,7 +137,24 @@ public class MilkFrothingManager : MonoBehaviour
         return Mathf.RoundToInt((diff / step) * 10);
     }
 
-    private async void HandleFrothingCompleted()
+    private void HandleStart()
+    {
+        ResetProgress();
+
+        _canvasGroup.gameObject.SetActive(true);
+        Tween.Alpha(_canvasGroup, 1f, 0.5f);
+
+        _frothingActions.Enable();
+    }
+
+    private async void HandleEnd(int _)
+    {
+        await Tween.Alpha(_canvasGroup, 0f, 0.5f);
+
+        _canvasGroup.gameObject.SetActive(false);
+    }
+
+    private async void HandleCompleted()
     {
         _frothingActions.Disable();
 

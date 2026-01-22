@@ -1,10 +1,14 @@
 using PrimeTween;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class MiniGameManager : MonoBehaviour
 {
+    [SerializeField]
+    private float _transitionDuration = 0.25f;
+
     [SerializeField]
     private Camera _frothingCamera;
 
@@ -31,9 +35,25 @@ public class MiniGameManager : MonoBehaviour
         _frothingCamera.transform.position = _frothingCameraHiddenPosition;
 
         Events.MiniGameEvents.OnFrothingTransitionIn.AddListener(() => TransitionFrothingIn());
-
         Events.MiniGameEvents.OnFrothingTransitionOut.AddListener(() => TransitionFrothingOut());
     }
+
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+        {
+            TransitionFrothingIn();
+            return;
+        }
+
+        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+        {
+            TransitionFrothingOut();
+            return;
+        }
+    }
+#endif
 
     private async void TransitionFrothingIn()
     {
@@ -41,12 +61,18 @@ public class MiniGameManager : MonoBehaviour
 
         await Sequence
             .Create()
-            .Group(Tween.Position(_frothingCamera.transform, _frothingCameraShownPosition, 1.5f))
+            .Group(
+                Tween.Position(
+                    _frothingCamera.transform,
+                    _frothingCameraShownPosition,
+                    _transitionDuration
+                )
+            )
             .Group(
                 Tween.Custom(
                     3f,
                     1.5f,
-                    duration: 0.5f,
+                    duration: _transitionDuration,
                     ease: Ease.InQuart,
                     onValueChange: val => _dof.focusDistance.value = val
                 )
@@ -59,12 +85,18 @@ public class MiniGameManager : MonoBehaviour
     {
         await Sequence
             .Create()
-            .Group(Tween.Position(_frothingCamera.transform, _frothingCameraHiddenPosition, 1.5f))
+            .Group(
+                Tween.Position(
+                    _frothingCamera.transform,
+                    _frothingCameraHiddenPosition,
+                    _transitionDuration
+                )
+            )
             .Group(
                 Tween.Custom(
                     1.5f,
                     3f,
-                    duration: 1f,
+                    duration: _transitionDuration,
                     onValueChange: val => _dof.focusDistance.value = val
                 )
             );
