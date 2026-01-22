@@ -55,56 +55,18 @@ public class MilkFrothingManager : MonoBehaviour
 
     private MilkJugDepth _currentJugDepth = MilkJugDepth.NONE;
 
+    private InputSystem_Actions.FrothingActions _frothingActions;
+
     private void Start()
     {
-        _temperatureProgress = 0.1f;
-        _temperatureGauge.fillAmount = _temperatureProgress;
-
-        _foamProgress = 0f;
-        _foamProgressBar.fillAmount = _foamProgress;
-
-        _stirProgress = 0f;
-        _stirProgressBar.fillAmount = _stirProgress;
-
-        _nozzle.OnJugDepthChange.AddListener(
-            (newDepth) =>
-            {
-                Debug.Log($"Nozzle depth change: {newDepth}");
-                _currentJugDepth = newDepth;
-            }
-        );
-
         Cursor.lockState = CursorLockMode.Locked;
 
-        var actions = ControlsManager.FrothingActions;
+        _nozzle.OnJugDepthChange.AddListener((newDepth) => _currentJugDepth = newDepth);
 
-        actions.Complete.performed += _ =>
-        {
-            var deductions = 0f;
+        _frothingActions = ControlsManager.FrothingActions;
+        _frothingActions.Complete.performed += _ => HandleFrothingCompleted();
 
-            deductions += CalculatePointsDeduction(
-                _temperatureProgress,
-                _temperaturePerfectMinProgress,
-                _temperaturePerfectMaxProgress,
-                0.1f
-            );
-
-            deductions += CalculatePointsDeduction(
-                _foamProgress,
-                _foamPerfectMinProgress,
-                _foamPerfectMaxProgress,
-                0.1f
-            );
-
-            deductions += CalculatePointsDeduction(
-                _stirProgress,
-                _foamPerfectMinProgress,
-                _foamPerfectMaxProgress,
-                0.1f
-            );
-        };
-
-        actions.Enable();
+        Events.FrothingEvents.OnFrothingStart.AddListener(HandleFrothingStart);
     }
 
     private void Update()
@@ -133,6 +95,33 @@ public class MilkFrothingManager : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("Start Mini-Game")]
+    private void DEBUG_StartFrothing()
+    {
+        Events.FrothingEvents.OnFrothingStart.Invoke();
+    }
+#endif
+
+    private void HandleFrothingStart()
+    {
+        ResetProgress();
+
+        _frothingActions.Enable();
+    }
+
+    private void ResetProgress()
+    {
+        _temperatureProgress = 0.1f;
+        _temperatureGauge.fillAmount = _temperatureProgress;
+
+        _foamProgress = 0f;
+        _foamProgressBar.fillAmount = _foamProgress;
+
+        _stirProgress = 0f;
+        _stirProgressBar.fillAmount = _stirProgress;
+    }
+
     private bool IsInRange(float value, float min, float max)
     {
         return value < max && value > min;
@@ -145,5 +134,35 @@ public class MilkFrothingManager : MonoBehaviour
 
         float diff = value < min ? min - value : value - max;
         return Mathf.RoundToInt((diff / step) * 10);
+    }
+
+    private void HandleFrothingCompleted()
+    {
+        _frothingActions.Disable();
+
+        var qualityDeduction = 0;
+
+        qualityDeduction += CalculatePointsDeduction(
+            _temperatureProgress,
+            _temperaturePerfectMinProgress,
+            _temperaturePerfectMaxProgress,
+            0.1f
+        );
+
+        qualityDeduction += CalculatePointsDeduction(
+            _foamProgress,
+            _foamPerfectMinProgress,
+            _foamPerfectMaxProgress,
+            0.1f
+        );
+
+        qualityDeduction += CalculatePointsDeduction(
+            _stirProgress,
+            _foamPerfectMinProgress,
+            _foamPerfectMaxProgress,
+            0.1f
+        );
+
+        Events.FrothingEvents.OnFrothingEnd.Invoke(qualityDeduction);
     }
 }
