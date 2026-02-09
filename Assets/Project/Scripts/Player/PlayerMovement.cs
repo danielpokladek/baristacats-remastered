@@ -11,10 +11,15 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
 
     [SerializeField]
+    private Transform _bodyTransform;
+
+    [SerializeField]
     private Animator _animator;
 
     [SerializeField]
     private float _movementSpeed = 10f;
+
+    private bool _isFacingRight = false;
 
     private void Start()
     {
@@ -34,13 +39,15 @@ public class PlayerMovement : MonoBehaviour
 
         _animator.SetBool("IsWalking", x != 0);
 
-        if (x > 0)
-        {
-            _spriteRenderer.flipX = true;
-        }
-        else if (x < 0)
-        {
-            _spriteRenderer.flipX = false;
-        }
+        bool needsDirectionFlip = (x > 0 && !_isFacingRight) || (x < 0 && _isFacingRight);
+
+        if (!needsDirectionFlip)
+            return;
+
+        Vector3 localScale = _bodyTransform.localScale;
+        localScale.x *= -1;
+
+        _bodyTransform.localScale = localScale;
+        _isFacingRight = x > 0;
     }
 }

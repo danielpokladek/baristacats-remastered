@@ -109,6 +109,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Froth"",
+                    ""type"": ""Button"",
+                    ""id"": ""bfc9bd6f-05ce-45b4-8885-9936d458a721"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -125,12 +134,56 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""6e504ded-ee0e-4626-94e3-85345feaaa2e"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c161b327-dc12-42c4-94c6-3d0dbd9e7bc3"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Complete"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a1778a80-d532-405b-950b-bea8726720d6"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Complete"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c9cc4c4-4f91-4eee-a38e-c4038e2c3636"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Froth"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8b01199f-59e0-4145-93c2-b13e1f1843c3"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Froth"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1194,6 +1247,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Frothing = asset.FindActionMap("Frothing", throwIfNotFound: true);
         m_Frothing_Move = m_Frothing.FindAction("Move", throwIfNotFound: true);
         m_Frothing_Complete = m_Frothing.FindAction("Complete", throwIfNotFound: true);
+        m_Frothing_Froth = m_Frothing.FindAction("Froth", throwIfNotFound: true);
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
@@ -1301,6 +1355,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private List<IFrothingActions> m_FrothingActionsCallbackInterfaces = new List<IFrothingActions>();
     private readonly InputAction m_Frothing_Move;
     private readonly InputAction m_Frothing_Complete;
+    private readonly InputAction m_Frothing_Froth;
     /// <summary>
     /// Provides access to input actions defined in input action map "Frothing".
     /// </summary>
@@ -1320,6 +1375,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Frothing/Complete".
         /// </summary>
         public InputAction @Complete => m_Wrapper.m_Frothing_Complete;
+        /// <summary>
+        /// Provides access to the underlying input action "Frothing/Froth".
+        /// </summary>
+        public InputAction @Froth => m_Wrapper.m_Frothing_Froth;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1352,6 +1411,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Complete.started += instance.OnComplete;
             @Complete.performed += instance.OnComplete;
             @Complete.canceled += instance.OnComplete;
+            @Froth.started += instance.OnFroth;
+            @Froth.performed += instance.OnFroth;
+            @Froth.canceled += instance.OnFroth;
         }
 
         /// <summary>
@@ -1369,6 +1431,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Complete.started -= instance.OnComplete;
             @Complete.performed -= instance.OnComplete;
             @Complete.canceled -= instance.OnComplete;
+            @Froth.started -= instance.OnFroth;
+            @Froth.performed -= instance.OnFroth;
+            @Froth.canceled -= instance.OnFroth;
         }
 
         /// <summary>
@@ -1867,6 +1932,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnComplete(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Froth" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFroth(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.
