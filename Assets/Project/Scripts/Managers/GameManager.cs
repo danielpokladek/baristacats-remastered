@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    private GameUIManager _gameUI;
+    private GameUI _gameUI;
 
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _gameUI = GameUIManager.Instance;
+        _gameUI = GameUI.Instance;
     }
 
     public int CoffeeCompleted { get; private set; }

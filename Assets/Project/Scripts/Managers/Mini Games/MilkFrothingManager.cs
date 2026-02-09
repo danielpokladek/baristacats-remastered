@@ -33,8 +33,9 @@ public class MilkFrothingManager : MonoBehaviour
     private float _foamProgress = 0f;
     private float _stirProgress = 0f;
 
-    private MilkJugDepth _currentJugDepth = MilkJugDepth.NONE;
+    private bool _isFrothing = false;
 
+    private MilkJugDepth _currentJugDepth = MilkJugDepth.NONE;
     private InputSystem_Actions.FrothingActions _frothingActions;
 
     private void Start()
@@ -46,6 +47,9 @@ public class MilkFrothingManager : MonoBehaviour
         _frothingActions = ControlsManager.FrothingActions;
         _frothingActions.Complete.performed += _ => HandleCompleted();
 
+        _frothingActions.Froth.performed += _ => _isFrothing = true;
+        _frothingActions.Froth.canceled += _ => _isFrothing = false;
+
         Events.MiniGameEvents.OnFrothingStart.AddListener(HandleStart);
         Events.MiniGameEvents.OnFrothingEnd.AddListener(HandleEnd);
 
@@ -55,7 +59,7 @@ public class MilkFrothingManager : MonoBehaviour
 
     private void Update()
     {
-        if (_currentJugDepth == MilkJugDepth.NONE)
+        if (_currentJugDepth == MilkJugDepth.NONE || !_isFrothing)
             return;
 
         if (_currentJugDepth == MilkJugDepth.SHALLOW && _foamProgress < 1)
