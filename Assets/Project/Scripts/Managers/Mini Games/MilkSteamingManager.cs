@@ -31,28 +31,6 @@ public class MilkFrothingManager : MonoBehaviour
     [SerializeField]
     private float _stirGainSpeed = 0.7f;
 
-    [Header("Temperature")]
-    [SerializeField]
-    private Image _temperatureGauge;
-
-    [SerializeField]
-    private Color _coldColor;
-
-    [SerializeField]
-    private Color _perfectColor;
-
-    [SerializeField]
-    private Color _hotColor;
-
-    [SerializeField]
-    private float _temperatureGainSpeed = 0.2f;
-
-    [SerializeField]
-    private float _temperaturePerfectMinProgress = 0.66f;
-
-    [SerializeField]
-    private float _temperaturePerfectMaxProgress = 0.77f;
-
     private float _temperatureProgress = 0f;
     private float _foamProgress = 0f;
     private float _stirProgress = 0f;
@@ -93,14 +71,6 @@ public class MilkFrothingManager : MonoBehaviour
             _stirProgress += Time.deltaTime * _stirGainSpeed;
             _stirProgressBar.fillAmount = _stirProgress;
         }
-
-        if (_temperatureProgress < 1)
-        {
-            _temperatureProgress += Time.deltaTime * _temperatureGainSpeed;
-
-            _temperatureGauge.fillAmount = _temperatureProgress;
-            _temperatureGauge.color = Color.Lerp(_coldColor, _hotColor, _temperatureProgress);
-        }
     }
 
 #if UNITY_EDITOR
@@ -113,9 +83,6 @@ public class MilkFrothingManager : MonoBehaviour
 
     private void ResetProgress()
     {
-        _temperatureProgress = 0.1f;
-        _temperatureGauge.fillAmount = _temperatureProgress;
-
         _foamProgress = 0f;
         _foamProgressBar.fillAmount = _foamProgress;
 
@@ -159,13 +126,6 @@ public class MilkFrothingManager : MonoBehaviour
         _frothingActions.Disable();
 
         var qualityDeduction = 0;
-
-        qualityDeduction += CalculatePointsDeduction(
-            _temperatureProgress,
-            _temperaturePerfectMinProgress,
-            _temperaturePerfectMaxProgress,
-            0.1f
-        );
 
         qualityDeduction += CalculatePointsDeduction(
             _foamProgress,

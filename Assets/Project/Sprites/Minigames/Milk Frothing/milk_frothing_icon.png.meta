@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ea12df035447e7b599d5935e3caeeb96
+guid: b09b10734ed5e3030bc387cafdd7ae8e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -959928427581152393
-    second: milk_frothing_frame_0
+      213: 8645761781744111493
+    second: milk_frothing_icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 512
-  spriteBorder: {x: 170, y: 170, z: 170, w: 170}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: milk_frothing_frame_0
+      name: milk_frothing_icon_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 35
-        width: 512
-        height: 443
+        x: 80
+        y: 0
+        width: 354
+        height: 503
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 773e9385e26ada2f0800000000000000
-      internalID: -959928427581152393
+      spriteID: 58f8185888aebf770800000000000000
+      internalID: 8645761781744111493
       vertices: []
       indices: 
       edges: []
@@ -139,7 +139,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      milk_frothing_frame_0: -959928427581152393
+      milk_frothing_icon_0: 8645761781744111493
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
