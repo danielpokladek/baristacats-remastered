@@ -16691,62 +16691,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 125067540397164935, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_Name
-      value: Item
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5983596
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5983596
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5983596
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.068
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.085
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9913111
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.13153848
-      objectReference: {fileID: 0}
-    - target: {fileID: 168032166293517141, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -15.117
-      objectReference: {fileID: 0}
-    - target: {fileID: 446136328865123070, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: cc0b8a526398e9b1f84cd56e6558c3ec, type: 3}
-    - target: {fileID: 446136328865123070, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_SortingOrder
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 990489013626527363, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_SortingOrder
-      value: 13
-      objectReference: {fileID: 0}
     - target: {fileID: 5335728808347190695, guid: 0af62ea139754525c99e115986f875b1, type: 3}
       propertyPath: _playerCamera
       value: 
@@ -16795,10 +16739,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8854871303987408994, guid: 0af62ea139754525c99e115986f875b1, type: 3}
-      propertyPath: m_SortingOrder
-      value: 12
-      objectReference: {fileID: 0}
+    - target: {fileID: 6514549196754398134, guid: 0af62ea139754525c99e115986f875b1, type: 3}
+      propertyPath: _milkRed
+      value: 
+      objectReference: {fileID: 21300000, guid: 73a2f00cdd2d4103d8d569f745bc4509, type: 3}
+    - target: {fileID: 6514549196754398134, guid: 0af62ea139754525c99e115986f875b1, type: 3}
+      propertyPath: _milkBlue
+      value: 
+      objectReference: {fileID: 21300000, guid: d3b9e0e9d3f4597ab88d0f01d9cfc40e, type: 3}
+    - target: {fileID: 6514549196754398134, guid: 0af62ea139754525c99e115986f875b1, type: 3}
+      propertyPath: _coffeeCup
+      value: 
+      objectReference: {fileID: 21300000, guid: 8f7358432f84ced348e7d1674a404ea7, type: 3}
+    - target: {fileID: 6514549196754398134, guid: 0af62ea139754525c99e115986f875b1, type: 3}
+      propertyPath: _milkGreen
+      value: 
+      objectReference: {fileID: 21300000, guid: ad4417a0e0e009707bab23198541d161, type: 3}
+    - target: {fileID: 6514549196754398134, guid: 0af62ea139754525c99e115986f875b1, type: 3}
+      propertyPath: _milkYellow
+      value: 
+      objectReference: {fileID: 21300000, guid: 051d9ab20eb04b05694fd602f9c4945a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

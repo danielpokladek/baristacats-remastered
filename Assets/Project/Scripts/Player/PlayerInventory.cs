@@ -1,7 +1,11 @@
 #nullable enable
 
+using UnityEngine.Events;
+
 public class PlayerInventory
 {
+    public UnityEvent OnInventoryUpdate = new();
+
     private MilkType _milkInHand = MilkType.NONE;
     private CoffeeData? _coffeeInHand = null;
     private bool _isHoldingBeans = false;
@@ -23,6 +27,8 @@ public class PlayerInventory
             {
                 IsHoldingItem = true;
             }
+
+            OnInventoryUpdate.Invoke();
         }
     }
 
@@ -41,6 +47,8 @@ public class PlayerInventory
             {
                 IsHoldingItem = true;
             }
+
+            OnInventoryUpdate.Invoke();
         }
     }
 
@@ -59,6 +67,8 @@ public class PlayerInventory
             {
                 IsHoldingItem = true;
             }
+
+            OnInventoryUpdate.Invoke();
         }
     }
 }
