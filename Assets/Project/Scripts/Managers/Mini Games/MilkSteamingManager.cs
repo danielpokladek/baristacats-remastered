@@ -1,12 +1,11 @@
 using PrimeTween;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MilkFrothingManager : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField]
-    private FrotherNozzle _nozzle;
+    public static UnityEvent<MilkJugDepth> OnJugDepthChange = new();
 
     [SerializeField]
     private CanvasGroup _canvasGroup;
@@ -31,7 +30,6 @@ public class MilkFrothingManager : MonoBehaviour
     [SerializeField]
     private float _stirGainSpeed = 0.7f;
 
-    private float _temperatureProgress = 0f;
     private float _foamProgress = 0f;
     private float _stirProgress = 0f;
 
@@ -43,7 +41,7 @@ public class MilkFrothingManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
 
-        _nozzle.OnJugDepthChange.AddListener((newDepth) => _currentJugDepth = newDepth);
+        OnJugDepthChange.AddListener((newDepth) => _currentJugDepth = newDepth);
 
         _frothingActions = ControlsManager.FrothingActions;
         _frothingActions.Complete.performed += _ => HandleCompleted();
