@@ -440,6 +440,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _handTransform: {fileID: 1709236565467777701}
   _itemInHand: {fileID: 990489013626527363}
+  _coffeeCup: {fileID: 21300000, guid: 8f7358432f84ced348e7d1674a404ea7, type: 3}
+  _grinder: {fileID: 21300000, guid: 7f6c3c76529b73839bf0545a11efedff, type: 3}
+  _milkRed: {fileID: 21300000, guid: 73a2f00cdd2d4103d8d569f745bc4509, type: 3}
+  _milkBlue: {fileID: 21300000, guid: d3b9e0e9d3f4597ab88d0f01d9cfc40e, type: 3}
+  _milkGreen: {fileID: 21300000, guid: ad4417a0e0e009707bab23198541d161, type: 3}
+  _milkYellow: {fileID: 21300000, guid: 051d9ab20eb04b05694fd602f9c4945a, type: 3}
 --- !u!114 &5042047099469150311
 MonoBehaviour:
   m_ObjectHideFlags: 0

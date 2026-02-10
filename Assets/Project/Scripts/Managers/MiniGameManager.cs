@@ -44,7 +44,11 @@ public class MiniGameManager : MonoBehaviour
 
     public async void StartFrothing()
     {
+        ControlsManager.PlayerActions.Disable();
+
         await Sequence.Create().Group(_gameUI.FadeInBlur()).Group(_gameUI.TransitionFrothingIn());
+
+        ControlsManager.FrothingActions.Enable();
     }
 
     public async void StartMilkPicking()
@@ -66,6 +70,21 @@ public class MiniGameManager : MonoBehaviour
         await Sequence.Create().Group(_gameUI.FadeOutBlur()).Group(_gameUI.TransitionPickingOut());
 
         _player.Inventory.MilkInHand = milkType;
+
+        ControlsManager.PlayerActions.Enable();
+    }
+
+    public async void HandleMilkFrothed(int qualityDeduction)
+    {
+        ControlsManager.FrothingActions.Disable();
+
+        await Sequence.Create().Group(_gameUI.FadeOutBlur()).Group(_gameUI.TransitionFrothingOut());
+
+        var coffeeInHand = _player.Inventory.CoffeeInHand;
+
+        coffeeInHand.Quality -= qualityDeduction;
+        coffeeInHand.Milk = _player.Inventory.MilkInHand;
+        _player.Inventory.MilkInHand = MilkType.NONE;
 
         ControlsManager.PlayerActions.Enable();
     }

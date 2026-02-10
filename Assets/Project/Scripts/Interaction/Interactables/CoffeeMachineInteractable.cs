@@ -50,7 +50,7 @@ public class CoffeeMachineInteractable : Interactable
                 player.Inventory.CoffeeInHand = new CoffeeData
                 {
                     Milk = MilkType.NONE,
-                    Quality = 0,
+                    Quality = 100,
                 };
 
                 completedSlot.Reset();
@@ -77,7 +77,27 @@ public class CoffeeMachineInteractable : Interactable
             return;
         }
 
-        if (!player.Inventory.IsHoldingBeans)
+        if (inventory.MilkInHand != MilkType.NONE && isAnyCoffeeReady)
+        {
+            var completedSlot = GetBrewedSlot();
+
+            if (completedSlot)
+            {
+                player.Inventory.CoffeeInHand = new CoffeeData
+                {
+                    Milk = MilkType.NONE,
+                    Quality = 100,
+                };
+
+                completedSlot.Reset();
+                _brewedCoffee--;
+            }
+
+            MiniGameManager.Instance.StartFrothing();
+            return;
+        }
+
+        if (!inventory.IsHoldingBeans)
         {
             ShowNoBeans();
             return;

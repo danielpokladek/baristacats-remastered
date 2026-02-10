@@ -111,8 +111,6 @@ public class MilkFrothingManager : MonoBehaviour
 
     private async void HandleCompleted()
     {
-        _frothingActions.Disable();
-
         var qualityDeduction = 0;
 
         qualityDeduction += CalculatePointsDeduction(
@@ -129,10 +127,6 @@ public class MilkFrothingManager : MonoBehaviour
             0.1f
         );
 
-        Events.MiniGameEvents.OnFrothingEnd.Invoke(qualityDeduction);
-
-        await Tween.Delay(2f);
-
-        Events.MiniGameEvents.OnFrothingTransitionOut.Invoke();
+        MiniGameManager.Instance.HandleMilkFrothed(qualityDeduction);
     }
 }

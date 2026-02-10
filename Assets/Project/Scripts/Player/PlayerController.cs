@@ -41,6 +41,11 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInventoryUpdate()
     {
+        Debug.Log($"Is holding item {Inventory.IsHoldingItem}");
+        Debug.Log($"Is holding beans {Inventory.IsHoldingBeans}");
+        Debug.Log($"Is holding coffee {Inventory.CoffeeInHand != null}");
+        Debug.Log($"Is holding milk {Inventory.MilkInHand != MilkType.NONE}");
+
         if (!Inventory.IsHoldingItem)
         {
             _handTransform.SetActive(false);
