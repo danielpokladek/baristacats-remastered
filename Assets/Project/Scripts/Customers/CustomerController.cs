@@ -29,10 +29,10 @@ public class CustomerController : MonoBehaviour
         _coffeeImage.color = new(1, 1, 1, 0);
     }
 
-    public void GenerateOrder()
+    public void SetCoffeeOrder(CoffeeData coffeeData)
     {
-        var order = new CoffeeData();
-        order.Milk = MilkType.NONE;
+        DesiredCoffee.Milk = coffeeData.Milk;
+        DesiredCoffee.Quality = coffeeData.Quality;
     }
 
     public async Task ShowOrderEmote()
@@ -55,7 +55,7 @@ public class CustomerController : MonoBehaviour
 
     public async Task ShowEmote(bool isHappy)
     {
-        _emoteImage.sprite = _emotes.GetHappyEmote();
+        _emoteImage.sprite = isHappy ? _emotes.GetHappyEmote() : _emotes.GetSadEmote();
 
         await Sequence.Create().Group(Tween.Alpha(_emoteImage, 1f, 0.5f));
 

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class CashRegisterInteractable : Interactable
 {
     private QueueManager _queueManager;
@@ -28,7 +26,7 @@ public class CashRegisterInteractable : Interactable
 
 #pragma warning disable CS4014
         // Disabling the warning here, as we don't need to await the animation.
-        _queueManager.HandleOrderPaid();
+        _queueManager.HandleOrderPaid(player.Inventory.CoffeeInHand);
 #pragma warning restore
     }
 

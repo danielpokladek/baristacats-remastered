@@ -76,5 +76,10 @@
         "Mathf",
         "Rigidbody",
         "Yoyo"
-    ]
+    ],
+    "[csharp]": {
+        "editor.codeActionsOnSave": [
+            "source.organizeImports"
+        ]
+    }
 }

@@ -58,4 +58,11 @@ public class CharacterEmotes : MonoBehaviour
 
         return _happyEmotes[index];
     }
+
+    public Sprite GetSadEmote()
+    {
+        var index = Random.Range(0, _sadEmotes.Length);
+
+        return _sadEmotes[index];
+    }
 }

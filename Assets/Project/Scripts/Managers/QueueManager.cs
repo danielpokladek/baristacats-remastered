@@ -96,7 +96,8 @@ public class QueueManager : MonoBehaviour
 
         _payQueue.Enqueue(customer);
 
-        customer.GenerateOrder();
+        var coffeeData = GenerateOrder();
+        customer.SetCoffeeOrder(coffeeData);
 
         await customer.ShowOrderEmote();
 
@@ -109,7 +110,7 @@ public class QueueManager : MonoBehaviour
     }
 
     [ContextMenu("Handle Order Paid")]
-    public async Task HandleOrderPaid()
+    public async Task HandleOrderPaid(CoffeeData servedCoffee)
     {
         if (_payQueue.Count == 0)
         {
@@ -118,6 +119,8 @@ public class QueueManager : MonoBehaviour
         }
 
         var customer = _payQueue.Dequeue();
+        customer.ServedCoffee.Milk = servedCoffee.Milk;
+        customer.ServedCoffee.Quality = servedCoffee.Quality;
 
         await _game.ProcessCustomerServed(customer);
 
@@ -174,6 +177,44 @@ public class QueueManager : MonoBehaviour
     {
         customer.Movement.OnArrived.RemoveListener(NotifyPayQueueUpdated);
         OnPayQueueUpdated.Invoke();
+    }
+
+    private CoffeeData GenerateOrder()
+    {
+        var coffeeData = new CoffeeData();
+
+        var randomIndex = Random.Range(0, 3);
+        var milkType = MilkType.NONE;
+
+        // TODO: Add some randomization to this.
+        var minQuality = 80;
+
+        switch (randomIndex)
+        {
+            case 0:
+                break;
+
+            case 1:
+                milkType = MilkType.BLUE;
+                break;
+
+            case 2:
+                milkType = MilkType.RED;
+                break;
+
+            case 3:
+                milkType = MilkType.YELLOW;
+                break;
+
+            case 4:
+                milkType = MilkType.CYAN;
+                break;
+        }
+
+        coffeeData.Milk = milkType;
+        coffeeData.Quality = minQuality;
+
+        return coffeeData;
     }
 
     private void OnDrawGizmosSelected()

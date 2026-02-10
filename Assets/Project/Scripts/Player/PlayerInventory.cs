@@ -1,7 +1,5 @@
 #nullable enable
 
-using NUnit.Framework;
-using Unity.VisualScripting;
 using UnityEngine.Events;
 
 public class PlayerInventory

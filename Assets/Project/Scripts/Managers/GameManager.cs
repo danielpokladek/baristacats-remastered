@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
-
-        // SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
     }
 
     private void Start()
@@ -31,10 +29,25 @@ public class GameManager : MonoBehaviour
 
     public async Task ProcessCustomerServed(CustomerController customer)
     {
+        var desiredCoffee = customer.DesiredCoffee;
+        var servedCoffee = customer.ServedCoffee;
+
+        var isHappy = true;
+
+        if (desiredCoffee.Milk != servedCoffee.Milk)
+        {
+            isHappy = false;
+        }
+
+        if (desiredCoffee.Quality > servedCoffee.Quality)
+        {
+            isHappy = false;
+        }
+
         CoffeeCompleted++;
 
         _gameUI.UpdateCompletedCoffeeText(CoffeeCompleted);
 
-        await customer.ShowEmote(true);
+        await customer.ShowEmote(isHappy);
     }
 }
