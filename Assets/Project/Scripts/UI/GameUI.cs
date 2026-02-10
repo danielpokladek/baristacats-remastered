@@ -24,6 +24,9 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private RectTransform _frothingMiniGameTransform;
 
+    [SerializeField]
+    private RectTransform _milkPickingMiniGame;
+
     private DepthOfField _dof;
 
     private void Awake()
@@ -46,6 +49,7 @@ public class GameUI : MonoBehaviour
         _dof = dof;
 
         TransitionFrothingOut(true);
+        TransitionPickingOut(true);
     }
 
 #if UNITY_EDITOR
@@ -53,14 +57,14 @@ public class GameUI : MonoBehaviour
     {
         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
         {
-            TransitionFrothingIn();
+            TransitionPickingIn();
             FadeInBlur();
             return;
         }
 
         if (Keyboard.current.downArrowKey.wasPressedThisFrame)
         {
-            TransitionFrothingOut();
+            TransitionPickingOut();
             FadeOutBlur();
             return;
         }
@@ -101,6 +105,20 @@ public class GameUI : MonoBehaviour
     {
         return Tween.LocalPositionY(
             _frothingMiniGameTransform,
+            -Screen.height * 2,
+            isInstant ? 0 : _miniGameTransition
+        );
+    }
+
+    public Tween TransitionPickingIn()
+    {
+        return Tween.LocalPositionY(_milkPickingMiniGame.transform, 0, _miniGameTransition);
+    }
+
+    public Tween TransitionPickingOut(bool isInstant = false)
+    {
+        return Tween.LocalPositionY(
+            _milkPickingMiniGame,
             -Screen.height * 2,
             isInstant ? 0 : _miniGameTransition
         );

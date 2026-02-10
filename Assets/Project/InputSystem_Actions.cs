@@ -190,6 +190,96 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""Milk Picking"",
+            ""id"": ""aed6d3de-4eb0-4af0-a0ef-c617c39ef04e"",
+            ""actions"": [
+                {
+                    ""name"": ""Previous"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce8ad972-3357-444d-b6cf-dd781edcffba"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Next"",
+                    ""type"": ""Button"",
+                    ""id"": ""68a8aab3-a8cc-41e8-8398-b753b1918f15"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Confirm"",
+                    ""type"": ""Button"",
+                    ""id"": ""06dd49e2-09ef-4595-8078-fe09d67bf4a7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a8061e8b-b5ac-4e39-878e-5f6b1f8609dc"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Previous"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43e5b2cc-0254-413e-a006-4f50784be7b9"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Previous"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6468786-6aaf-488c-929e-e7abb8470148"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Next"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a3193f7-38c3-424e-9991-b4a3f276dc45"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Next"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03053c3f-93f2-4178-babe-3868763c69aa"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Player"",
             ""id"": ""df70fa95-8a34-4494-b137-73ab6b9c7d37"",
             ""actions"": [
@@ -1248,6 +1338,11 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Frothing_Move = m_Frothing.FindAction("Move", throwIfNotFound: true);
         m_Frothing_Complete = m_Frothing.FindAction("Complete", throwIfNotFound: true);
         m_Frothing_Froth = m_Frothing.FindAction("Froth", throwIfNotFound: true);
+        // Milk Picking
+        m_MilkPicking = asset.FindActionMap("Milk Picking", throwIfNotFound: true);
+        m_MilkPicking_Previous = m_MilkPicking.FindAction("Previous", throwIfNotFound: true);
+        m_MilkPicking_Next = m_MilkPicking.FindAction("Next", throwIfNotFound: true);
+        m_MilkPicking_Confirm = m_MilkPicking.FindAction("Confirm", throwIfNotFound: true);
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
@@ -1276,6 +1371,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     ~@InputSystem_Actions()
     {
         UnityEngine.Debug.Assert(!m_Frothing.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Frothing.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_MilkPicking.enabled, "This will cause a leak and performance issues, InputSystem_Actions.MilkPicking.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputSystem_Actions.UI.Disable() has not been called.");
     }
@@ -1467,6 +1563,124 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="FrothingActions" /> instance referencing this action map.
     /// </summary>
     public FrothingActions @Frothing => new FrothingActions(this);
+
+    // Milk Picking
+    private readonly InputActionMap m_MilkPicking;
+    private List<IMilkPickingActions> m_MilkPickingActionsCallbackInterfaces = new List<IMilkPickingActions>();
+    private readonly InputAction m_MilkPicking_Previous;
+    private readonly InputAction m_MilkPicking_Next;
+    private readonly InputAction m_MilkPicking_Confirm;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Milk Picking".
+    /// </summary>
+    public struct MilkPickingActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public MilkPickingActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "MilkPicking/Previous".
+        /// </summary>
+        public InputAction @Previous => m_Wrapper.m_MilkPicking_Previous;
+        /// <summary>
+        /// Provides access to the underlying input action "MilkPicking/Next".
+        /// </summary>
+        public InputAction @Next => m_Wrapper.m_MilkPicking_Next;
+        /// <summary>
+        /// Provides access to the underlying input action "MilkPicking/Confirm".
+        /// </summary>
+        public InputAction @Confirm => m_Wrapper.m_MilkPicking_Confirm;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_MilkPicking; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="MilkPickingActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(MilkPickingActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="MilkPickingActions" />
+        public void AddCallbacks(IMilkPickingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MilkPickingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MilkPickingActionsCallbackInterfaces.Add(instance);
+            @Previous.started += instance.OnPrevious;
+            @Previous.performed += instance.OnPrevious;
+            @Previous.canceled += instance.OnPrevious;
+            @Next.started += instance.OnNext;
+            @Next.performed += instance.OnNext;
+            @Next.canceled += instance.OnNext;
+            @Confirm.started += instance.OnConfirm;
+            @Confirm.performed += instance.OnConfirm;
+            @Confirm.canceled += instance.OnConfirm;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="MilkPickingActions" />
+        private void UnregisterCallbacks(IMilkPickingActions instance)
+        {
+            @Previous.started -= instance.OnPrevious;
+            @Previous.performed -= instance.OnPrevious;
+            @Previous.canceled -= instance.OnPrevious;
+            @Next.started -= instance.OnNext;
+            @Next.performed -= instance.OnNext;
+            @Next.canceled -= instance.OnNext;
+            @Confirm.started -= instance.OnConfirm;
+            @Confirm.performed -= instance.OnConfirm;
+            @Confirm.canceled -= instance.OnConfirm;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="MilkPickingActions.UnregisterCallbacks(IMilkPickingActions)" />.
+        /// </summary>
+        /// <seealso cref="MilkPickingActions.UnregisterCallbacks(IMilkPickingActions)" />
+        public void RemoveCallbacks(IMilkPickingActions instance)
+        {
+            if (m_Wrapper.m_MilkPickingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="MilkPickingActions.AddCallbacks(IMilkPickingActions)" />
+        /// <seealso cref="MilkPickingActions.RemoveCallbacks(IMilkPickingActions)" />
+        /// <seealso cref="MilkPickingActions.UnregisterCallbacks(IMilkPickingActions)" />
+        public void SetCallbacks(IMilkPickingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MilkPickingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MilkPickingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="MilkPickingActions" /> instance referencing this action map.
+    /// </summary>
+    public MilkPickingActions @MilkPicking => new MilkPickingActions(this);
 
     // Player
     private readonly InputActionMap m_Player;
@@ -1939,6 +2153,35 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFroth(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Milk Picking" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="MilkPickingActions.AddCallbacks(IMilkPickingActions)" />
+    /// <seealso cref="MilkPickingActions.RemoveCallbacks(IMilkPickingActions)" />
+    public interface IMilkPickingActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Previous" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPrevious(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Next" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNext(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Confirm" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnConfirm(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.
