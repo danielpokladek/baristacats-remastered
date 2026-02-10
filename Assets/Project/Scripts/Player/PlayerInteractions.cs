@@ -1,3 +1,6 @@
+#nullable enable
+
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -6,7 +9,9 @@ public class PlayerInteractions : MonoBehaviour
     [SerializeField]
     private PlayerController _playerController;
 
-    private Interactable _currentInteractable;
+    private readonly HashSet<Interactable> _interactablesInRange = new();
+    private Interactable? _currentInteractable;
+
     private InputSystem_Actions.PlayerActions _playerActions;
 
     private bool _isInteracting = false;
@@ -24,7 +29,7 @@ public class PlayerInteractions : MonoBehaviour
             // TODO DP: For some reason this causes `infinity`.
             // var holdInteraction = ctx.interaction as HoldInteraction;
 
-            if (!_currentInteractable.CanInteract)
+            if (!_currentInteractable || !_currentInteractable.CanInteract)
                 return;
 
             _interactionDuration = 0.4f;
@@ -36,7 +41,7 @@ public class PlayerInteractions : MonoBehaviour
 
         _playerActions.Interact.canceled += _ =>
         {
-            if (!_currentInteractable.CanInteract)
+            if (!_currentInteractable || !_currentInteractable.CanInteract)
                 return;
 
             _isInteracting = false;
@@ -48,7 +53,7 @@ public class PlayerInteractions : MonoBehaviour
 
         _playerActions.Interact.performed += _ =>
         {
-            if (!_currentInteractable.CanInteract)
+            if (!_currentInteractable || !_currentInteractable.CanInteract)
                 return;
 
             _isInteracting = false;
@@ -62,7 +67,7 @@ public class PlayerInteractions : MonoBehaviour
 
     private void Update()
     {
-        if (!_isInteracting)
+        if (!_isInteracting || !_currentInteractable)
             return;
 
         _interactionTimer += Time.deltaTime;
@@ -74,9 +79,7 @@ public class PlayerInteractions : MonoBehaviour
         if (!collision.CompareTag("Interactable"))
             return;
 
-        collision.gameObject.TryGetComponent<Interactable>(out Interactable interactable);
-
-        if (!interactable)
+        if (!collision.gameObject.TryGetComponent(out Interactable interactable))
         {
             Debug.LogWarning(
                 "Interacted with object tagged as 'interactable', but no interactable script found!"
@@ -85,11 +88,8 @@ public class PlayerInteractions : MonoBehaviour
             return;
         }
 
-        _currentInteractable = interactable;
-        _currentInteractable.PlayerInRange = true;
-        _currentInteractable.ShowInteractionPrompt();
-
-        _playerActions.Interact.Enable();
+        _interactablesInRange.Add(interactable);
+        UpdateCurrentInteractable();
     }
 
     public void OnTriggerExit2D(Collider2D collision)
@@ -97,10 +97,53 @@ public class PlayerInteractions : MonoBehaviour
         if (!collision.CompareTag("Interactable"))
             return;
 
-        _playerActions.Interact.Disable();
+        if (!collision.TryGetComponent(out Interactable interactable))
+            return;
 
-        _currentInteractable.HideInteractionPrompt();
-        _currentInteractable.PlayerInRange = false;
-        _currentInteractable = null;
+        _interactablesInRange.Remove(interactable);
+        UpdateCurrentInteractable();
+    }
+
+    private void UpdateCurrentInteractable()
+    {
+        Interactable? next = null;
+        float bestDistSq = float.MaxValue;
+
+        Vector2 playerPos = transform.position;
+
+        foreach (var interactable in _interactablesInRange)
+        {
+            Vector2 interactablePos = interactable.transform.position;
+            float distSq = (interactablePos - playerPos).sqrMagnitude;
+
+            if (distSq < bestDistSq)
+            {
+                bestDistSq = distSq;
+                next = interactable;
+            }
+        }
+
+        if (_currentInteractable == next)
+            return;
+
+        if (_currentInteractable != null)
+        {
+            _currentInteractable.HideInteractionPrompt();
+            _currentInteractable.PlayerInRange = false;
+        }
+
+        _currentInteractable = next;
+
+        if (_currentInteractable != null)
+        {
+            _currentInteractable.PlayerInRange = true;
+            _currentInteractable.ShowInteractionPrompt();
+
+            _playerActions.Interact.Enable();
+        }
+        else
+        {
+            _playerActions.Interact.Disable();
+        }
     }
 }

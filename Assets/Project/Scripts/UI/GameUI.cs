@@ -51,14 +51,14 @@ public class GameUI : MonoBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
-        if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
         {
             TransitionFrothingIn();
             FadeInBlur();
             return;
         }
 
-        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+        if (Keyboard.current.downArrowKey.wasPressedThisFrame)
         {
             TransitionFrothingOut();
             FadeOutBlur();
@@ -101,7 +101,7 @@ public class GameUI : MonoBehaviour
     {
         return Tween.LocalPositionY(
             _frothingMiniGameTransform,
-            Screen.height,
+            -Screen.height * 2,
             isInstant ? 0 : _miniGameTransition
         );
     }

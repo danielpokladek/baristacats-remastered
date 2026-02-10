@@ -1294,7 +1294,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7194518026209925454}
   - component: {fileID: 3664742652429944778}
-  - component: {fileID: 3761681090378988452}
   m_Layer: 5
   m_Name: Frothing
   m_TagString: Untagged
@@ -1340,18 +1339,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
   m_Padding: {x: -60, y: -60, z: -60, w: -60}
   m_Softness: {x: 0, y: 0}
---- !u!225 &3761681090378988452
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4684917440502612015}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &5112784468147397175
 GameObject:
   m_ObjectHideFlags: 0

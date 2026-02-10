@@ -7,9 +7,6 @@ public class MilkFrothingManager : MonoBehaviour
 {
     public static UnityEvent<MilkJugDepth> OnJugDepthChange = new();
 
-    [SerializeField]
-    private CanvasGroup _canvasGroup;
-
     [Header("Foam Properties")]
     [SerializeField]
     private Image _foamProgressBar;
@@ -52,9 +49,6 @@ public class MilkFrothingManager : MonoBehaviour
 
         Events.MiniGameEvents.OnFrothingStart.AddListener(HandleStart);
         Events.MiniGameEvents.OnFrothingEnd.AddListener(HandleEnd);
-
-        _canvasGroup.alpha = 0;
-        _canvasGroup.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -110,18 +104,10 @@ public class MilkFrothingManager : MonoBehaviour
     {
         ResetProgress();
 
-        _canvasGroup.gameObject.SetActive(true);
-        Tween.Alpha(_canvasGroup, 1f, 0.5f);
-
         _frothingActions.Enable();
     }
 
-    private async void HandleEnd(int _)
-    {
-        await Tween.Alpha(_canvasGroup, 0f, 0.5f);
-
-        _canvasGroup.gameObject.SetActive(false);
-    }
+    private void HandleEnd(int _) { }
 
     private async void HandleCompleted()
     {
