@@ -1,5 +1,7 @@
 #nullable enable
 
+using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine.Events;
 
 public class PlayerInventory
@@ -9,8 +11,17 @@ public class PlayerInventory
     private MilkType _milkInHand = MilkType.NONE;
     private CoffeeData? _coffeeInHand = null;
     private bool _isHoldingBeans = false;
+    private bool _isHoldingItem = false;
 
-    public bool IsHoldingItem { get; private set; }
+    public bool IsHoldingItem
+    {
+        get { return _isHoldingItem; }
+        private set
+        {
+            _isHoldingItem = value;
+            OnInventoryUpdate.Invoke();
+        }
+    }
 
     public MilkType MilkInHand
     {
@@ -18,17 +29,7 @@ public class PlayerInventory
         set
         {
             _milkInHand = value;
-
-            if (value == MilkType.NONE)
-            {
-                IsHoldingItem = false;
-            }
-            else
-            {
-                IsHoldingItem = true;
-            }
-
-            OnInventoryUpdate.Invoke();
+            UpdateState();
         }
     }
 
@@ -38,17 +39,7 @@ public class PlayerInventory
         set
         {
             _coffeeInHand = value;
-
-            if (value == null)
-            {
-                IsHoldingItem = false;
-            }
-            else
-            {
-                IsHoldingItem = true;
-            }
-
-            OnInventoryUpdate.Invoke();
+            UpdateState();
         }
     }
 
@@ -58,17 +49,23 @@ public class PlayerInventory
         set
         {
             _isHoldingBeans = value;
-
-            if (!value)
-            {
-                IsHoldingItem = false;
-            }
-            else
-            {
-                IsHoldingItem = true;
-            }
-
-            OnInventoryUpdate.Invoke();
+            UpdateState();
         }
+    }
+
+    private void UpdateState()
+    {
+        bool isHoldingItem = false;
+
+        if (_isHoldingBeans)
+            isHoldingItem = true;
+
+        if (_coffeeInHand != null)
+            isHoldingItem = true;
+
+        if (_milkInHand != MilkType.NONE)
+            isHoldingItem = true;
+
+        IsHoldingItem = isHoldingItem;
     }
 }
