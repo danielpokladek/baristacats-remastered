@@ -7,19 +7,19 @@ public class OrderTicketUI : MonoBehaviour
 {
     [Header("Icons")]
     [SerializeField]
-    private GameObject _beanIcon;
+    private GameObject _beanIcon = null!;
 
     [SerializeField]
-    private GameObject _milkIcon;
+    private GameObject _milkIcon = null!;
 
     [SerializeField]
-    private Image _milkSprite;
+    private Image _milkSprite = null!;
 
     [SerializeField]
-    private Image _timerBar;
+    private Image _timerBar = null!;
 
     [SerializeField]
-    private Sprite _unknownOrderSprite;
+    private Sprite _unknownOrderSprite = null!;
 
     private float _maxWaitTime;
     private float _currentWaitTime;

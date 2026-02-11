@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerInteractions : MonoBehaviour
 {
     [SerializeField]
-    private PlayerController _playerController;
+    private PlayerController _playerController = null!;
 
     private readonly HashSet<Interactable> _interactablesInRange = new();
     private Interactable? _currentInteractable;

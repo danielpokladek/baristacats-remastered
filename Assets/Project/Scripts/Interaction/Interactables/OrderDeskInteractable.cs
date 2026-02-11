@@ -29,7 +29,7 @@ public class OrderDeskInteractable : Interactable
             return;
         }
 
-        _orderController.HandleOrderAccepted();
+        _ = _orderController.HandleOrderAccepted();
     }
 
     private void HandleInteractStateChange()

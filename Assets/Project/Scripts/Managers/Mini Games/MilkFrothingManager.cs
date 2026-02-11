@@ -108,7 +108,7 @@ public class MilkFrothingManager : MonoBehaviour
 
     private void HandleEnd(int _) { }
 
-    private async void HandleCompleted()
+    private void HandleCompleted()
     {
         var qualityDeduction = 0;
 

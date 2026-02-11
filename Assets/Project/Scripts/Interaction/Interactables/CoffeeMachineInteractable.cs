@@ -6,10 +6,10 @@ using UnityEngine;
 public class CoffeeMachineInteractable : Interactable
 {
     [SerializeField]
-    private CoffeeMachineSlot[] _slots;
+    private CoffeeMachineSlot[] _slots = null!;
 
     [SerializeField]
-    private CanvasGroup _noBeansCanvasGroup;
+    private CanvasGroup _noBeansCanvasGroup = null!;
 
     [SerializeField]
     private float _brewDuration = 3f;
@@ -132,7 +132,7 @@ public class CoffeeMachineInteractable : Interactable
 
         Sequence
             .Create()
-            .ChainCallback(() => _interactionPrompt.HideBoth())
+            .ChainCallback(() => _interactionPrompt?.HideBoth())
             .Chain(Tween.Alpha(_noBeansCanvasGroup, 1, 0.5f))
             .Chain(Tween.Delay(1.5f))
             .Chain(Tween.Alpha(_noBeansCanvasGroup, 0, 0.5f))
@@ -141,8 +141,8 @@ public class CoffeeMachineInteractable : Interactable
                 if (!PlayerInRange)
                     return;
 
-                _interactionPrompt.UpdateTimerFill(0);
-                _interactionPrompt.ShowBoth();
+                _interactionPrompt?.UpdateTimerFill(0);
+                _interactionPrompt?.ShowBoth();
             });
 
         CanInteract = true;

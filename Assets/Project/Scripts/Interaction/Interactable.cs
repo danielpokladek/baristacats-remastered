@@ -9,7 +9,7 @@ public abstract class Interactable : MonoBehaviour
     protected InteractionPrompt? _interactionPrompt;
 
     [SerializeField]
-    private SpriteRenderer _outlineRenderer;
+    private SpriteRenderer _outlineRenderer = null!;
 
     public bool CanInteract { get; set; }
 
@@ -21,6 +21,11 @@ public abstract class Interactable : MonoBehaviour
     {
         CanInteract = true;
         PlayerInRange = false;
+
+        if (_interactionPrompt == null)
+        {
+            Debug.LogWarning("Missing interaction prompt for: ", gameObject);
+        }
 
         if (_outlineRenderer)
         {
