@@ -78,8 +78,11 @@
         "Yoyo"
     ],
     "[csharp]": {
-        "editor.codeActionsOnSave": [
-            "source.organizeImports"
-        ]
+        "editor.formatOnPaste": false,
+        "editor.formatOnType": false,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "always"
+        }
     }
 }
