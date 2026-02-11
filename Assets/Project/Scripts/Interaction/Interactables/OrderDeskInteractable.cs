@@ -3,7 +3,7 @@ using UnityEngine;
 public class OrderDeskInteractable : Interactable
 {
     [SerializeField]
-    private QueueManager _queueManager;
+    private OrderController _orderController;
 
     protected override void Start()
     {
@@ -11,7 +11,7 @@ public class OrderDeskInteractable : Interactable
 
         CanInteract = false;
 
-        _queueManager.OnOrderQueueUpdated.AddListener(HandleInteractStateChange);
+        _orderController.OnStateChange.AddListener(HandleInteractStateChange);
     }
 
     public override InteractionTypeEnum GetNextInteractionType()
@@ -23,18 +23,18 @@ public class OrderDeskInteractable : Interactable
     {
         base.Interact(player);
 
-        if (!_queueManager.HasCustomersAtOrderDesk)
+        if (!_orderController.HasCustomersAtOrderDesk)
         {
             _interactionPrompt.ShowBoth();
             return;
         }
 
-        _queueManager.HandleOrderPlaced();
+        _orderController.HandleOrderAccepted();
     }
 
     private void HandleInteractStateChange()
     {
-        if (_queueManager.HasCustomersAtOrderDesk)
+        if (_orderController.HasCustomersAtOrderDesk)
         {
             CanInteract = true;
         }

@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 108769246772953758}
   - component: {fileID: 7743162010436177308}
   m_Layer: 0
-  m_Name: InteractionPrompt
+  m_Name: Interaction Prompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

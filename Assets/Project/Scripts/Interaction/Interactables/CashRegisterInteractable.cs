@@ -1,16 +1,17 @@
+using UnityEngine;
+
 public class CashRegisterInteractable : Interactable
 {
-    private QueueManager _queueManager;
+    [SerializeField]
+    private OrderController _orderController;
 
     protected override void Start()
     {
         base.Start();
 
-        _queueManager = QueueManager.Instance;
-
         CanInteract = false;
 
-        _queueManager.OnPayQueueUpdated.AddListener(HandleInteractStateChange);
+        _orderController.OnStateChange.AddListener(HandleInteractStateChange);
     }
 
     public override void Interact(PlayerController player)
@@ -24,10 +25,7 @@ public class CashRegisterInteractable : Interactable
 
         inventory.CoffeeInHand = null;
 
-#pragma warning disable CS4014
-        // Disabling the warning here, as we don't need to await the animation.
-        _queueManager.HandleOrderPaid(player.Inventory.CoffeeInHand);
-#pragma warning restore
+        _orderController.HandleOrderComplete();
     }
 
     public override InteractionTypeEnum GetNextInteractionType()
@@ -37,7 +35,7 @@ public class CashRegisterInteractable : Interactable
 
     private void HandleInteractStateChange()
     {
-        if (_queueManager.HasCustomersAtPayDesk)
+        if (_orderController.HasCustomersAtPayDesk)
         {
             CanInteract = true;
         }

@@ -5557,6 +5557,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &698262516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 698262517}
+  - component: {fileID: 698262518}
+  m_Layer: 0
+  m_Name: Orders
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &698262517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698262516}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1073463029}
+  m_Father: {fileID: 2014968119}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &698262518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698262516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d2c159afdb721c88c4681bca3e1b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrderController
+  _queue: {fileID: 1073463030}
+  _orderUI: {fileID: 749747381}
+  OnStateChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &728920669
 GameObject:
   m_ObjectHideFlags: 0
@@ -5723,6 +5773,56 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &749747379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 749747380}
+  - component: {fileID: 749747381}
+  m_Layer: 5
+  m_Name: Orders Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &749747380
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749747379}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1806041800}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 200, y: 100}
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &749747381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749747379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0611f494696598aa79a47500f41b3942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrderUIController
+  _orderTicketPrefab: {fileID: 1435306766476108235, guid: 0295fe565a06147c4a3a8406e06d62f2, type: 3}
+  _ticketXSpacing: 270
 --- !u!1 &750538231
 GameObject:
   m_ObjectHideFlags: 0
@@ -6356,7 +6456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrderDesk
   _interactionPrompt: {fileID: 984457241}
   _outlineRenderer: {fileID: 0}
-  _queueManager: {fileID: 1073463030}
+  _orderController: {fileID: 698262518}
 --- !u!61 &843119925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7859,6 +7959,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1039017991}
+  - component: {fileID: 1039017992}
   m_Layer: 5
   m_Name: Coffee Completed
   m_TagString: Untagged
@@ -7887,6 +7988,18 @@ RectTransform:
   m_AnchoredPosition: {x: 20, y: -20}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0, y: 1}
+--- !u!225 &1039017992
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039017990}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1042184491
 GameObject:
   m_ObjectHideFlags: 0
@@ -8225,12 +8338,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1073463028}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2014968119}
+  m_Father: {fileID: 698262517}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1073463030
 MonoBehaviour:
@@ -8247,9 +8360,11 @@ MonoBehaviour:
   OnOrderQueueUpdated:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   OnPayQueueUpdated:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   _spawnPosition: {x: 35, y: -2, z: 3}
   _orderPosition: {x: 8, y: -2, z: 3}
   _payPosition: {x: -19, y: -2, z: 3}
@@ -8259,6 +8374,8 @@ MonoBehaviour:
   - {fileID: 1503840626093151076, guid: 6d281a6d8323185178ed42deb839ae6c, type: 3}
   - {fileID: 5329653107169192051, guid: 997a0acf96f617d6ead6d6388b8caf09, type: 3}
   _doorSound: {fileID: 8300000, guid: f5db3e001faf7289c8369166c34ac6e8, type: 3}
+  _game: {fileID: 0}
+  _audioSource: {fileID: 0}
 --- !u!82 &1073463031
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13299,6 +13416,7 @@ RectTransform:
   m_Children:
   - {fileID: 424676111}
   - {fileID: 147754676}
+  - {fileID: 749747380}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13320,6 +13438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameUIManager
   _completedCoffeeText: {fileID: 754663237}
   _globalVolume: {fileID: 693277743}
+  _orderUI: {fileID: 0}
   _miniGameTransition: 0.25
   _frothingMiniGameTransform: {fileID: 496149900}
   _milkPickingMiniGame: {fileID: 1042184492}
@@ -14349,6 +14468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CashRegisterInteractable
   _interactionPrompt: {fileID: 2028029767}
   _outlineRenderer: {fileID: 1805036038}
+  _orderController: {fileID: 698262518}
 --- !u!1 &1932814320
 GameObject:
   m_ObjectHideFlags: 0
@@ -15205,9 +15325,9 @@ Transform:
   m_Children:
   - {fileID: 273905247}
   - {fileID: 529545971}
-  - {fileID: 1073463029}
   - {fileID: 1438742533}
   - {fileID: 755536678}
+  - {fileID: 698262517}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2018806337

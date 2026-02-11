@@ -65,4 +65,17 @@ public class CharacterEmotes : MonoBehaviour
 
         return _sadEmotes[index];
     }
+
+    public Sprite GetMilkEmote(MilkType milkType)
+    {
+        foreach (var emote in _milkEmotes)
+        {
+            if (emote.MilkType == milkType)
+            {
+                return emote.MilkImage;
+            }
+        }
+
+        throw new System.Exception($"Could not find emote image for milk type: {milkType}");
+    }
 }

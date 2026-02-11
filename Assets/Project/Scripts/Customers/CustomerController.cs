@@ -27,9 +27,12 @@ public class CustomerController : MonoBehaviour
 
         _emoteImage.color = new(1, 1, 1, 0);
         _coffeeImage.color = new(1, 1, 1, 0);
+
+        DesiredCoffee = new();
+        ServedCoffee = new();
     }
 
-    public void SetCoffeeOrder(CoffeeData coffeeData)
+    public void SetOrderData(CoffeeData coffeeData)
     {
         DesiredCoffee.Milk = coffeeData.Milk;
         DesiredCoffee.Quality = coffeeData.Quality;

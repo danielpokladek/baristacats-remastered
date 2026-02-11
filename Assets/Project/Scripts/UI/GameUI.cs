@@ -16,6 +16,9 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private Volume _globalVolume;
 
+    [SerializeField]
+    private OrderUIController _orderUI;
+
     [Header("Animations")]
     [SerializeField]
     private float _miniGameTransition = 0.25f;
@@ -28,6 +31,8 @@ public class GameUI : MonoBehaviour
     private RectTransform _milkPickingMiniGame;
 
     private DepthOfField _dof;
+
+    public OrderUIController OrderUI => _orderUI;
 
     private void Awake()
     {

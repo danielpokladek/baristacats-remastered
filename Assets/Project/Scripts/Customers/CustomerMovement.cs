@@ -1,44 +1,28 @@
+#nullable enable
+
+using PrimeTween;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CustomerMovement : MonoBehaviour
 {
-    public UnityEvent<CustomerController> OnArrived;
-
     [SerializeField]
     private float _movementSpeed;
 
-    private CustomerController _customerController;
-    private Vector3 _destination;
-    private Rigidbody2D _rigidbody;
+    private Tween? _currentMoveTween;
 
-    private void Awake()
+    public Tween MoveTo(Vector2 destination)
     {
-        _customerController = GetComponent<CustomerController>();
-        _rigidbody = GetComponent<Rigidbody2D>();
+        _currentMoveTween?.Stop();
 
-        enabled = false;
-    }
+        var distance = Vector2.Distance(transform.position, destination);
+        var duration = distance / _movementSpeed;
 
-    public void MoveTo(Vector2 position)
-    {
-        _destination = position;
+        var moveTween = Tween
+            .Position(transform, destination, duration, ease: Ease.Linear)
+            .OnComplete(() => _currentMoveTween = null);
 
-        enabled = true;
-    }
+        _currentMoveTween = moveTween;
 
-    private void Update()
-    {
-        transform.position = Vector2.MoveTowards(
-            transform.position,
-            _destination,
-            _movementSpeed * Time.deltaTime
-        );
-
-        if (Vector2.Distance(transform.position, _destination) < 0.1f)
-        {
-            OnArrived.Invoke(_customerController);
-            enabled = false;
-        }
+        return moveTween;
     }
 }
