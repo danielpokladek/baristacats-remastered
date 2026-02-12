@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PrimeTween;
 using UnityEngine;
 
 [Serializable]
@@ -26,6 +27,8 @@ public class ApplicationManager : MonoBehaviour
             Debug.LogWarning("Multiple instances of ApplicationManager detected!");
             return;
         }
+
+        PrimeTweenConfig.warnZeroDuration = false;
 
         Instance = this;
         DontDestroyOnLoad(gameObject);

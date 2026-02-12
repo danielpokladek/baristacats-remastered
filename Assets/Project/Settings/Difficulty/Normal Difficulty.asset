@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Normal Difficulty
   m_EditorClassIdentifier: Assembly-CSharp::DifficultySettingsSO
   DifficultyRampDuration: 30
-  BaseCustomerSpawnInterval: 2
+  BaseCustomerSpawnInterval: 10
   CustomerSpawnScaling: 1
   BaseCustomerPatience: 90
   CustomerPatienceScaling: 1

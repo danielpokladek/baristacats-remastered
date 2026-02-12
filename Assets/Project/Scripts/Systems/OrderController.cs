@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Mono.Cecil.Cil;
 using NUnit.Framework.Constraints;
 using PrimeTween;
+using UnityEditor.PackageManager.Requests;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,8 +29,8 @@ public class OrderController : MonoBehaviour
     [SerializeField]
     private OrderUIController _orderUI;
 
-    private Queue<OrderData> _orderQueue = new();
-    private Queue<OrderData> _payQueue = new();
+    private List<OrderData> _orderQueue = new();
+    private List<OrderData> _payQueue = new();
 
     private MilkType[] _milkTypeValues;
 
@@ -63,6 +64,8 @@ public class OrderController : MonoBehaviour
             difficultySettings.BaseCustomerSpawnInterval
             / (1f + difficulty * difficultySettings.CustomerSpawnScaling);
 
+        _spawnTimer = _spawnInterval;
+
         Events.CustomerEvents.PatienceLost.AddListener(HandleCustomerQuit);
     }
 
@@ -79,12 +82,25 @@ public class OrderController : MonoBehaviour
 
     private void HandleCustomerQuit(CustomerController customer)
     {
-        var isOrderQueue = _orderQueue.First().Owner == customer;
+        bool isInOrderQueue = _orderQueue.Count((a) => a.Owner == customer) > 0;
+        bool isInPayQueue = _payQueue.Count((a) => a.Owner == customer) > 0;
 
-        var queue = isOrderQueue ? _orderQueue : _payQueue;
-        var otherQueue = isOrderQueue ? _payQueue : _orderQueue;
+        if (!isInOrderQueue && !isInPayQueue)
+        {
+            Debug.LogError("Tried to remove customer, but they're not in order OR pay queue!");
+            return;
+        }
 
-        var order = queue.Dequeue();
+        if (isInOrderQueue && isInPayQueue)
+        {
+            Debug.LogError("Tried to remove customer, but they are in both queues!");
+            return;
+        }
+
+        var queue = isInOrderQueue ? _orderQueue : _payQueue;
+        var otherQueue = isInOrderQueue ? _payQueue : _orderQueue;
+
+        var order = queue.First((o) => o.Owner == customer);
 
         _orderUI.DiscardTicket(order.Ticket);
 
@@ -111,7 +127,7 @@ public class OrderController : MonoBehaviour
             MaxWaitTime = UnityEngine.Random.Range(10, 30),
         };
 
-        _orderQueue.Enqueue(orderData);
+        _orderQueue.Add(orderData);
 
         ticket.Init(orderData);
 
@@ -136,13 +152,17 @@ public class OrderController : MonoBehaviour
             return;
         }
 
-        var order = _orderQueue.Dequeue();
-        _payQueue.Enqueue(order);
+        var order = _orderQueue[0];
+        _orderQueue.RemoveAt(0);
+
+        _payQueue.Add(order);
 
         order.Ticket.RevealOrder();
 
         // _queue.HandleQueueCustomerMoved(_orderQueue);
-        int totalIndex = _payQueue.Count - 1;
+        int totalIndex = 0;
+
+        ProcessQueue(_payQueue, _queue.MoveToPayDesk, ref totalIndex);
         ProcessQueue(_orderQueue, _queue.MoveToOrderDesk, ref totalIndex);
 
         await _queue.MoveToPayDesk(order.Owner, _payQueue.Count - 1);
@@ -160,7 +180,8 @@ public class OrderController : MonoBehaviour
             return;
         }
 
-        var order = _payQueue.Dequeue();
+        var order = _payQueue[0];
+        _payQueue.RemoveAt(0);
 
         // TODO: Add animation to ticket moving out of view.
         order.Ticket.gameObject.SetActive(false);
@@ -169,7 +190,9 @@ public class OrderController : MonoBehaviour
         // _queue.HandleQueueCustomerMoved(_payQueue);
 
         int totalIndex = 0;
+
         ProcessQueue(_payQueue, _queue.MoveToPayDesk, ref totalIndex);
+        ProcessQueue(_orderQueue, _queue.MoveToOrderDesk, ref totalIndex);
     }
 
     private CoffeeData GenerateOrder()
@@ -186,7 +209,7 @@ public class OrderController : MonoBehaviour
     }
 
     private void ProcessQueue(
-        Queue<OrderData> queue,
+        List<OrderData> queue,
         Func<CustomerController, int, Tween> moveAction,
         ref int totalIndex
     )

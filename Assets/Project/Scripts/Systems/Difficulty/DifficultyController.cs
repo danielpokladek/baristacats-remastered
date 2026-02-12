@@ -17,10 +17,6 @@ public class DifficultyController
     {
         _appManager = appManager;
         _difficultyRampDuration = _appManager.CurrentDifficulty.DifficultyRampDuration;
-
-        Events.OnDifficultyLevelChange.AddListener(
-            (level) => Debug.Log($"Difficulty level changed to: {level}")
-        );
     }
 
     public void UpdateDifficultyStep()
