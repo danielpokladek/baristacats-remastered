@@ -5602,6 +5602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4d2c159afdb721c88c4681bca3e1b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OrderController
+  _gameManager: {fileID: 529545972}
   _queue: {fileID: 1073463030}
   _orderUI: {fileID: 749747381}
   OnStateChange:
@@ -8357,14 +8358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afdeecbbfd06b2c99a34ff0e19ab7a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QueueManager
-  OnOrderQueueUpdated:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  OnPayQueueUpdated:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
   _spawnPosition: {x: 35, y: -2, z: 3}
   _orderPosition: {x: 8, y: -2, z: 3}
   _payPosition: {x: -19, y: -2, z: 3}
@@ -8374,8 +8367,6 @@ MonoBehaviour:
   - {fileID: 1503840626093151076, guid: 6d281a6d8323185178ed42deb839ae6c, type: 3}
   - {fileID: 5329653107169192051, guid: 997a0acf96f617d6ead6d6388b8caf09, type: 3}
   _doorSound: {fileID: 8300000, guid: f5db3e001faf7289c8369166c34ac6e8, type: 3}
-  _game: {fileID: 0}
-  _audioSource: {fileID: 0}
 --- !u!82 &1073463031
 AudioSource:
   m_ObjectHideFlags: 0

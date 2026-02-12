@@ -26,12 +26,20 @@ public class OrderUIController : MonoBehaviour
         return instance;
     }
 
-    public Tween MoveTicketToNextSpot(OrderTicketUI ticket, int position)
+    public Tween? MoveTicketToPosition(OrderTicketUI ticket, int position)
     {
         var xPos = _ticketXSpacing * position;
         var currentPos = ticket.transform.localPosition;
         var destination = new Vector3(xPos, currentPos.y, currentPos.z);
 
+        if (ticket.transform.localPosition == destination)
+            return null;
+
         return Tween.LocalPosition(ticket.transform, destination, duration: 0.3f);
+    }
+
+    public void DiscardTicket(OrderTicketUI ticket)
+    {
+        ticket.gameObject.SetActive(false);
     }
 }

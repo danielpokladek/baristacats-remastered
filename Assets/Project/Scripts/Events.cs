@@ -8,7 +8,15 @@ public class MiniGameEvents
     public readonly UnityEvent OnFrothingTransitionOut = new();
 }
 
+public class CustomerEvents
+{
+    public readonly UnityEvent<CustomerController> PatienceLost = new();
+}
+
 public static class Events
 {
     public static readonly MiniGameEvents MiniGameEvents = new();
+    public static readonly CustomerEvents CustomerEvents = new();
+
+    public static readonly UnityEvent<int> OnDifficultyLevelChange = new();
 }

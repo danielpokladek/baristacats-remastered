@@ -69,12 +69,14 @@
     },
     "dotnet.defaultSolution": "baristacats-remastered.slnx",
     "cSpell.words": [
+        "Dont",
         "Frother",
         "Interactable",
         "interactables",
         "Lerp",
         "Mathf",
         "Rigidbody",
+        "Scriptable",
         "Yoyo"
     ],
     "[csharp]": {

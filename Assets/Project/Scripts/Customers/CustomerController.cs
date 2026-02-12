@@ -19,8 +19,37 @@ public class CustomerController : MonoBehaviour
 
     private CharacterEmotes _emotes;
 
-    public void Init()
+    private ApplicationManager _appManager;
+    private DifficultyController _difficultyController;
+
+    private OrderTicketUI _ticket;
+
+    private float _patience = 0f;
+    private float _patienceTimer = 0f;
+
+    private void Awake()
     {
+        enabled = false;
+    }
+
+    private void Update()
+    {
+        _patienceTimer -= Time.deltaTime;
+        _ticket.SetPatienceBarFill(_patienceTimer / _patience);
+
+        if (_patienceTimer <= 0)
+        {
+            enabled = false;
+
+            Events.CustomerEvents.PatienceLost.Invoke(this);
+        }
+    }
+
+    public void Setup(ApplicationManager appManager, DifficultyController difficultyController)
+    {
+        _appManager = appManager;
+        _difficultyController = difficultyController;
+
         _emotes = CharacterEmotes.Instance;
 
         Movement = GetComponent<CustomerMovement>();
@@ -30,6 +59,19 @@ public class CustomerController : MonoBehaviour
 
         DesiredCoffee = new();
         ServedCoffee = new();
+    }
+
+    public void Initialize(OrderTicketUI ticket)
+    {
+        _patience = CalculatePatience();
+        _patienceTimer = _patience;
+
+        _ticket = ticket;
+    }
+
+    public void StartTimer()
+    {
+        enabled = true;
     }
 
     public void SetOrderData(CoffeeData coffeeData)
@@ -65,5 +107,14 @@ public class CustomerController : MonoBehaviour
         await Tween.Delay(1.5f);
 
         await Sequence.Create().Group(Tween.Alpha(_emoteImage, 0f, 0.5f));
+    }
+
+    private float CalculatePatience()
+    {
+        var difficultySettings = _appManager.CurrentDifficulty;
+        var currentDifficulty = _difficultyController.CurrentDifficulty;
+
+        return difficultySettings.BaseCustomerPatience
+            / (1f + currentDifficulty * difficultySettings.CustomerPatienceScaling);
     }
 }

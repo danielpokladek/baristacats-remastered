@@ -1,5 +1,6 @@
 #nullable enable
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,48 +17,34 @@ public class OrderTicketUI : MonoBehaviour
     private Image _milkSprite = null!;
 
     [SerializeField]
-    private Image _timerBar = null!;
+    private Image _patienceBar = null!;
 
     [SerializeField]
     private Sprite _unknownOrderSprite = null!;
 
-    private float _maxWaitTime;
-    private float _currentWaitTime;
     private CoffeeData? _coffeeData;
 
     private void Awake()
     {
-        enabled = false;
-
         _beanIcon.SetActive(false);
         _milkIcon.SetActive(false);
-        _timerBar.gameObject.SetActive(false);
-    }
-
-    private void Update()
-    {
-        _currentWaitTime -= Time.deltaTime;
-
-        _timerBar.fillAmount = _currentWaitTime / _maxWaitTime;
-
-        if (_currentWaitTime <= 0)
-        {
-            enabled = false;
-        }
+        _patienceBar.gameObject.SetActive(false);
     }
 
     public void Init(OrderData orderData)
     {
         _coffeeData = orderData.CoffeeData;
 
-        _maxWaitTime = orderData.MaxWaitTime;
-        _currentWaitTime = orderData.MaxWaitTime;
-
-        _timerBar.fillAmount = 1;
-        _timerBar.gameObject.SetActive(true);
+        _patienceBar.fillAmount = 1;
+        _patienceBar.gameObject.SetActive(true);
 
         _milkSprite.sprite = _unknownOrderSprite;
         _milkSprite.gameObject.SetActive(true);
+    }
+
+    public void SetPatienceBarFill(float fillAmount)
+    {
+        _patienceBar.fillAmount = fillAmount;
     }
 
     public void RevealOrder()
@@ -83,16 +70,6 @@ public class OrderTicketUI : MonoBehaviour
         _milkIcon.SetActive(true);
     }
 
-    public void StartTimer()
-    {
-        enabled = true;
-    }
-
-    public void StopTimer()
-    {
-        enabled = false;
-    }
-
     public void Reset()
     {
         enabled = false;
@@ -100,6 +77,6 @@ public class OrderTicketUI : MonoBehaviour
         _beanIcon.gameObject.SetActive(false);
         _milkIcon.gameObject.SetActive(false);
 
-        _timerBar.fillAmount = 1;
+        _patienceBar.fillAmount = 1;
     }
 }

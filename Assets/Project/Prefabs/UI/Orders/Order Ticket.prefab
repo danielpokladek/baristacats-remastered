@@ -570,5 +570,5 @@ MonoBehaviour:
   _beanIcon: {fileID: 3360859388951577271}
   _milkIcon: {fileID: 1996359924812887802}
   _milkSprite: {fileID: 5261190706319688721}
-  _timerBar: {fileID: 1860404884625400370}
+  _patienceBar: {fileID: 1860404884625400370}
   _unknownOrderSprite: {fileID: 21300000, guid: bef463aef16f4e279afe8010aa6eab41, type: 3}

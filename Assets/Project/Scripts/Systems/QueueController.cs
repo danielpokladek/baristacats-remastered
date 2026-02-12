@@ -35,14 +35,17 @@ public class QueueController : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    public CustomerController GetCustomer()
+    public CustomerController GetCustomer(
+        ApplicationManager appManager,
+        DifficultyController difficultyController
+    )
     {
         var randomIndex = Random.Range(0, _customerPrefabs.Length);
         var customerPrefab = _customerPrefabs[randomIndex];
 
         // TODO: Pool customers instead of creating new instance each time.
         var customer = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
-        customer.Init();
+        customer.Setup(appManager, difficultyController);
 
         _audioSource.PlayOneShot(_doorSound);
 
@@ -55,7 +58,7 @@ public class QueueController : MonoBehaviour
         return customer.Movement.MoveTo(positionInQueue);
     }
 
-    public Tween MoveToPayTable(CustomerController customer, int queueIndex)
+    public Tween MoveToPayDesk(CustomerController customer, int queueIndex)
     {
         var positionInQueue = GetPositionWithSpacing(_payPosition, queueIndex);
         return customer.Movement.MoveTo(positionInQueue);
@@ -74,16 +77,19 @@ public class QueueController : MonoBehaviour
         return newPos;
     }
 
-    private void HandleQueueCustomerMoved(Queue<CustomerController> queue)
-    {
-        int index = 0;
+    // public void HandleQueueCustomerMoved(Queue<OrderData> queue)
+    // {
+    //     int index = 0;
+    //     float moveDelay = 0f;
 
-        foreach (var customer in queue)
-        {
-            Vector3 orderPos = GetPositionWithSpacing(_orderPosition, index++);
-            customer.Movement.MoveTo(orderPos);
-        }
-    }
+    //     foreach (var order in queue)
+    //     {
+    //         moveDelay += Random.Range(0f, 1f) > 0.8f ? 1f : 0f;
+
+    //         Vector3 orderPos = GetPositionWithSpacing(_orderPosition, index++);
+    //         Tween.Delay(moveDelay, () => order.Owner.Movement.MoveTo(orderPos));
+    //     }
+    // }
 
     private void OnDrawGizmosSelected()
     {

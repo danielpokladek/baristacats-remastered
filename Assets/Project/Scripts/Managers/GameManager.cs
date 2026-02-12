@@ -3,29 +3,29 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
     private GameUI _gameUI;
-
-    private void Awake()
-    {
-        if (Instance != null)
-        {
-            Debug.LogWarning("Multiple instances of `GameManager` found in scene!");
-            return;
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
 
     private void Start()
     {
+        var appManager = ApplicationManager.Instance;
+
+        if (!appManager)
+        {
+            Debug.LogError("Unable to initialize GameManager, no ApplicationManager found!");
+            return;
+        }
+
+        DifficultyController = new DifficultyController(appManager);
         _gameUI = GameUI.Instance;
     }
 
+    private void Update()
+    {
+        DifficultyController.UpdateDifficultyStep();
+    }
+
     public int CoffeeCompleted { get; private set; }
+    public DifficultyController DifficultyController { get; private set; }
 
     public async Task ProcessCustomerServed(CustomerController customer)
     {
