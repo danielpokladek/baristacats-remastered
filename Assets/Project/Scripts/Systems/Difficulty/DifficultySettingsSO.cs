@@ -1,4 +1,17 @@
+using System;
 using UnityEngine;
+
+[Serializable]
+public class MinMax
+{
+    public float MinimumValue;
+    public float MaximumValue;
+
+    public float GetRandomValue()
+    {
+        return UnityEngine.Random.Range(MinimumValue, MaximumValue);
+    }
+}
 
 [CreateAssetMenu(
     fileName = "NewGameDifficulty",
@@ -11,14 +24,14 @@ public class DifficultySettingsSO : ScriptableObject
     public float DifficultyRampDuration;
 
     [Header("Customer Difficulty Settings")]
-    public float BaseCustomerSpawnInterval;
+    public MinMax CustomerSpawnInterval;
     public float CustomerSpawnScaling;
 
-    public float BaseCustomerPatience;
+    public MinMax CustomerPatience;
     public float CustomerPatienceScaling;
 
     [Header("Queue Settings")]
-    public int MaxOrdersQueued = 7;
+    public int MaxOrdersQueued;
 
     [Header("Drinks Difficulty Settings")]
     public int BaseDrinkComplexity;

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SanityUI : MonoBehaviour
 {
@@ -13,9 +12,6 @@ public class SanityUI : MonoBehaviour
 
     [SerializeField]
     private Color _lowSanityColor;
-
-    private float _maxSanity = 1f;
-    private float _currentSanity = 1f;
 
     public void UpdateSanityUI(float normalizedProgress)
     {

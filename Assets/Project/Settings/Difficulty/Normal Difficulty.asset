@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: Normal Difficulty
   m_EditorClassIdentifier: Assembly-CSharp::DifficultySettingsSO
   DifficultyRampDuration: 30
-  BaseCustomerSpawnInterval: 10
+  CustomerSpawnInterval:
+    MinimumValue: 15
+    MaximumValue: 30
   CustomerSpawnScaling: 1
-  BaseCustomerPatience: 10
+  CustomerPatience:
+    MinimumValue: 90
+    MaximumValue: 120
   CustomerPatienceScaling: 1
-  MaxOrdersQueued: 7
+  MaxOrdersQueued: 5
   BaseDrinkComplexity: 1
   DrinkComplexityScaling: 2
   StartingSanity: 1

@@ -36,8 +36,8 @@ public class OrderController : MonoBehaviour
     public bool HasCustomersAtPayDesk => _payQueue.Count > 0;
     public int TotalTicketCount => _orderQueue.Count + _payQueue.Count;
 
-    private float _spawnInterval = 0f;
-    private float _spawnTimer = 0f;
+    private float _spawnInterval;
+    private float _spawnTimer;
 
     private ApplicationManager _appManager;
     private DifficultyController _difficultyController;
@@ -64,15 +64,18 @@ public class OrderController : MonoBehaviour
 
         var difficulty = _difficultyController.CurrentDifficulty;
 
-        _spawnInterval =
-            _difficultySettings.BaseCustomerSpawnInterval
-            / (1f + difficulty * _difficultySettings.CustomerSpawnScaling);
+        _spawnInterval = GetSpawnInterval();
 
         _spawnTimer = _spawnInterval;
 
-        Events.CustomerEvents.OrderFailed.AddListener(
+        Events.CustomerEvents.RanOutOfPatience.AddListener(
             (customer) => _ = HandleCustomerQuit(customer)
         );
+
+        Events.RushStart.AddListener(() =>
+        {
+            _spawnTimer = _spawnInterval;
+        });
     }
 
     private void Update()
@@ -85,6 +88,9 @@ public class OrderController : MonoBehaviour
         if (_spawnTimer >= _spawnInterval)
         {
             _spawnTimer = 0;
+            _spawnInterval = GetSpawnInterval();
+            ;
+
             _ = CreateNewCustomer();
         }
     }
@@ -154,7 +160,7 @@ public class OrderController : MonoBehaviour
         OnStateChange.Invoke();
     }
 
-    public async Task HandleOrderComplete()
+    public async Task HandleOrderComplete(CoffeeData servedCoffee)
     {
         if (_payQueue.Count == 0)
         {
@@ -170,7 +176,7 @@ public class OrderController : MonoBehaviour
         // TODO: Add animation to ticket moving out of view.
         order.Ticket.gameObject.SetActive(false);
 
-        bool wasSuccessful = EvaluateOrder(order.Owner);
+        bool wasSuccessful = EvaluateOrder(order.Owner, servedCoffee);
 
         if (wasSuccessful)
         {
@@ -276,18 +282,24 @@ public class OrderController : MonoBehaviour
         }
     }
 
-    private bool EvaluateOrder(CustomerController customer)
+    private bool EvaluateOrder(CustomerController customer, CoffeeData servedCoffee)
     {
-        var desiredDrink = customer.DesiredCoffee;
-        var servedDrink = customer.ServedCoffee;
+        var desiredCoffee = customer.DesiredCoffee;
         var wasSuccessful = true;
 
-        if (servedDrink.Milk != desiredDrink.Milk)
+        print(
+            $"Desired Milk: {desiredCoffee.Milk} | Served Milk: {servedCoffee.Milk} | {desiredCoffee.Milk == servedCoffee.Milk}"
+        );
+        print(
+            $"Desired Quality: {desiredCoffee.Quality} | Served Quality: {servedCoffee.Quality} | {servedCoffee.Quality >= desiredCoffee.Quality}"
+        );
+
+        if (servedCoffee.Milk != desiredCoffee.Milk)
         {
             wasSuccessful = false;
         }
 
-        if (servedDrink.Quality < desiredDrink.Quality)
+        if (servedCoffee.Quality < desiredCoffee.Quality)
         {
             wasSuccessful = false;
         }
@@ -301,5 +313,22 @@ public class OrderController : MonoBehaviour
             + Mathf.FloorToInt(
                 _difficultyController.CurrentDifficulty * _difficultySettings.DrinkComplexityScaling
             );
+    }
+
+    private float GetSpawnInterval()
+    {
+        var spawnInterval =
+            _difficultySettings.CustomerSpawnInterval.GetRandomValue()
+            / (
+                1f
+                + _difficultyController.CurrentDifficulty * _difficultySettings.CustomerSpawnScaling
+            );
+
+        if (_gameManager.RushController.IsRushActive)
+        {
+            spawnInterval *= 2;
+        }
+
+        return spawnInterval;
     }
 }

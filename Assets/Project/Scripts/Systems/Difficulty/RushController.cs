@@ -18,6 +18,8 @@ public class RushController
         _rushActive = false;
     }
 
+    public bool IsRushActive => _rushActive;
+
     public void Update()
     {
         _rushTimer += Time.deltaTime;

@@ -12,6 +12,7 @@ public class CustomerEvents
 {
     public readonly UnityEvent<CustomerController> OrderFailed = new();
     public readonly UnityEvent<CustomerController> OrderSuccessful = new();
+    public readonly UnityEvent<CustomerController> RanOutOfPatience = new();
 }
 
 public static class Events

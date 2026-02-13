@@ -440,6 +440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _handTransform: {fileID: 1709236565467777701}
   _itemInHand: {fileID: 990489013626527363}
+  _milkySanity: {fileID: 0}
   _coffeeCup: {fileID: 21300000, guid: 8f7358432f84ced348e7d1674a404ea7, type: 3}
   _grinder: {fileID: 21300000, guid: 7f6c3c76529b73839bf0545a11efedff, type: 3}
   _milkRed: {fileID: 21300000, guid: 73a2f00cdd2d4103d8d569f745bc4509, type: 3}
@@ -475,7 +476,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 6408443035476060962}
   _bodyTransform: {fileID: 7062669888993440949}
   _animator: {fileID: 4303807382255849820}
-  _movementSpeed: 10
+  _movementSpeed: 15
 --- !u!1 &9057262340498317308
 GameObject:
   m_ObjectHideFlags: 0

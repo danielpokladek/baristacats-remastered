@@ -35,28 +35,4 @@ public class GameManager : MonoBehaviour
     public DifficultyController DifficultyController { get; private set; }
     public SanityController SanityController { get; private set; }
     public RushController RushController { get; private set; }
-
-    public async Task ProcessCustomerServed(CustomerController customer)
-    {
-        var desiredCoffee = customer.DesiredCoffee;
-        var servedCoffee = customer.ServedCoffee;
-
-        var isHappy = true;
-
-        if (desiredCoffee.Milk != servedCoffee.Milk)
-        {
-            isHappy = false;
-        }
-
-        if (desiredCoffee.Quality > servedCoffee.Quality)
-        {
-            isHappy = false;
-        }
-
-        CoffeeCompleted++;
-
-        _gameUI.UpdateCompletedCoffeeText(CoffeeCompleted);
-
-        await customer.ShowEmote(isHappy);
-    }
 }

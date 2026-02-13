@@ -13,7 +13,6 @@ public class CustomerController : MonoBehaviour
     private Image _coffeeImage;
 
     public CoffeeData DesiredCoffee { get; private set; }
-    public CoffeeData ServedCoffee { get; private set; }
 
     public CustomerMovement Movement { get; private set; }
 
@@ -41,7 +40,7 @@ public class CustomerController : MonoBehaviour
         {
             enabled = false;
 
-            Events.CustomerEvents.OrderFailed.Invoke(this);
+            Events.CustomerEvents.RanOutOfPatience.Invoke(this);
         }
     }
 
@@ -58,7 +57,6 @@ public class CustomerController : MonoBehaviour
         _coffeeImage.color = new(1, 1, 1, 0);
 
         DesiredCoffee = new();
-        ServedCoffee = new();
     }
 
     public void Initialize(OrderTicketUI ticket)
@@ -114,7 +112,7 @@ public class CustomerController : MonoBehaviour
         var difficultySettings = _appManager.CurrentDifficulty;
         var currentDifficulty = _difficultyController.CurrentDifficulty;
 
-        return difficultySettings.BaseCustomerPatience
+        return difficultySettings.CustomerPatience.GetRandomValue()
             / (1f + currentDifficulty * difficultySettings.CustomerPatienceScaling);
     }
 }

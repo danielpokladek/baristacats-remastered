@@ -23,9 +23,10 @@ public class CashRegisterInteractable : Interactable
         if (!inventory.IsHoldingItem || inventory.CoffeeInHand == null)
             return;
 
+        var servedCoffee = inventory.CoffeeInHand;
         inventory.CoffeeInHand = null;
 
-        _ = _orderController.HandleOrderComplete();
+        _ = _orderController.HandleOrderComplete(servedCoffee);
     }
 
     public override InteractionTypeEnum GetNextInteractionType()
