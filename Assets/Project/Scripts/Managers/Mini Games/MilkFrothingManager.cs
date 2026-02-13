@@ -46,6 +46,8 @@ public class MilkFrothingManager : MonoBehaviour
         _frothingActions.Froth.performed += _ => _isFrothing = true;
         _frothingActions.Froth.canceled += _ => _isFrothing = false;
 
+        ResetProgress();
+
         Events.MiniGameEvents.OnFrothingStart.AddListener(HandleStart);
         Events.MiniGameEvents.OnFrothingEnd.AddListener(HandleEnd);
     }

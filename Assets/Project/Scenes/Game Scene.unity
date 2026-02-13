@@ -1991,7 +1991,7 @@ Transform:
   m_GameObject: {fileID: 259442418}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.368, y: -4.82, z: -3.1}
+  m_LocalPosition: {x: -15.58, y: -4.82, z: -3.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3339,6 +3339,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1518954077970605780, guid: 997a0acf96f617d6ead6d6388b8caf09, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2219598505882918195, guid: 997a0acf96f617d6ead6d6388b8caf09, type: 3}
       propertyPath: m_Name
       value: Hugh Mann
@@ -5965,7 +5969,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 7
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: f7636749884c9f2608febed5fd83de01, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7659,7 +7663,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 442c4a0013588dec19f1b0a06ce7b884, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7910,7 +7914,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 54f541bc60dd68c5eac2ca16269f14ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -8001,7 +8005,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 6d5c2592e93f19b35963f7af13a90023, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -8827,7 +8831,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: be6e63b43810c69608b86ef72a19878c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -11595,6 +11599,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3642842896649009425, guid: 6d281a6d8323185178ed42deb839ae6c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4649671501971625546, guid: 6d281a6d8323185178ed42deb839ae6c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.3
@@ -11723,7 +11731,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 139d14a8fb6603415954d37d6cf881f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -12203,7 +12211,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 6
+  m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 24e8efcb0e996b24d92ed30d53f32bcd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -13812,8 +13820,8 @@ MonoBehaviour:
   _outlineRenderer: {fileID: 1829941923}
   _beanImage: {fileID: 1472390480}
   _timerImage: {fileID: 2102264060}
-  _grindDuration: 5.1
-  _grinderSound: {fileID: 8300000, guid: 13e6340a9a351c293b2d75045ee7a6bb, type: 3}
+  _grindsRequired: 10
+  _grinderSound: {fileID: 8300000, guid: 45ac6744a0a07cca5af89410d6656f05, type: 3}
 --- !u!61 &1829941925
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14439,7 +14447,7 @@ Transform:
   m_GameObject: {fileID: 1929795801}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20.83, y: -1.301, z: -3.1}
+  m_LocalPosition: {x: -21.36, y: -1.301, z: -3.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

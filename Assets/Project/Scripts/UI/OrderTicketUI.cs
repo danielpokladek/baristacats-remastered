@@ -1,6 +1,7 @@
 #nullable enable
 
 using System.Collections.Generic;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +24,7 @@ public class OrderTicketUI : MonoBehaviour
     private Sprite _unknownOrderSprite = null!;
 
     private CoffeeData? _coffeeData;
+    private Tween? _currentTween;
 
     private void Awake()
     {
@@ -68,6 +70,16 @@ public class OrderTicketUI : MonoBehaviour
 
         _milkSprite.sprite = milkEmote;
         _milkIcon.SetActive(true);
+    }
+
+    public Tween MoveTo(Vector3 destination)
+    {
+        _currentTween?.Stop();
+
+        var tween = Tween.LocalPosition(transform, destination, duration: 0.3f);
+        _currentTween = tween;
+
+        return tween;
     }
 
     public void Reset()

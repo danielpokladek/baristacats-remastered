@@ -34,6 +34,8 @@ public class ApplicationManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         _appSettings = new();
+
+        // TODO: Remove the hardcode here, and save/load from file.
         _appSettings.SetDifficulty(_difficultyOptions.First().Settings);
     }
 

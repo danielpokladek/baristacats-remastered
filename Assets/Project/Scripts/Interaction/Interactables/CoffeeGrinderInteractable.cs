@@ -4,20 +4,22 @@ using UnityEngine.UI;
 
 public class CoffeeGrinderInteractable : Interactable
 {
+    [Header("References")]
     [SerializeField]
     private Image _beanImage;
 
     [SerializeField]
     private Image _timerImage;
 
+    [Header("Grinder Settings")]
     [SerializeField]
-    private float _grindDuration = 5f;
+    private int _grindsRequired = 10;
 
     [Header("Audio")]
     [SerializeField]
     private AudioClip _grinderSound;
 
-    private float _grindTimer = 0;
+    private int _grindsComplete = 0;
 
     private bool _isGrinding = false;
     private bool _hasBeans = false;
@@ -39,21 +41,21 @@ public class CoffeeGrinderInteractable : Interactable
         _timerImage.gameObject.SetActive(false);
     }
 
-    private void Update()
-    {
-        if (!_isGrinding)
-            return;
+    // private void Update()
+    // {
+    //     if (!_isGrinding)
+    //         return;
 
-        _grindTimer += Time.deltaTime;
+    //     _grindTimer += Time.deltaTime;
 
-        if (_grindTimer >= _grindDuration)
-        {
-            CompleteGrind();
-            return;
-        }
+    //     if (_grindTimer >= _grindDuration)
+    //     {
+    //         CompleteGrind();
+    //         return;
+    //     }
 
-        _timerImage.fillAmount = 1 - (_grindTimer / _grindDuration);
-    }
+    //     _timerImage.fillAmount = 1 - (_grindTimer / _grindDuration);
+    // }
 
     public override InteractionTypeEnum GetNextInteractionType()
     {
@@ -86,12 +88,28 @@ public class CoffeeGrinderInteractable : Interactable
 
             player.Inventory.IsHoldingBeans = true;
 
-            Debug.Log("Collected ground beans.");
-
             return;
         }
 
-        StartGrinding();
+        if (!_isGrinding)
+        {
+            StartGrinding();
+        }
+
+        HandleBeansGrind();
+    }
+
+    private void HandleBeansGrind()
+    {
+        _audioSource.PlayOneShot(_grinderSound);
+
+        _grindsComplete += 1;
+        _timerImage.fillAmount = (float)_grindsComplete / _grindsRequired;
+
+        if (_grindsComplete >= _grindsRequired)
+        {
+            CompleteGrind();
+        }
     }
 
     private void StartGrinding()
@@ -99,15 +117,11 @@ public class CoffeeGrinderInteractable : Interactable
         if (_isGrinding)
             return;
 
-        CanInteract = false;
-
         _timerImage.fillAmount = 1;
         _timerImage.gameObject.SetActive(true);
 
-        _grindTimer = 0;
+        _grindsComplete = 0;
         _isGrinding = true;
-
-        _audioSource.PlayOneShot(_grinderSound);
     }
 
     private void CompleteGrind()
@@ -125,7 +139,5 @@ public class CoffeeGrinderInteractable : Interactable
 
         _beanImage.gameObject.SetActive(true);
         _beanIconSequence.isPaused = false;
-
-        CanInteract = true;
     }
 }

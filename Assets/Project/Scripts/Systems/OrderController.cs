@@ -2,11 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Mono.Cecil.Cil;
-using NUnit.Framework.Constraints;
 using PrimeTween;
-using UnityEditor.PackageManager.Requests;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -66,11 +62,16 @@ public class OrderController : MonoBehaviour
 
         _spawnTimer = _spawnInterval;
 
-        Events.CustomerEvents.PatienceLost.AddListener(HandleCustomerQuit);
+        Events.CustomerEvents.PatienceLost.AddListener(
+            (customer) => _ = HandleCustomerQuit(customer)
+        );
     }
 
     private void Update()
     {
+        if (IsAtMaxOrders)
+            return;
+
         _spawnTimer += Time.deltaTime;
 
         if (_spawnTimer >= _spawnInterval)
@@ -80,7 +81,10 @@ public class OrderController : MonoBehaviour
         }
     }
 
-    private void HandleCustomerQuit(CustomerController customer)
+    public int TotalOrderCount => _orderQueue.Count + _payQueue.Count;
+    public bool IsAtMaxOrders => TotalOrderCount >= _appManager.CurrentDifficulty.MaxOrdersQueued;
+
+    private async Task HandleCustomerQuit(CustomerController customer)
     {
         bool isInOrderQueue = _orderQueue.Count((a) => a.Owner == customer) > 0;
         bool isInPayQueue = _payQueue.Count((a) => a.Owner == customer) > 0;
@@ -97,14 +101,16 @@ public class OrderController : MonoBehaviour
             return;
         }
 
+        await customer.ShowEmote(false);
+
         var queue = isInOrderQueue ? _orderQueue : _payQueue;
         var otherQueue = isInOrderQueue ? _payQueue : _orderQueue;
 
         var order = queue.First((o) => o.Owner == customer);
+        queue.Remove(order);
 
-        _orderUI.DiscardTicket(order.Ticket);
-
-        _queue.MoveToExit(order.Owner);
+        _ = _orderUI.DiscardTicket(order.Ticket);
+        _ = _queue.MoveToExit(order.Owner);
 
         int totalIndex = 0;
 
@@ -170,7 +176,7 @@ public class OrderController : MonoBehaviour
         OnStateChange.Invoke();
     }
 
-    public void HandleOrderComplete()
+    public async Task HandleOrderComplete()
     {
         if (_payQueue.Count == 0)
         {
@@ -185,9 +191,11 @@ public class OrderController : MonoBehaviour
 
         // TODO: Add animation to ticket moving out of view.
         order.Ticket.gameObject.SetActive(false);
-        _queue.MoveToExit(order.Owner);
 
-        // _queue.HandleQueueCustomerMoved(_payQueue);
+        bool wasSuccessful = EvaluateOrder(order.Owner);
+        await order.Owner.ShowEmote(wasSuccessful);
+
+        _ = _queue.MoveToExit(order.Owner);
 
         int totalIndex = 0;
 
@@ -224,5 +232,24 @@ public class OrderController : MonoBehaviour
             index++;
             totalIndex++;
         }
+    }
+
+    private bool EvaluateOrder(CustomerController customer)
+    {
+        var desiredDrink = customer.DesiredCoffee;
+        var servedDrink = customer.ServedCoffee;
+        var wasSuccessful = true;
+
+        if (servedDrink.Milk != desiredDrink.Milk)
+        {
+            wasSuccessful = false;
+        }
+
+        if (servedDrink.Quality < desiredDrink.Quality)
+        {
+            wasSuccessful = false;
+        }
+
+        return wasSuccessful;
     }
 }

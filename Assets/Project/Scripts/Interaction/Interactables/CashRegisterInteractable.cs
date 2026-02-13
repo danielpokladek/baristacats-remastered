@@ -25,7 +25,7 @@ public class CashRegisterInteractable : Interactable
 
         inventory.CoffeeInHand = null;
 
-        _orderController.HandleOrderComplete();
+        _ = _orderController.HandleOrderComplete();
     }
 
     public override InteractionTypeEnum GetNextInteractionType()

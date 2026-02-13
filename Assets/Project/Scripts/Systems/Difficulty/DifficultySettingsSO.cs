@@ -17,6 +17,9 @@ public class DifficultySettingsSO : ScriptableObject
     public float BaseCustomerPatience;
     public float CustomerPatienceScaling;
 
+    [Header("Queue Settings")]
+    public int MaxOrdersQueued = 7;
+
     [Header("Drinks Difficulty Settings")]
     public int BaseDrinkComplexity;
     public int DrinkComplexityScaling;
