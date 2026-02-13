@@ -41,6 +41,8 @@ public class OrderController : MonoBehaviour
 
     private ApplicationManager _appManager;
     private DifficultyController _difficultyController;
+    private RushController _rushController;
+
     private DifficultySettingsSO _difficultySettings;
 
     private List<MilkType> _availableMilks = Enum.GetValues(typeof(MilkType))
@@ -57,6 +59,8 @@ public class OrderController : MonoBehaviour
             return;
         }
 
+        _rushController = _gameManager.RushController;
+
         _milkTypeValues = (MilkType[])Enum.GetValues(typeof(MilkType));
 
         _difficultySettings = ApplicationManager.Instance.CurrentDifficulty;
@@ -65,7 +69,6 @@ public class OrderController : MonoBehaviour
         var difficulty = _difficultyController.CurrentDifficulty;
 
         _spawnInterval = GetSpawnInterval();
-
         _spawnTimer = _spawnInterval;
 
         Events.CustomerEvents.RanOutOfPatience.AddListener(
@@ -80,7 +83,7 @@ public class OrderController : MonoBehaviour
 
     private void Update()
     {
-        if (IsAtMaxOrders)
+        if (IsAtMaxOrders())
             return;
 
         _spawnTimer += Time.deltaTime;
@@ -89,14 +92,20 @@ public class OrderController : MonoBehaviour
         {
             _spawnTimer = 0;
             _spawnInterval = GetSpawnInterval();
-            ;
 
             _ = CreateNewCustomer();
         }
     }
 
     public int TotalOrderCount => _orderQueue.Count + _payQueue.Count;
-    public bool IsAtMaxOrders => TotalOrderCount >= _appManager.CurrentDifficulty.MaxOrdersQueued;
+
+    public bool IsAtMaxOrders()
+    {
+        var baseMaxOrders = _appManager.CurrentDifficulty.MaxOrdersQueued;
+        var adjustedMaxOrders = _rushController.IsRushActive ? baseMaxOrders * 2 : baseMaxOrders;
+
+        return TotalOrderCount >= adjustedMaxOrders;
+    }
 
     [ContextMenu("New Customer")]
     public async Task CreateNewCustomer()
