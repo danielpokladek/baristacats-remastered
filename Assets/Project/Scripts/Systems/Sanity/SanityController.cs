@@ -33,12 +33,12 @@ public class SanityController
         _currentSanity -= GetSanityPenalty();
         _sanityUI.UpdateSanityUI(1f - (_currentSanity / _maxSanity));
 
-        Debug.Log($"Sanity dropped! Current sanity: {_currentSanity}");
+        // Debug.Log($"Sanity dropped! Current sanity: {_currentSanity}");
 
-        if (_currentSanity <= 0)
-        {
-            Debug.Log("All sanity lost, poor Milky..");
-        }
+        // if (_currentSanity <= 0)
+        // {
+        //     Debug.Log("All sanity lost, poor Milky..");
+        // }
     }
 
     public void HandleOrderSuccessful(CustomerController _)
@@ -52,7 +52,7 @@ public class SanityController
 
         _sanityUI.UpdateSanityUI(1f - (_currentSanity / _maxSanity));
 
-        Debug.Log($"Sanity gained! Current sanity: {_currentSanity}");
+        // Debug.Log($"Sanity gained! Current sanity: {_currentSanity}");
     }
 
     private float GetSanityPenalty()

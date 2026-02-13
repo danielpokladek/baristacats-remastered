@@ -235,7 +235,7 @@ public class OrderController : MonoBehaviour
 
     private CoffeeData BuildOrderBasedOnComplexity(float complexity)
     {
-        print($"Creating new order - drink complexity: {complexity}");
+        // print($"Creating new order - drink complexity: {complexity}");
 
         var coffeeData = new CoffeeData { Quality = 80 };
 

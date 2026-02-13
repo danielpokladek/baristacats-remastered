@@ -20,4 +20,7 @@ public static class Events
     public static readonly CustomerEvents CustomerEvents = new();
 
     public static readonly UnityEvent<int> OnDifficultyLevelChange = new();
+
+    public static readonly UnityEvent RushStart = new();
+    public static readonly UnityEvent RushEnd = new();
 }

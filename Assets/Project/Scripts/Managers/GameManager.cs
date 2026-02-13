@@ -19,16 +19,14 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        DifficultyController = new DifficultyController(appManager);
-        SanityController = new SanityController(
-            appManager.CurrentDifficulty,
-            DifficultyController,
-            _sanityUI
-        );
+        DifficultyController = new(appManager);
+        SanityController = new(appManager.CurrentDifficulty, DifficultyController, _sanityUI);
+        RushController = new();
     }
 
     private void Update()
     {
+        RushController.Update();
         DifficultyController.UpdateDifficultyStep();
     }
 
@@ -36,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     public DifficultyController DifficultyController { get; private set; }
     public SanityController SanityController { get; private set; }
+    public RushController RushController { get; private set; }
 
     public async Task ProcessCustomerServed(CustomerController customer)
     {
