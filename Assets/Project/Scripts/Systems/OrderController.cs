@@ -40,6 +40,12 @@ public class OrderController : MonoBehaviour
     private float _spawnTimer = 0f;
 
     private ApplicationManager _appManager;
+    private DifficultyController _difficultyController;
+    private DifficultySettingsSO _difficultySettings;
+
+    private List<MilkType> _availableMilks = Enum.GetValues(typeof(MilkType))
+        .Cast<MilkType>()
+        .ToList();
 
     private void Start()
     {
@@ -53,16 +59,18 @@ public class OrderController : MonoBehaviour
 
         _milkTypeValues = (MilkType[])Enum.GetValues(typeof(MilkType));
 
-        var difficulty = _gameManager.DifficultyController.CurrentDifficulty;
-        var difficultySettings = ApplicationManager.Instance.CurrentDifficulty;
+        _difficultySettings = ApplicationManager.Instance.CurrentDifficulty;
+        _difficultyController = _gameManager.DifficultyController;
+
+        var difficulty = _difficultyController.CurrentDifficulty;
 
         _spawnInterval =
-            difficultySettings.BaseCustomerSpawnInterval
-            / (1f + difficulty * difficultySettings.CustomerSpawnScaling);
+            _difficultySettings.BaseCustomerSpawnInterval
+            / (1f + difficulty * _difficultySettings.CustomerSpawnScaling);
 
         _spawnTimer = _spawnInterval;
 
-        Events.CustomerEvents.PatienceLost.AddListener(
+        Events.CustomerEvents.OrderFailed.AddListener(
             (customer) => _ = HandleCustomerQuit(customer)
         );
     }
@@ -83,40 +91,6 @@ public class OrderController : MonoBehaviour
 
     public int TotalOrderCount => _orderQueue.Count + _payQueue.Count;
     public bool IsAtMaxOrders => TotalOrderCount >= _appManager.CurrentDifficulty.MaxOrdersQueued;
-
-    private async Task HandleCustomerQuit(CustomerController customer)
-    {
-        bool isInOrderQueue = _orderQueue.Count((a) => a.Owner == customer) > 0;
-        bool isInPayQueue = _payQueue.Count((a) => a.Owner == customer) > 0;
-
-        if (!isInOrderQueue && !isInPayQueue)
-        {
-            Debug.LogError("Tried to remove customer, but they're not in order OR pay queue!");
-            return;
-        }
-
-        if (isInOrderQueue && isInPayQueue)
-        {
-            Debug.LogError("Tried to remove customer, but they are in both queues!");
-            return;
-        }
-
-        await customer.ShowEmote(false);
-
-        var queue = isInOrderQueue ? _orderQueue : _payQueue;
-        var otherQueue = isInOrderQueue ? _payQueue : _orderQueue;
-
-        var order = queue.First((o) => o.Owner == customer);
-        queue.Remove(order);
-
-        _ = _orderUI.DiscardTicket(order.Ticket);
-        _ = _queue.MoveToExit(order.Owner);
-
-        int totalIndex = 0;
-
-        ProcessQueue(_payQueue, _queue.MoveToPayDesk, ref totalIndex);
-        ProcessQueue(_orderQueue, _queue.MoveToOrderDesk, ref totalIndex);
-    }
 
     [ContextMenu("New Customer")]
     public async Task CreateNewCustomer()
@@ -141,6 +115,10 @@ public class OrderController : MonoBehaviour
         customer.Initialize(ticket);
 
         _ = _orderUI.MoveTicketToPosition(ticket, TotalTicketCount - 1);
+
+        // TODO: Debug only, remove later.
+        ticket.RevealOrder();
+
         await _queue.MoveToOrderDesk(customer, _orderQueue.Count - 1);
 
         orderData.Owner.StartTimer();
@@ -193,6 +171,16 @@ public class OrderController : MonoBehaviour
         order.Ticket.gameObject.SetActive(false);
 
         bool wasSuccessful = EvaluateOrder(order.Owner);
+
+        if (wasSuccessful)
+        {
+            Events.CustomerEvents.OrderSuccessful.Invoke(order.Owner);
+        }
+        else
+        {
+            Events.CustomerEvents.OrderFailed.Invoke(order.Owner);
+        }
+
         await order.Owner.ShowEmote(wasSuccessful);
 
         _ = _queue.MoveToExit(order.Owner);
@@ -203,17 +191,71 @@ public class OrderController : MonoBehaviour
         ProcessQueue(_orderQueue, _queue.MoveToOrderDesk, ref totalIndex);
     }
 
+    private async Task HandleCustomerQuit(CustomerController customer)
+    {
+        bool isInOrderQueue = _orderQueue.Count((a) => a.Owner == customer) > 0;
+        bool isInPayQueue = _payQueue.Count((a) => a.Owner == customer) > 0;
+
+        if (!isInOrderQueue && !isInPayQueue)
+        {
+            Debug.LogError("Tried to remove customer, but they're not in order OR pay queue!");
+            return;
+        }
+
+        if (isInOrderQueue && isInPayQueue)
+        {
+            Debug.LogError("Tried to remove customer, but they are in both queues!");
+            return;
+        }
+
+        await customer.ShowEmote(false);
+
+        var queue = isInOrderQueue ? _orderQueue : _payQueue;
+        var otherQueue = isInOrderQueue ? _payQueue : _orderQueue;
+
+        var order = queue.First((o) => o.Owner == customer);
+        queue.Remove(order);
+
+        _ = _orderUI.DiscardTicket(order.Ticket);
+        _ = _queue.MoveToExit(order.Owner);
+
+        int totalIndex = 0;
+
+        ProcessQueue(_payQueue, _queue.MoveToPayDesk, ref totalIndex);
+        ProcessQueue(_orderQueue, _queue.MoveToOrderDesk, ref totalIndex);
+    }
+
     private CoffeeData GenerateOrder()
     {
-        var coffeeData = new CoffeeData();
+        var maxComplexity = GetMaxOrderComplexity();
+        var drinkComplexity = UnityEngine.Random.Range(1f, maxComplexity);
 
-        // TODO: Add some randomization to this.
-        var minQuality = 80;
+        return BuildOrderBasedOnComplexity(drinkComplexity);
+    }
 
-        coffeeData.Milk = _milkTypeValues[UnityEngine.Random.Range(0, _milkTypeValues.Length)];
-        coffeeData.Quality = minQuality;
+    private CoffeeData BuildOrderBasedOnComplexity(float complexity)
+    {
+        print($"Creating new order - drink complexity: {complexity}");
+
+        var coffeeData = new CoffeeData { Quality = 80 };
+
+        var availableMilk = GetAvailableMilk();
+
+        if (complexity > 2)
+        {
+            var milk = availableMilk[UnityEngine.Random.Range(0, availableMilk.Count())];
+            coffeeData.Milk = milk;
+        }
 
         return coffeeData;
+    }
+
+    private List<MilkType> GetAvailableMilk()
+    {
+        int unlockedCount = 1 + Mathf.FloorToInt(_difficultyController.CurrentDifficulty * 1);
+        unlockedCount = Mathf.Clamp(unlockedCount, 1, _milkTypeValues.Count() - 1);
+
+        return _availableMilks.Take(unlockedCount).ToList();
     }
 
     private void ProcessQueue(
@@ -251,5 +293,13 @@ public class OrderController : MonoBehaviour
         }
 
         return wasSuccessful;
+    }
+
+    private float GetMaxOrderComplexity()
+    {
+        return _difficultySettings.BaseDrinkComplexity
+            + Mathf.FloorToInt(
+                _difficultyController.CurrentDifficulty * _difficultySettings.DrinkComplexityScaling
+            );
     }
 }

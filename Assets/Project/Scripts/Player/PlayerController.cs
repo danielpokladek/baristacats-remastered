@@ -1,14 +1,17 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public PlayerInventory Inventory { get; private set; }
-
+    [Header("References")]
     [SerializeField]
     private GameObject _handTransform;
 
     [SerializeField]
     private SpriteRenderer _itemInHand;
+
+    [SerializeField]
+    private Image _milkySanity;
 
     [Header("Items")]
     [SerializeField]
@@ -38,6 +41,8 @@ public class PlayerController : MonoBehaviour
         HandleInventoryUpdate();
         Inventory.OnInventoryUpdate.AddListener(HandleInventoryUpdate);
     }
+
+    public PlayerInventory Inventory { get; private set; }
 
     private void HandleInventoryUpdate()
     {

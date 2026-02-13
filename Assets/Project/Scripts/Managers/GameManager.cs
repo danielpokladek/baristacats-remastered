@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private SanityUI _sanityUI;
+
+    [SerializeField]
     private GameUI _gameUI;
 
     private void Start()
@@ -16,7 +20,11 @@ public class GameManager : MonoBehaviour
         }
 
         DifficultyController = new DifficultyController(appManager);
-        _gameUI = GameUI.Instance;
+        SanityController = new SanityController(
+            appManager.CurrentDifficulty,
+            DifficultyController,
+            _sanityUI
+        );
     }
 
     private void Update()
@@ -25,7 +33,9 @@ public class GameManager : MonoBehaviour
     }
 
     public int CoffeeCompleted { get; private set; }
+
     public DifficultyController DifficultyController { get; private set; }
+    public SanityController SanityController { get; private set; }
 
     public async Task ProcessCustomerServed(CustomerController customer)
     {

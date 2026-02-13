@@ -22,9 +22,10 @@ public class DifficultySettingsSO : ScriptableObject
 
     [Header("Drinks Difficulty Settings")]
     public int BaseDrinkComplexity;
-    public int DrinkComplexityScaling;
+    public float DrinkComplexityScaling;
 
     [Header("Sanity Difficulty Settings")]
+    public float StartingSanity;
     public float SanityLossPerCustomer;
     public float SanityGainPerCustomer;
     public float SanityScaling;

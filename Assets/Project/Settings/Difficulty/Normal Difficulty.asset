@@ -15,10 +15,12 @@ MonoBehaviour:
   DifficultyRampDuration: 30
   BaseCustomerSpawnInterval: 10
   CustomerSpawnScaling: 1
-  BaseCustomerPatience: 90
+  BaseCustomerPatience: 10
   CustomerPatienceScaling: 1
+  MaxOrdersQueued: 7
   BaseDrinkComplexity: 0
   DrinkComplexityScaling: 0
-  SanityLossPerCustomer: 0
-  SanityGainPerCustomer: 0
-  SanityScaling: 0
+  StartingSanity: 1
+  SanityLossPerCustomer: 0.1
+  SanityGainPerCustomer: 0.1
+  SanityScaling: 1

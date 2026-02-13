@@ -7,8 +7,6 @@ using UnityEngine.Rendering.Universal;
 
 public class GameUI : MonoBehaviour
 {
-    public static GameUI Instance { get; private set; }
-
     [Header("References")]
     [SerializeField]
     private TMP_Text _completedCoffeeText;
@@ -36,16 +34,6 @@ public class GameUI : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Debug.LogWarning("Multiple instances of `GameUIManager` found in scene!");
-            return;
-        }
-        else
-        {
-            Instance = this;
-        }
-
         _globalVolume.profile.TryGet(out DepthOfField dof);
 
         if (!dof)

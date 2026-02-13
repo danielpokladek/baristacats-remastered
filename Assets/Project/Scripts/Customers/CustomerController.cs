@@ -41,7 +41,7 @@ public class CustomerController : MonoBehaviour
         {
             enabled = false;
 
-            Events.CustomerEvents.PatienceLost.Invoke(this);
+            Events.CustomerEvents.OrderFailed.Invoke(this);
         }
     }
 

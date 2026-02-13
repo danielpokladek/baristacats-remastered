@@ -77,20 +77,6 @@ public class QueueController : MonoBehaviour
         return newPos;
     }
 
-    // public void HandleQueueCustomerMoved(Queue<OrderData> queue)
-    // {
-    //     int index = 0;
-    //     float moveDelay = 0f;
-
-    //     foreach (var order in queue)
-    //     {
-    //         moveDelay += Random.Range(0f, 1f) > 0.8f ? 1f : 0f;
-
-    //         Vector3 orderPos = GetPositionWithSpacing(_orderPosition, index++);
-    //         Tween.Delay(moveDelay, () => order.Owner.Movement.MoveTo(orderPos));
-    //     }
-    // }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
