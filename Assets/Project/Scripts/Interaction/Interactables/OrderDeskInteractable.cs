@@ -25,7 +25,7 @@ public class OrderDeskInteractable : Interactable
 
         if (!_orderController.HasCustomersAtOrderDesk)
         {
-            _interactionPrompt.ShowBoth();
+            _interactionPrompt.ShowPrompt();
             return;
         }
 

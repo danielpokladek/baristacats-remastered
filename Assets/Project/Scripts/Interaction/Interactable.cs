@@ -45,19 +45,14 @@ public abstract class Interactable : MonoBehaviour
         if (!CanInteract)
             return;
 
-        _interactionPrompt!.ShowBoth();
+        _interactionPrompt!.ShowPrompt();
         ShowOutline();
     }
 
     public void HideInteractionPrompt()
     {
-        _interactionPrompt!.HideBoth();
+        _interactionPrompt!.HidePrompt();
         HideOutline();
-    }
-
-    public void UpdateInteractionTimerFill(float fillValue)
-    {
-        _interactionPrompt!.UpdateTimerFill(fillValue);
     }
 
     protected Sequence GetItemReadySequence(Transform item)

@@ -132,18 +132,21 @@ public class CoffeeMachineInteractable : Interactable
 
         Sequence
             .Create()
-            .ChainCallback(() => _interactionPrompt?.HideBoth())
+            .ChainCallback(() => _interactionPrompt?.HidePrompt())
             .Chain(Tween.Alpha(_noBeansCanvasGroup, 1, 0.5f))
             .Chain(Tween.Delay(1.5f))
             .Chain(Tween.Alpha(_noBeansCanvasGroup, 0, 0.5f))
-            .ChainCallback(() =>
-            {
-                if (!PlayerInRange)
-                    return;
+            .ChainCallback(
+                (System.Action)(
+                    () =>
+                    {
+                        if (!PlayerInRange)
+                            return;
 
-                _interactionPrompt?.UpdateTimerFill(0);
-                _interactionPrompt?.ShowBoth();
-            });
+                        _interactionPrompt?.ShowPrompt();
+                    }
+                )
+            );
 
         CanInteract = true;
     }

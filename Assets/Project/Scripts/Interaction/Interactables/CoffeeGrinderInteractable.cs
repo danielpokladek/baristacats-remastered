@@ -120,8 +120,7 @@ public class CoffeeGrinderInteractable : Interactable
 
         if (PlayerInRange)
         {
-            _interactionPrompt.UpdateTimerFill(0);
-            _interactionPrompt.ShowPrompt();
+            _interactionPrompt?.ShowPrompt();
         }
 
         _beanImage.gameObject.SetActive(true);

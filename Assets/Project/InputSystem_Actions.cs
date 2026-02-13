@@ -269,7 +269,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""03053c3f-93f2-4178-babe-3868763c69aa"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -316,7 +316,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {

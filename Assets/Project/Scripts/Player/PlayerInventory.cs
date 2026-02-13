@@ -51,6 +51,15 @@ public class PlayerInventory
         }
     }
 
+    public void DiscardItem()
+    {
+        _milkInHand = MilkType.NONE;
+        _coffeeInHand = null;
+        _isHoldingBeans = false;
+
+        UpdateState();
+    }
+
     private void UpdateState()
     {
         bool isHoldingItem = false;
