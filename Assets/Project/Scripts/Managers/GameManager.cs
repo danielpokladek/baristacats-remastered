@@ -8,6 +8,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameUI _gameUI;
 
+    private int _failedBrews = 0;
+    private int _drinksCompleted = 0;
+    private int _customersQuit = 0;
+    private int _successfulBrews = 0;
+    private int _rushHourCompleted = 0;
+
     private void Start()
     {
         var appManager = ApplicationManager.Instance;
@@ -18,12 +24,17 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        DifficultyController = new(appManager);
         SanityController = new(appManager.CurrentDifficulty);
         RushController = new(appManager.CurrentDifficulty);
 
         Events.OnGameStart.AddListener(() =>
         {
+            _failedBrews = 0;
+            _customersQuit = 0;
+            _successfulBrews = 0;
+            _drinksCompleted = 0;
+            _rushHourCompleted = 0;
+
             ControlsManager.EnablePlayerControls();
             enabled = true;
         });
@@ -32,7 +43,30 @@ public class GameManager : MonoBehaviour
             ControlsManager.DisablePlayerControls();
             ControlsManager.DisableFrothingControls();
             enabled = false;
+
+            Debug.Log("Milky has served:");
+            Debug.Log($"{_successfulBrews} happy customers!");
+            Debug.Log($"{_failedBrews} not so happy customers.");
+            Debug.Log($"{_customersQuit} customers probably won't come back.");
         });
+
+        Events.CustomerEvents.OnOutOfTime.AddListener((_) => _customersQuit++);
+        Events.CustomerEvents.OnOrderFailed.AddListener(
+            (_) =>
+            {
+                _failedBrews++;
+                _drinksCompleted++;
+            }
+        );
+        Events.CustomerEvents.OnOrderSuccessful.AddListener(
+            (_) =>
+            {
+                _successfulBrews++;
+                _drinksCompleted++;
+            }
+        );
+
+        Events.RushEnd.AddListener(() => _rushHourCompleted++);
 
         enabled = false;
     }
@@ -40,12 +74,13 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         RushController.Update();
-        DifficultyController.UpdateDifficultyStep();
     }
 
     public int CoffeeCompleted { get; private set; }
 
-    public DifficultyController DifficultyController { get; private set; }
     public SanityController SanityController { get; private set; }
     public RushController RushController { get; private set; }
+
+    public int RushHourComplete => _rushHourCompleted;
+    public int DrinksCompleted => _drinksCompleted;
 }

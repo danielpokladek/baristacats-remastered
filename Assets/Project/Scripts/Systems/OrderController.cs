@@ -43,7 +43,6 @@ public class OrderController : MonoBehaviour
     private float _spawnTimer;
 
     private ApplicationManager _appManager;
-    private DifficultyController _difficultyController;
     private RushController _rushController;
 
     private DifficultySettingsSO _difficultySettings;
@@ -66,9 +65,6 @@ public class OrderController : MonoBehaviour
         _milkTypeValues = (MilkType[])Enum.GetValues(typeof(MilkType));
 
         _difficultySettings = ApplicationManager.Instance.CurrentDifficulty;
-        _difficultyController = _gameManager.DifficultyController;
-
-        var difficulty = _difficultyController.CurrentDifficulty;
 
         Events.CustomerEvents.OnOutOfTime.AddListener(
             (customer) => _ = HandleCustomerQuit(customer)
@@ -207,14 +203,11 @@ public class OrderController : MonoBehaviour
         bool wasSuccessful = EvaluateOrder(order.Owner, servedCoffee);
 
         if (wasSuccessful)
-        {
             Events.CustomerEvents.OnOrderSuccessful.Invoke(order.Owner);
-        }
         else
-        {
             Events.CustomerEvents.OnOrderFailed.Invoke(order.Owner);
-        }
 
+        order.Owner.StopTimer();
         await order.Owner.ShowEmote(wasSuccessful);
 
         _ = _queue.MoveToExit(order.Owner);
@@ -251,7 +244,7 @@ public class OrderController : MonoBehaviour
         queue.Remove(order);
 
         _ = _orderUI.DiscardTicket(order.Ticket);
-        _ = _queue.MoveToExit(order.Owner);
+        _ = _queue.MoveToSpawn(order.Owner);
 
         int totalIndex = 0;
 
@@ -262,21 +255,28 @@ public class OrderController : MonoBehaviour
     private CoffeeData GenerateOrder()
     {
         var maxComplexity = GetMaxOrderComplexity();
-        var drinkComplexity = UnityEngine.Random.Range(1f, maxComplexity);
+        print($"Max Complexity: {maxComplexity}");
 
-        return BuildOrderBasedOnComplexity(drinkComplexity);
+        return BuildOrderBasedOnComplexity(maxComplexity);
     }
 
-    private CoffeeData BuildOrderBasedOnComplexity(float complexity)
+    private CoffeeData BuildOrderBasedOnComplexity(int complexity)
     {
         var coffeeData = new CoffeeData { Quality = 80 };
+        var shouldAddMilk = UnityEngine.Random.Range(0f, 1f);
 
-        var availableMilk = GetAvailableMilk();
-
-        if (complexity > 2)
+        if (complexity >= 1 && shouldAddMilk >= 0.5f)
         {
-            var milk = availableMilk[UnityEngine.Random.Range(0, availableMilk.Count())];
+            var availableMilk = GetAvailableMilk();
+            var maxMilkIndex = Math.Min(complexity, availableMilk.Count());
+            var milkIndex = UnityEngine.Random.Range(0, maxMilkIndex);
+
+            print($"Milk Index: {milkIndex}");
+
+            var milk = availableMilk[milkIndex];
             coffeeData.Milk = milk;
+
+            print($"Order Milk: {milk}");
         }
 
         return coffeeData;
@@ -284,7 +284,7 @@ public class OrderController : MonoBehaviour
 
     private List<MilkType> GetAvailableMilk()
     {
-        int unlockedCount = 1 + Mathf.FloorToInt(_difficultyController.CurrentDifficulty * 1);
+        int unlockedCount = 1 + Mathf.FloorToInt(_gameManager.DrinksCompleted);
         unlockedCount = Mathf.Clamp(unlockedCount, 1, _milkTypeValues.Count() - 1);
 
         return _availableMilks.Take(unlockedCount).ToList();
@@ -322,12 +322,15 @@ public class OrderController : MonoBehaviour
         return wasSuccessful;
     }
 
-    private float GetMaxOrderComplexity()
+    private int GetMaxOrderComplexity()
     {
-        return _difficultySettings.BaseDrinkComplexity
+        var drinksComplexity =
+            _difficultySettings.BaseDrinkComplexity
             + Mathf.FloorToInt(
-                _difficultyController.CurrentDifficulty * _difficultySettings.DrinkComplexityScaling
+                _gameManager.DrinksCompleted / _difficultySettings.DrinkComplexityScaling
             );
+
+        return drinksComplexity;
     }
 
     private float GetSpawnInterval()

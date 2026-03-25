@@ -79,10 +79,10 @@ public class MilkFrothingManager : MonoBehaviour
     private void ResetProgress()
     {
         _foamProgress = 0f;
-        _foamProgressBar.fillAmount = _foamProgress;
+        _foamProgressBar.fillAmount = 0;
 
         _stirProgress = 0f;
-        _stirProgressBar.fillAmount = _stirProgress;
+        _stirProgressBar.fillAmount = 0;
     }
 
     private bool IsInRange(float value, float min, float max)

@@ -23,25 +23,8 @@ public class CustomerController : MonoBehaviour
     private OrderTicketUI _ticket;
 
     private float _waitTime = 0f;
-    private float _waitTimer = 0f;
 
-    private void Awake()
-    {
-        enabled = false;
-    }
-
-    private void Update()
-    {
-        _waitTimer -= Time.deltaTime;
-        _ticket.SetPatienceBarFill(_waitTimer / _waitTime);
-
-        if (_waitTimer <= 0)
-        {
-            enabled = false;
-
-            Events.CustomerEvents.OnOutOfTime.Invoke(this);
-        }
-    }
+    private Tween? _timerTween;
 
     public void Setup()
     {
@@ -59,12 +42,18 @@ public class CustomerController : MonoBehaviour
     {
         _ticket = orderData.Ticket;
         _waitTime = orderData.MaxWaitTime;
-        _waitTimer = orderData.MaxWaitTime;
     }
 
     public void StartTimer()
     {
-        enabled = true;
+        _timerTween = Tween
+            .Custom(_waitTime, 0, _waitTime, (val) => _ticket.SetPatienceBarFill(val / _waitTime))
+            .OnComplete(() => Events.CustomerEvents.OnOutOfTime.Invoke(this));
+    }
+
+    public void StopTimer()
+    {
+        _timerTween?.Stop();
     }
 
     public void SetOrderData(CoffeeData coffeeData)

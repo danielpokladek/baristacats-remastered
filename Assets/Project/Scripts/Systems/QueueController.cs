@@ -67,6 +67,11 @@ public class QueueController : MonoBehaviour
         _customerPool.Release(customer);
     }
 
+    public Tween MoveToSpawn(CustomerController customer)
+    {
+        return customer.Movement.MoveTo(_spawnPosition);
+    }
+
     public Tween MoveToOrderDesk(CustomerController customer, int queueIndex)
     {
         var positionInQueue = GetPositionWithSpacing(_orderPosition, queueIndex);

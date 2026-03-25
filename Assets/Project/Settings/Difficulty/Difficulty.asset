@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Difficulty
   m_EditorClassIdentifier: Assembly-CSharp::DifficultySettingsSO
   RushModeWaitTime:
-    _minimum: 60
-    _maximum: 120
+    _minimum: 40
+    _maximum: 90
     _curve:
       serializedVersion: 2
       m_Curve:
@@ -40,7 +40,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   RushModeDuration:
-    _minimum: 120
+    _minimum: 30
     _maximum: 180
     _curve:
       serializedVersion: 2
@@ -129,10 +129,10 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  MaxOrdersRegular: 5
-  MaxOrdersRush: 8
-  BaseDrinkComplexity: 1
-  DrinkComplexityScaling: 2
+  MaxOrdersRegular: 6
+  MaxOrdersRush: 10
+  BaseDrinkComplexity: 0
+  DrinkComplexityScaling: 6
   StartingSanity: 1
   SanityLossPerCustomer: 0.15
   SanityGainPerCustomer: 0.05
