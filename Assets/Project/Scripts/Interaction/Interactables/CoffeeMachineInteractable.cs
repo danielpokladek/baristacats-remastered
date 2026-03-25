@@ -1,5 +1,4 @@
 #nullable enable
-
 using PrimeTween;
 using UnityEngine;
 
@@ -44,61 +43,36 @@ public class CoffeeMachineInteractable : Interactable
     {
         base.Interact(player);
 
-        var inventory = player.Inventory;
+        var playerInventory = player.Inventory;
         var isAnyCoffeeReady = _brewedCoffee > 0;
 
-        if (!inventory.IsHoldingItem && isAnyCoffeeReady)
+        if (!playerInventory.IsHoldingItem && isAnyCoffeeReady)
         {
-            var completedSlot = GetReadySlot();
-
-            if (completedSlot)
-            {
-                player.Inventory.CoffeeInHand = new CoffeeData
-                {
-                    Milk = MilkType.NONE,
-                    Quality = 100,
-                };
-
-                _brewedCoffee--;
-
-                completedSlot.Reset();
-
-                return;
-            }
+            RetrieveReadyCoffee(playerInventory);
+            return;
         }
 
         CoffeeMachineSlot? freeSlot = GetFreeSlot();
 
-        if (inventory.IsHoldingBeans && freeSlot != null)
+        if (playerInventory.IsHoldingBeans && freeSlot != null)
         {
-            player.Inventory.IsHoldingBeans = false;
-            _ = freeSlot.StartBrewing();
-
+            StartBrewing(playerInventory, freeSlot);
             return;
         }
 
-        if (inventory.MilkInHand != MilkType.NONE && isAnyCoffeeReady)
+        CoffeeMachineSlot? brewedSlot = GetBrewedSlot();
+
+        if (playerInventory.MilkInHand != MilkType.NONE && isAnyCoffeeReady && brewedSlot != null)
         {
-            var completedSlot = GetReadySlot();
-
-            if (completedSlot)
-            {
-                player.Inventory.CoffeeInHand = new CoffeeData
-                {
-                    Milk = MilkType.NONE,
-                    Quality = 100,
-                };
-
-                completedSlot.Reset();
-                _brewedCoffee--;
-            }
-
-            MiniGameManager.Instance.StartFrothing();
+            StartFrothingMinigame(playerInventory, brewedSlot);
             return;
         }
 
-        if (!inventory.IsHoldingBeans)
+        if (!playerInventory.IsHoldingBeans)
+        {
             ShowNoBeans();
+            return;
+        }
     }
 
     private CoffeeMachineSlot? GetFreeSlot()
@@ -112,7 +86,7 @@ public class CoffeeMachineInteractable : Interactable
         return null;
     }
 
-    private CoffeeMachineSlot? GetReadySlot()
+    private CoffeeMachineSlot? GetBrewedSlot()
     {
         foreach (CoffeeMachineSlot slot in _slots)
         {
@@ -121,6 +95,39 @@ public class CoffeeMachineInteractable : Interactable
         }
 
         return null;
+    }
+
+    private void RetrieveReadyCoffee(PlayerInventory inventory)
+    {
+        var completedSlot = GetBrewedSlot();
+
+        if (completedSlot)
+        {
+            inventory.CoffeeInHand = new CoffeeData { Milk = MilkType.NONE, Quality = 100 };
+
+            _brewedCoffee--;
+
+            completedSlot.Reset();
+
+            return;
+        }
+    }
+
+    private void StartBrewing(PlayerInventory inventory, CoffeeMachineSlot slot)
+    {
+        inventory.IsHoldingBeans = false;
+        _ = slot.StartBrewing();
+    }
+
+    private void StartFrothingMinigame(PlayerInventory inventory, CoffeeMachineSlot slot)
+    {
+        inventory.CoffeeInHand = new CoffeeData { Milk = MilkType.NONE, Quality = 100 };
+
+        _brewedCoffee--;
+        slot.Reset();
+
+        MiniGameManager.Instance.StartFrothing();
+        return;
     }
 
     private void ShowNoBeans()

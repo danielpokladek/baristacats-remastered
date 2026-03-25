@@ -75,6 +75,7 @@
         "interactables",
         "Lerp",
         "Mathf",
+        "Minigame",
         "Rigidbody",
         "Scriptable",
         "Yoyo"
