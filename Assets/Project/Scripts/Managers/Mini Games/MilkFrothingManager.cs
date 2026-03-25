@@ -36,8 +36,6 @@ public class MilkFrothingManager : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-
         OnJugDepthChange.AddListener((newDepth) => _currentJugDepth = newDepth);
 
         _frothingActions = ControlsManager.FrothingActions;

@@ -103,8 +103,8 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomerPatience:
-    _minimum: 10
-    _maximum: 10
+    _minimum: 2
+    _maximum: 2
     _curve:
       serializedVersion: 2
       m_Curve:
@@ -133,7 +133,7 @@ MonoBehaviour:
   MaxOrdersRush: 8
   BaseDrinkComplexity: 1
   DrinkComplexityScaling: 2
-  StartingSanity: 1
+  StartingSanity: 0.1
   SanityLossPerCustomer: 0.15
   SanityGainPerCustomer: 0.05
   SanityLossCurve:

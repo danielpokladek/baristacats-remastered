@@ -37,11 +37,14 @@ public class ApplicationManager : MonoBehaviour
 
         // TODO: Remove the hardcode here, and save/load from file.
         _appSettings.SetDifficulty(_difficultyOptions.First().Settings);
+
+        Events.OnGameOver.AddListener(() => Cursor.lockState = CursorLockMode.None);
     }
 
     [ContextMenu("Start Game")]
     public void StartGame()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         Events.OnGameStart.Invoke();
     }
 

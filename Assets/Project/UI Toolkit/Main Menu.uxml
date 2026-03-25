@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Project/UI%20Toolkit/Shared.uss?fileID=7433441132597879392&amp;guid=289a5638c52afe28eb00b0953cc162cc&amp;type=3#Shared"/>
+    <ui:VisualElement name="container" style="flex-grow: 1;">
+        <ui:VisualElement name="background" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Project/Sprites/UI/Main%20Menu/menu_background.png?fileID=2800000&amp;guid=bf520aa5703a21c2a861d985693619cf&amp;type=3#menu_background&quot;); position: absolute; width: 100%; height: 100%;"/>
+        <ui:VisualElement style="flex-grow: 1;">
+            <ui:VisualElement style="flex-grow: 1;"/>
+            <ui:VisualElement style="flex-grow: 0.2; flex-direction: column; justify-content: space-around; align-items: flex-start; align-self: auto; align-content: center; padding-left: 50px;">
+                <ui:Button text="PLAY" name="play-button" icon-image="" class="menu-button"/>
+                <ui:Button text="QUIT" name="quit-button" class="menu-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

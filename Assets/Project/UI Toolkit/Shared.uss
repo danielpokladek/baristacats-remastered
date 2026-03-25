@@ -1,0 +1,22 @@
+:root {
+}
+
+.menu-button {
+    width: auto;
+    -unity-font-style: bold;
+    font-size: 28px;
+    -unity-font-definition: url("project://database/Assets/Project/Fonts/Basteleur/Basteleur-Moonlight.ttf?fileID=12800000&guid=fc2fc0252c6b59e1cb6178eebcd5ade3&type=3#Basteleur-Moonlight");
+    color: rgb(22, 132, 72);
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+}
+
+.menu-button:hover {
+    width: auto;
+    -unity-font-style: bold;
+    font-size: 28px;
+    -unity-font-definition: url("project://database/Assets/Project/Fonts/Basteleur/Basteleur-Moonlight.ttf?fileID=12800000&guid=fc2fc0252c6b59e1cb6178eebcd5ade3&type=3#Basteleur-Moonlight");
+    color: rgb(22, 132, 72);
+    -unity-text-outline-width: 1.5px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+}
