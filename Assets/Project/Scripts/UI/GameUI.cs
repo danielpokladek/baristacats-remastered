@@ -50,7 +50,11 @@ public class GameUI : MonoBehaviour
         TransitionFrothingOut(true);
         TransitionPickingOut(true);
 
+        _failVideoPlayer.loopPointReached += HandleFailVideoFinished;
+
         Events.RushStart.AddListener(ShowRush);
+
+        Events.OnGameStart.AddListener(HandleGameStart);
         Events.OnGameOver.AddListener(HandleGameOver);
     }
 
@@ -135,6 +139,11 @@ public class GameUI : MonoBehaviour
         await Tween.Alpha(_rushHour, 0f, 0.15f);
     }
 
+    private void HandleGameStart()
+    {
+        _failVideoCanvasGroup.alpha = 0;
+    }
+
     private async void HandleGameOver()
     {
         if (_failVideoPlayer.isPlaying)
@@ -144,5 +153,10 @@ public class GameUI : MonoBehaviour
 
         _failVideoPlayer.Stop();
         _failVideoPlayer.Play();
+    }
+
+    private void HandleFailVideoFinished(VideoPlayer _)
+    {
+        Events.OnShowMenu.Invoke();
     }
 }

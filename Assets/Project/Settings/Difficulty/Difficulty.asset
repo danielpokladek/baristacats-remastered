@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e22d6c783afc9783a6ad7bb3beefdc3, type: 3}
-  m_Name: Normal Difficulty
+  m_Name: Difficulty
   m_EditorClassIdentifier: Assembly-CSharp::DifficultySettingsSO
   RushModeWaitTime:
-    _minimum: 15
-    _maximum: 15
+    _minimum: 60
+    _maximum: 120
     _curve:
       serializedVersion: 2
       m_Curve:
@@ -74,7 +74,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -83,7 +83,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 0.5
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0.65
+        value: 0.35
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -103,14 +103,14 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomerPatience:
-    _minimum: 2
-    _maximum: 2
+    _minimum: 40
+    _maximum: 70
     _curve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -119,12 +119,12 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 1
-        value: 1
-        inSlope: 2.9203715
-        outSlope: 2.9203715
-        tangentMode: 0
+        value: 0
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
         weightedMode: 0
-        inWeight: 0.030981064
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -133,7 +133,7 @@ MonoBehaviour:
   MaxOrdersRush: 8
   BaseDrinkComplexity: 1
   DrinkComplexityScaling: 2
-  StartingSanity: 0.1
+  StartingSanity: 1
   SanityLossPerCustomer: 0.15
   SanityGainPerCustomer: 0.05
   SanityLossCurve:

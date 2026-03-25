@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,8 +7,6 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameUI _gameUI;
-
-    private bool _gameStarted = false;
 
     private void Start()
     {

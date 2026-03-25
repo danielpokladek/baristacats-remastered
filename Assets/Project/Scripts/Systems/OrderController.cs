@@ -17,13 +17,16 @@ public class OrderData
 public class OrderController : MonoBehaviour
 {
     [SerializeField]
-    private GameManager _gameManager;
+    GameManager _gameManager;
 
     [SerializeField]
     private QueueController _queue;
 
     [SerializeField]
     private OrderUIController _orderUI;
+
+    [SerializeField]
+    AudioSource _counterDing;
 
     private List<OrderData> _orderQueue = new();
     private List<OrderData> _payQueue = new();
@@ -83,7 +86,10 @@ public class OrderController : MonoBehaviour
 
             enabled = true;
         });
-        Events.OnGameOver.AddListener(() => enabled = false);
+        Events.OnGameOver.AddListener(() =>
+        {
+            enabled = false;
+        });
 
         enabled = false;
     }
@@ -127,7 +133,7 @@ public class OrderController : MonoBehaviour
         var ticket = _orderUI.GetNewTicket();
 
         var isRush = _rushController.IsRushActive;
-        var maxWaitTime = _difficultySettings.CustomerPatience.GetValueReversed(
+        var maxWaitTime = _difficultySettings.CustomerPatience.GetValue(
             isRush ? 1 : _rushController.ProgressToRush
         );
 
@@ -146,9 +152,10 @@ public class OrderController : MonoBehaviour
         customer.SetOrderData(coffeeData);
         customer.Initialize(orderData);
 
-        _ = _orderUI.MoveTicketToPosition(ticket, TotalTicketCount - 1);
-
         await _queue.MoveToOrderDesk(customer, _orderQueue.Count - 1);
+
+        _counterDing.Play();
+        _ = _orderUI.MoveTicketToPosition(ticket, TotalTicketCount - 1);
 
         orderData.Owner.StartTimer();
 
@@ -172,7 +179,6 @@ public class OrderController : MonoBehaviour
 
         order.Ticket.RevealOrder();
 
-        // _queue.HandleQueueCustomerMoved(_orderQueue);
         int totalIndex = 0;
 
         ProcessQueue(_payQueue, _queue.MoveToPayDesk, ref totalIndex);
@@ -196,8 +202,7 @@ public class OrderController : MonoBehaviour
         var order = _payQueue[0];
         _payQueue.RemoveAt(0);
 
-        // TODO: Add animation to ticket moving out of view.
-        order.Ticket.gameObject.SetActive(false);
+        _ = _orderUI.DiscardTicket(order.Ticket);
 
         bool wasSuccessful = EvaluateOrder(order.Owner, servedCoffee);
 
@@ -264,8 +269,6 @@ public class OrderController : MonoBehaviour
 
     private CoffeeData BuildOrderBasedOnComplexity(float complexity)
     {
-        // print($"Creating new order - drink complexity: {complexity}");
-
         var coffeeData = new CoffeeData { Quality = 80 };
 
         var availableMilk = GetAvailableMilk();
@@ -310,22 +313,11 @@ public class OrderController : MonoBehaviour
         var desiredCoffee = customer.DesiredCoffee;
         var wasSuccessful = true;
 
-        print(
-            $"Desired Milk: {desiredCoffee.Milk} | Served Milk: {servedCoffee.Milk} | {desiredCoffee.Milk == servedCoffee.Milk}"
-        );
-        print(
-            $"Desired Quality: {desiredCoffee.Quality} | Served Quality: {servedCoffee.Quality} | {servedCoffee.Quality >= desiredCoffee.Quality}"
-        );
-
         if (servedCoffee.Milk != desiredCoffee.Milk)
-        {
             wasSuccessful = false;
-        }
 
         if (servedCoffee.Quality < desiredCoffee.Quality)
-        {
             wasSuccessful = false;
-        }
 
         return wasSuccessful;
     }
@@ -345,8 +337,6 @@ public class OrderController : MonoBehaviour
             return _difficultySettings.CustomerSpawnInterval.Min;
         }
 
-        return _difficultySettings.CustomerSpawnInterval.GetValueReversed(
-            _rushController.ProgressToRush
-        );
+        return _difficultySettings.CustomerSpawnInterval.GetValue(_rushController.ProgressToRush);
     }
 }

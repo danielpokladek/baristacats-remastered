@@ -28,17 +28,6 @@ public class MinMax
     }
 
     /// <summary>
-    /// Gets reversed value based on progress.
-    /// </summary>
-    /// <param name="progress">Progress used to get value.</param>
-    /// <returns>A value between max and min by evaluating it against the animation curve.</returns>
-    public float GetValueReversed(float progress)
-    {
-        float curveValue = _curve.Evaluate(Mathf.Clamp01(progress));
-        return Mathf.Lerp(_maximum, _minimum, curveValue);
-    }
-
-    /// <summary>
     /// Gets a random value.
     /// </summary>
     /// <returns>A random value between the min and max.</returns>

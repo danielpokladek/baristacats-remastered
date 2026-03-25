@@ -1,5 +1,4 @@
 #nullable enable
-using System;
 using PrimeTween;
 using UnityEditor;
 using UnityEngine;
@@ -36,13 +35,15 @@ public class MainMenuUI : MonoBehaviour
 
         playButton.RegisterCallback<MouseUpEvent>(HandlePlayButtonPressed);
         quitButton.RegisterCallback<MouseUpEvent>(HandleQuitButtonPressed);
+
+        Events.OnShowMenu.AddListener(() => ShowMenu());
     }
 
     private void HandlePlayButtonPressed(MouseUpEvent evt)
     {
         Events.OnGameStart.Invoke();
 
-        Tween.Custom(1f, 0f, 0.5f, (val) => _container.style.opacity = val);
+        HideMenu();
     }
 
     private void HandleQuitButtonPressed(MouseUpEvent evt)
@@ -52,5 +53,15 @@ public class MainMenuUI : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    private Tween HideMenu()
+    {
+        return Tween.Custom(1f, 0f, 0.5f, (val) => _container.style.opacity = val);
+    }
+
+    private Tween ShowMenu()
+    {
+        return Tween.Custom(0f, 1f, 0.5f, (val) => _container.style.opacity = val);
     }
 }

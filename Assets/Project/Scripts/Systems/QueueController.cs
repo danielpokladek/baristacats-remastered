@@ -1,8 +1,9 @@
+using System.Threading.Tasks;
 using PrimeTween;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Pool;
 
-[RequireComponent(typeof(AudioSource))]
 public class QueueController : MonoBehaviour
 {
     [SerializeField]
@@ -23,54 +24,18 @@ public class QueueController : MonoBehaviour
     [SerializeField]
     private CustomerController[] _customerPrefabs;
 
-    [Header("Audio")]
-    [SerializeField]
-    private AudioClip _doorSound;
+    private ObjectPool<CustomerController> _customerPool;
 
-    private AudioSource _audioSource;
-
-    private void Start()
+    private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
-    }
-
-    public CustomerController GetCustomer()
-    {
-        var randomIndex = Random.Range(0, _customerPrefabs.Length);
-        var customerPrefab = _customerPrefabs[randomIndex];
-
-        // TODO: Pool customers instead of creating new instance each time.
-        var customer = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
-        customer.Setup();
-
-        _audioSource.PlayOneShot(_doorSound);
-
-        return customer;
-    }
-
-    public Tween MoveToOrderDesk(CustomerController customer, int queueIndex)
-    {
-        var positionInQueue = GetPositionWithSpacing(_orderPosition, queueIndex);
-        return customer.Movement.MoveTo(positionInQueue);
-    }
-
-    public Tween MoveToPayDesk(CustomerController customer, int queueIndex)
-    {
-        var positionInQueue = GetPositionWithSpacing(_payPosition, queueIndex);
-        return customer.Movement.MoveTo(positionInQueue);
-    }
-
-    public Tween MoveToExit(CustomerController customer)
-    {
-        return customer.Movement.MoveTo(_exitPosition);
-    }
-
-    private Vector2 GetPositionWithSpacing(Vector2 destination, int customerCount)
-    {
-        var newPos = destination;
-        newPos.x += _customerGap * customerCount;
-
-        return newPos;
+        _customerPool = new(
+            createFunc: CreateNewCustomer,
+            actionOnGet: OnGetCustomer,
+            actionOnRelease: OnReleaseCustomer,
+            actionOnDestroy: OnDestroyCustomer,
+            true,
+            10
+        );
     }
 
     private void OnDrawGizmosSelected()
@@ -90,5 +55,70 @@ public class QueueController : MonoBehaviour
         Gizmos.color = Color.red;
         Handles.Label(_exitPosition, "Exit Position");
         Gizmos.DrawWireSphere(_exitPosition, 0.5f);
+    }
+
+    public CustomerController GetCustomer()
+    {
+        return _customerPool.Get();
+    }
+
+    public void ReturnCustomer(CustomerController customer)
+    {
+        _customerPool.Release(customer);
+    }
+
+    public Tween MoveToOrderDesk(CustomerController customer, int queueIndex)
+    {
+        var positionInQueue = GetPositionWithSpacing(_orderPosition, queueIndex);
+        return customer.Movement.MoveTo(positionInQueue);
+    }
+
+    public Tween MoveToPayDesk(CustomerController customer, int queueIndex)
+    {
+        var positionInQueue = GetPositionWithSpacing(_payPosition, queueIndex);
+        return customer.Movement.MoveTo(positionInQueue);
+    }
+
+    public async Task MoveToExit(CustomerController customer)
+    {
+        await customer.Movement.MoveTo(_exitPosition);
+
+        ReturnCustomer(customer);
+    }
+
+    private CustomerController CreateNewCustomer()
+    {
+        var randomIndex = Random.Range(0, _customerPrefabs.Length);
+        var customerPrefab = _customerPrefabs[randomIndex];
+
+        var customer = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
+        customer.Setup();
+
+        return customer;
+    }
+
+    private void OnGetCustomer(CustomerController customer)
+    {
+        customer.transform.position = _spawnPosition;
+        customer.gameObject.SetActive(true);
+    }
+
+    private void OnReleaseCustomer(CustomerController customer)
+    {
+        customer.gameObject.SetActive(false);
+        customer.enabled = false;
+    }
+
+    private void OnDestroyCustomer(CustomerController customer)
+    {
+        Destroy(customer.gameObject);
+    }
+
+    private Vector2 GetPositionWithSpacing(Vector2 destination, int customerCount)
+    {
+        var newPos = destination;
+        newPos.x += _customerGap * customerCount;
+
+        return newPos;
     }
 }

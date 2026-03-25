@@ -17,6 +17,8 @@ public class CustomerEvents
 
 public static class Events
 {
+    public static readonly UnityEvent OnShowMenu = new();
+
     public static readonly MiniGameEvents MiniGameEvents = new();
     public static readonly CustomerEvents CustomerEvents = new();
 

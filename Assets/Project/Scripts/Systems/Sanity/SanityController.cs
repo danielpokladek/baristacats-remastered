@@ -1,5 +1,4 @@
 #nullable enable
-
 using UnityEngine;
 
 public class SanityController
@@ -7,18 +6,25 @@ public class SanityController
     private float _maxSanity;
     private float _currentSanity;
 
-    private DifficultySettingsSO _difficulty;
+    private readonly DifficultySettingsSO _difficulty;
 
     public SanityController(DifficultySettingsSO difficulty)
     {
         _difficulty = difficulty;
 
-        _maxSanity = difficulty.StartingSanity;
-        _currentSanity = _maxSanity;
+        Events.OnGameStart.AddListener(HandleGameStart);
 
         Events.CustomerEvents.OnOrderFailed.AddListener(HandleOrderFailed);
         Events.CustomerEvents.OnOutOfTime.AddListener(HandleOrderFailed);
         Events.CustomerEvents.OnOrderSuccessful.AddListener(HandleOrderSuccessful);
+    }
+
+    private void HandleGameStart()
+    {
+        _maxSanity = _difficulty.StartingSanity;
+        _currentSanity = _maxSanity;
+
+        HandleSanityChange();
     }
 
     private void HandleOrderFailed(CustomerController _)
@@ -28,16 +34,10 @@ public class SanityController
         else
             _currentSanity -= GetSanityPenalty();
 
-        var sanityProgress = 1f - (_currentSanity / _maxSanity);
-        Events.OnSanityChange.Invoke(sanityProgress);
-
-        Debug.Log($"Sanity lost, current sanity: {_currentSanity}");
+        HandleSanityChange();
 
         if (_currentSanity <= 0)
-        {
-            Debug.Log("All sanity lost, poor Milky..");
             Events.OnGameOver.Invoke();
-        }
     }
 
     public void HandleOrderSuccessful(CustomerController _)
@@ -49,10 +49,13 @@ public class SanityController
             _currentSanity = _maxSanity;
         }
 
+        HandleSanityChange();
+    }
+
+    private void HandleSanityChange()
+    {
         var sanityProgress = 1f - (_currentSanity / _maxSanity);
         Events.OnSanityChange.Invoke(sanityProgress);
-
-        Debug.Log($"Sanity gained, current sanity: {_currentSanity}");
     }
 
     private float GetSanityPenalty()

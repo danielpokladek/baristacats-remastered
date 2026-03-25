@@ -41,6 +41,7 @@ public class AudioManager : MonoBehaviour
         Events.RushStart.AddListener(TransitionToRush);
         Events.RushEnd.AddListener(TransitionToNormal);
 
+        Events.OnGameStart.AddListener(HandleGameStart);
         Events.OnGameOver.AddListener(HandleGameOver);
     }
 
@@ -114,6 +115,12 @@ public class AudioManager : MonoBehaviour
     private AudioClip GetAmbientClip()
     {
         return _ambience[Random.Range(0, _ambience.Length)];
+    }
+
+    private void HandleGameStart()
+    {
+        _ambientSource.clip = GetAmbientClip();
+        _ambientSource.Play();
     }
 
     private void HandleGameOver()
