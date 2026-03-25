@@ -39,6 +39,12 @@ public class ApplicationManager : MonoBehaviour
         _appSettings.SetDifficulty(_difficultyOptions.First().Settings);
     }
 
+    [ContextMenu("Start Game")]
+    public void StartGame()
+    {
+        Events.OnGameStart.Invoke();
+    }
+
     public List<DifficultyOption> DifficultyOptions => _difficultyOptions;
     public DifficultySettingsSO CurrentDifficulty => _appSettings.CurrentDifficulty;
 }

@@ -60,7 +60,6 @@ public class OrderController : MonoBehaviour
         }
 
         _rushController = _gameManager.RushController;
-
         _milkTypeValues = (MilkType[])Enum.GetValues(typeof(MilkType));
 
         _difficultySettings = ApplicationManager.Instance.CurrentDifficulty;
@@ -68,10 +67,7 @@ public class OrderController : MonoBehaviour
 
         var difficulty = _difficultyController.CurrentDifficulty;
 
-        _spawnInterval = GetSpawnInterval();
-        _spawnTimer = _spawnInterval;
-
-        Events.CustomerEvents.RanOutOfPatience.AddListener(
+        Events.CustomerEvents.OnOutOfTime.AddListener(
             (customer) => _ = HandleCustomerQuit(customer)
         );
 
@@ -79,6 +75,17 @@ public class OrderController : MonoBehaviour
         {
             _spawnTimer = _spawnInterval;
         });
+
+        Events.OnGameStart.AddListener(() =>
+        {
+            _spawnInterval = GetSpawnInterval();
+            _spawnTimer = _spawnInterval;
+
+            enabled = true;
+        });
+        Events.OnGameOver.AddListener(() => enabled = false);
+
+        enabled = false;
     }
 
     private void Update()
@@ -101,25 +108,35 @@ public class OrderController : MonoBehaviour
 
     public bool IsAtMaxOrders()
     {
-        var baseMaxOrders = _appManager.CurrentDifficulty.MaxOrdersQueued;
-        var adjustedMaxOrders = _rushController.IsRushActive ? baseMaxOrders * 2 : baseMaxOrders;
+        return TotalOrderCount >= MaxOrders();
+    }
 
-        return TotalOrderCount >= adjustedMaxOrders;
+    public int MaxOrders()
+    {
+        var diff = _appManager.CurrentDifficulty;
+        var maxOrders = _rushController.IsRushActive ? diff.MaxOrdersRush : diff.MaxOrdersRegular;
+
+        return maxOrders;
     }
 
     [ContextMenu("New Customer")]
     public async Task CreateNewCustomer()
     {
         var coffeeData = GenerateOrder();
-        var customer = _queue.GetCustomer(_appManager, _gameManager.DifficultyController);
+        var customer = _queue.GetCustomer();
         var ticket = _orderUI.GetNewTicket();
+
+        var isRush = _rushController.IsRushActive;
+        var maxWaitTime = _difficultySettings.CustomerPatience.GetValueReversed(
+            isRush ? 1 : _rushController.ProgressToRush
+        );
 
         var orderData = new OrderData
         {
             Owner = customer,
             Ticket = ticket,
             CoffeeData = coffeeData,
-            MaxWaitTime = UnityEngine.Random.Range(10, 30),
+            MaxWaitTime = maxWaitTime,
         };
 
         _orderQueue.Add(orderData);
@@ -127,12 +144,9 @@ public class OrderController : MonoBehaviour
         ticket.Init(orderData);
 
         customer.SetOrderData(coffeeData);
-        customer.Initialize(ticket);
+        customer.Initialize(orderData);
 
         _ = _orderUI.MoveTicketToPosition(ticket, TotalTicketCount - 1);
-
-        // TODO: Debug only, remove later.
-        ticket.RevealOrder();
 
         await _queue.MoveToOrderDesk(customer, _orderQueue.Count - 1);
 
@@ -189,11 +203,11 @@ public class OrderController : MonoBehaviour
 
         if (wasSuccessful)
         {
-            Events.CustomerEvents.OrderSuccessful.Invoke(order.Owner);
+            Events.CustomerEvents.OnOrderSuccessful.Invoke(order.Owner);
         }
         else
         {
-            Events.CustomerEvents.OrderFailed.Invoke(order.Owner);
+            Events.CustomerEvents.OnOrderFailed.Invoke(order.Owner);
         }
 
         await order.Owner.ShowEmote(wasSuccessful);
@@ -326,18 +340,13 @@ public class OrderController : MonoBehaviour
 
     private float GetSpawnInterval()
     {
-        var spawnInterval =
-            _difficultySettings.CustomerSpawnInterval.GetRandomValue()
-            / (
-                1f
-                + _difficultyController.CurrentDifficulty * _difficultySettings.CustomerSpawnScaling
-            );
-
-        if (_gameManager.RushController.IsRushActive)
+        if (_rushController.IsRushActive)
         {
-            spawnInterval *= 2;
+            return _difficultySettings.CustomerSpawnInterval.Min;
         }
 
-        return spawnInterval;
+        return _difficultySettings.CustomerSpawnInterval.GetValueReversed(
+            _rushController.ProgressToRush
+        );
     }
 }

@@ -8,7 +8,7 @@ public class DifficultyController
 
     private float _gameTime;
 
-    private float _difficultyRampDuration;
+    // private float _difficultyRampDuration;
     private int _currentDifficulty;
 
     private bool _rushActive;
@@ -21,7 +21,7 @@ public class DifficultyController
 
         _gameTime = 0;
 
-        _difficultyRampDuration = _appManager.CurrentDifficulty.DifficultyRampDuration;
+        // _difficultyRampDuration = _appManager.CurrentDifficulty.DifficultyRampDuration;
         _currentDifficulty = 1;
 
         _rushActive = false;
@@ -37,12 +37,12 @@ public class DifficultyController
 
         _gameTime += Time.deltaTime;
 
-        var newDifficulty = Mathf.CeilToInt(_gameTime / _difficultyRampDuration);
+        // var newDifficulty = Mathf.CeilToInt(_gameTime / _difficultyRampDuration);
 
-        if (newDifficulty == _currentDifficulty)
-            return;
+        // if (newDifficulty == _currentDifficulty)
+        //     return;
 
-        _currentDifficulty = newDifficulty;
-        Events.OnDifficultyLevelChange.Invoke(newDifficulty);
+        // _currentDifficulty = newDifficulty;
+        // Events.OnDifficultyLevelChange.Invoke(newDifficulty);
     }
 }

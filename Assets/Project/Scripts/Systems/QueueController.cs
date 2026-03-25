@@ -34,17 +34,14 @@ public class QueueController : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    public CustomerController GetCustomer(
-        ApplicationManager appManager,
-        DifficultyController difficultyController
-    )
+    public CustomerController GetCustomer()
     {
         var randomIndex = Random.Range(0, _customerPrefabs.Length);
         var customerPrefab = _customerPrefabs[randomIndex];
 
         // TODO: Pool customers instead of creating new instance each time.
         var customer = Instantiate(customerPrefab, _spawnPosition, Quaternion.identity);
-        customer.Setup(appManager, difficultyController);
+        customer.Setup();
 
         _audioSource.PlayOneShot(_doorSound);
 

@@ -36,8 +36,6 @@ public class PlayerController : MonoBehaviour
     {
         Inventory = new PlayerInventory();
 
-        ControlsManager.EnablePlayerControls();
-
         HandleInventoryUpdate();
         Inventory.OnInventoryUpdate.AddListener(HandleInventoryUpdate);
     }

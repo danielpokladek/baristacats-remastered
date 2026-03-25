@@ -1,3 +1,4 @@
+#nullable enable
 using UnityEngine;
 
 public class RushController
@@ -9,16 +10,21 @@ public class RushController
 
     private bool _rushActive;
 
-    public RushController()
-    {
-        _timeToRush = 60f;
-        _rushDuration = 15f;
-        _rushTimer = 0f;
+    private DifficultySettingsSO _difficultySettings;
 
+    public RushController(DifficultySettingsSO difficultySettings)
+    {
+        _difficultySettings = difficultySettings;
+
+        _timeToRush = _difficultySettings.RushModeWaitTime.Max;
+        _rushDuration = _difficultySettings.RushModeDuration.Min;
+
+        _rushTimer = 0f;
         _rushActive = false;
     }
 
     public bool IsRushActive => _rushActive;
+    public float ProgressToRush => Mathf.Clamp01(_rushTimer / _timeToRush);
 
     public void Update()
     {
@@ -44,10 +50,7 @@ public class RushController
 
     private void StartRush()
     {
-        _rushTimer = 0;
         _rushActive = true;
-
-        Debug.Log("Starting rush..");
 
         Events.RushStart.Invoke();
     }
@@ -57,7 +60,8 @@ public class RushController
         _rushTimer = 0;
         _rushActive = false;
 
-        Debug.Log("Ending rush..");
+        _timeToRush = _difficultySettings.RushModeWaitTime.GetRandomValue();
+        _rushDuration = _difficultySettings.RushModeDuration.GetRandomValue();
 
         Events.RushEnd.Invoke();
     }

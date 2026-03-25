@@ -1,36 +1,42 @@
+using System.Threading.Tasks;
 using PrimeTween;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Video;
 
 public class GameUI : MonoBehaviour
 {
     [Header("References")]
     [SerializeField]
-    private TMP_Text _completedCoffeeText;
+    TMP_Text _completedCoffeeText;
 
     [SerializeField]
-    private Volume _globalVolume;
+    Volume _globalVolume;
 
     [SerializeField]
-    private OrderUIController _orderUI;
+    CanvasGroup _rushHour;
+
+    [SerializeField]
+    CanvasGroup _failVideoCanvasGroup;
+
+    [SerializeField]
+    VideoPlayer _failVideoPlayer;
 
     [Header("Animations")]
     [SerializeField]
-    private float _miniGameTransition = 0.25f;
+    float _miniGameTransition = 0.25f;
 
     [Header("Mini Game")]
     [SerializeField]
-    private RectTransform _frothingMiniGameTransform;
+    RectTransform _frothingMiniGameTransform;
 
     [SerializeField]
-    private RectTransform _milkPickingMiniGame;
+    RectTransform _milkPickingMiniGame;
 
     private DepthOfField _dof;
-
-    public OrderUIController OrderUI => _orderUI;
 
     private void Awake()
     {
@@ -43,6 +49,9 @@ public class GameUI : MonoBehaviour
 
         TransitionFrothingOut(true);
         TransitionPickingOut(true);
+
+        Events.RushStart.AddListener(ShowRush);
+        Events.OnGameOver.AddListener(HandleGameOver);
     }
 
 #if UNITY_EDITOR
@@ -115,5 +124,25 @@ public class GameUI : MonoBehaviour
             -Screen.height * 2,
             isInstant ? 0 : _miniGameTransition
         );
+    }
+
+    private async void ShowRush()
+    {
+        await Tween.Alpha(_rushHour, 1f, 0.15f);
+
+        await Tween.Delay(2f);
+
+        await Tween.Alpha(_rushHour, 0f, 0.15f);
+    }
+
+    private async void HandleGameOver()
+    {
+        if (_failVideoPlayer.isPlaying)
+            return;
+
+        await Tween.Alpha(_failVideoCanvasGroup, 1f, 0.2f);
+
+        _failVideoPlayer.Stop();
+        _failVideoPlayer.Play();
     }
 }

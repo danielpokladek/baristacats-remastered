@@ -7,38 +7,37 @@ public class SanityController
     private float _maxSanity;
     private float _currentSanity;
 
-    private SanityUI _sanityUI;
     private DifficultySettingsSO _difficulty;
-    private DifficultyController _difficultyController;
 
-    public SanityController(
-        DifficultySettingsSO difficulty,
-        DifficultyController difficultyController,
-        SanityUI sanityUI
-    )
+    public SanityController(DifficultySettingsSO difficulty)
     {
-        _difficultyController = difficultyController;
         _difficulty = difficulty;
 
         _maxSanity = difficulty.StartingSanity;
         _currentSanity = _maxSanity;
-        _sanityUI = sanityUI;
 
-        Events.CustomerEvents.OrderFailed.AddListener(HandleOrderFailed);
-        Events.CustomerEvents.OrderSuccessful.AddListener(HandleOrderSuccessful);
+        Events.CustomerEvents.OnOrderFailed.AddListener(HandleOrderFailed);
+        Events.CustomerEvents.OnOutOfTime.AddListener(HandleOrderFailed);
+        Events.CustomerEvents.OnOrderSuccessful.AddListener(HandleOrderSuccessful);
     }
 
     private void HandleOrderFailed(CustomerController _)
     {
-        _currentSanity -= GetSanityPenalty();
-        _sanityUI.UpdateSanityUI(1f - (_currentSanity / _maxSanity));
+        if (_currentSanity == 1)
+            _currentSanity -= _difficulty.SanityLossPerCustomer;
+        else
+            _currentSanity -= GetSanityPenalty();
 
-        // Debug.Log($"Sanity dropped! Current sanity: {_currentSanity}");
+        var sanityProgress = 1f - (_currentSanity / _maxSanity);
+        Events.OnSanityChange.Invoke(sanityProgress);
 
-        // if (_currentSanity <= 0)
-        // {
-        //     Debug.Log("All sanity lost, poor Milky..");
-        // }
+        Debug.Log($"Sanity lost, current sanity: {_currentSanity}");
+
+        if (_currentSanity <= 0)
+        {
+            Debug.Log("All sanity lost, poor Milky..");
+            Events.OnGameOver.Invoke();
+        }
     }
 
     public void HandleOrderSuccessful(CustomerController _)
@@ -50,14 +49,17 @@ public class SanityController
             _currentSanity = _maxSanity;
         }
 
-        _sanityUI.UpdateSanityUI(1f - (_currentSanity / _maxSanity));
+        var sanityProgress = 1f - (_currentSanity / _maxSanity);
+        Events.OnSanityChange.Invoke(sanityProgress);
 
-        // Debug.Log($"Sanity gained! Current sanity: {_currentSanity}");
+        Debug.Log($"Sanity gained, current sanity: {_currentSanity}");
     }
 
     private float GetSanityPenalty()
     {
+        var sanityLossProgress = 1 - (_currentSanity / _difficulty.StartingSanity);
+
         return _difficulty.SanityLossPerCustomer
-            * (1f + _difficultyController.CurrentDifficulty * _difficulty.SanityScaling);
+            * _difficulty.SanityLossCurve.Evaluate(sanityLossProgress);
     }
 }

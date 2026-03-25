@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameUI _gameUI;
+
+    private bool _gameStarted = false;
 
     private void Start()
     {
@@ -19,8 +22,22 @@ public class GameManager : MonoBehaviour
         }
 
         DifficultyController = new(appManager);
-        SanityController = new(appManager.CurrentDifficulty, DifficultyController, _sanityUI);
-        RushController = new();
+        SanityController = new(appManager.CurrentDifficulty);
+        RushController = new(appManager.CurrentDifficulty);
+
+        Events.OnGameStart.AddListener(() =>
+        {
+            ControlsManager.EnablePlayerControls();
+            enabled = true;
+        });
+        Events.OnGameOver.AddListener(() =>
+        {
+            ControlsManager.DisablePlayerControls();
+            ControlsManager.DisableFrothingControls();
+            enabled = false;
+        });
+
+        enabled = false;
     }
 
     private void Update()

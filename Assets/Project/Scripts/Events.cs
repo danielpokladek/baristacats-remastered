@@ -10,9 +10,9 @@ public class MiniGameEvents
 
 public class CustomerEvents
 {
-    public readonly UnityEvent<CustomerController> OrderFailed = new();
-    public readonly UnityEvent<CustomerController> OrderSuccessful = new();
-    public readonly UnityEvent<CustomerController> RanOutOfPatience = new();
+    public readonly UnityEvent<CustomerController> OnOrderFailed = new();
+    public readonly UnityEvent<CustomerController> OnOrderSuccessful = new();
+    public readonly UnityEvent<CustomerController> OnOutOfTime = new();
 }
 
 public static class Events
@@ -20,7 +20,10 @@ public static class Events
     public static readonly MiniGameEvents MiniGameEvents = new();
     public static readonly CustomerEvents CustomerEvents = new();
 
-    public static readonly UnityEvent<int> OnDifficultyLevelChange = new();
+    public static readonly UnityEvent<float> OnSanityChange = new();
+
+    public static readonly UnityEvent OnGameStart = new();
+    public static readonly UnityEvent OnGameOver = new();
 
     public static readonly UnityEvent RushStart = new();
     public static readonly UnityEvent RushEnd = new();

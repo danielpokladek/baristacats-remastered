@@ -1,0 +1,754 @@
+fileFormatVersion: 2
+guid: 72a8181f7eafcddd5bbd13ca0a132e11
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4458719544897561499
+    second: milky_sad_0
+  - first:
+      213: -9121512512114623346
+    second: milky_sad_1
+  - first:
+      213: -3050183612690061525
+    second: milky_sad_2
+  - first:
+      213: -1178196823245461272
+    second: milky_sad_3
+  - first:
+      213: 7221884406574474236
+    second: milky_sad_4
+  - first:
+      213: -3632088317875492853
+    second: milky_sad_5
+  - first:
+      213: 1514542018019939298
+    second: milky_sad_6
+  - first:
+      213: 7022845091916530074
+    second: milky_sad_7
+  - first:
+      213: -456920263099808858
+    second: milky_sad_8
+  - first:
+      213: 2893311038480824738
+    second: milky_sad_9
+  - first:
+      213: -9193814217922890766
+    second: milky_sad_10
+  - first:
+      213: 5582492010175072076
+    second: milky_sad_11
+  - first:
+      213: -2807643741562185101
+    second: milky_sad_12
+  - first:
+      213: 5123430194005787113
+    second: milky_sad_13
+  - first:
+      213: 2538315419984424183
+    second: milky_sad_14
+  - first:
+      213: 8098154897910110412
+    second: milky_sad_15
+  - first:
+      213: -1925923893203705765
+    second: milky_sad_16
+  - first:
+      213: -1979139166538020059
+    second: milky_sad_17
+  - first:
+      213: -8591043732593625968
+    second: milky_sad_18
+  - first:
+      213: -6213310747787488519
+    second: milky_sad_19
+  - first:
+      213: -1150543970991436000
+    second: milky_sad_20
+  - first:
+      213: 845768791330493842
+    second: milky_sad_21
+  - first:
+      213: -5990175951939616712
+    second: milky_sad_22
+  - first:
+      213: -3851975904976080648
+    second: milky_sad_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 512
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: milky_sad_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 328
+        width: 22
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b93e5b28dcd80ed30800000000000000
+      internalID: 4458719544897561499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_1
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 56
+        width: 389
+        height: 336
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8c7025b2b0e96180800000000000000
+      internalID: -9121512512114623346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_2
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 340
+        width: 49
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2724e13a229ba5d0800000000000000
+      internalID: -3050183612690061525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_3
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 347
+        width: 32
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e8e5fa4b3436afe0800000000000000
+      internalID: -1178196823245461272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_4
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 347
+        width: 40
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf3edc6ca99493460800000000000000
+      internalID: 7221884406574474236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_5
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 360
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b086f242bea389dc0800000000000000
+      internalID: -3632088317875492853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_6
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 315
+        width: 23
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e35b75e0fbb40510800000000000000
+      internalID: 1514542018019939298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_7
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 304
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a91c7480768267160800000000000000
+      internalID: 7022845091916530074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_8
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 286
+        width: 12
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a3024b0171b8a9f0800000000000000
+      internalID: -456920263099808858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 259
+        width: 26
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a9bd516f0b172820800000000000000
+      internalID: 2893311038480824738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_10
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 232
+        width: 11
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f335c10ea2096080800000000000000
+      internalID: -9193814217922890766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_11
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 234
+        width: 23
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4701fbe7eef87d40800000000000000
+      internalID: 5582492010175072076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_12
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 206
+        width: 12
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37a565084ee3909d0800000000000000
+      internalID: -2807643741562185101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_13
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 217
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e1c939cd941a1740800000000000000
+      internalID: 5123430194005787113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_14
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 218
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fc61180d68e93320800000000000000
+      internalID: 2538315419984424183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_15
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 195
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc8950a49fc626070800000000000000
+      internalID: 8098154897910110412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_16
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 173
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b50e7215c6eb545e0800000000000000
+      internalID: -1925923893203705765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_17
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 159
+        width: 21
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52b4079f96fa884e0800000000000000
+      internalID: -1979139166538020059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_18
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 173
+        width: 10
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09439e41e3b76c880800000000000000
+      internalID: -8591043732593625968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_19
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 173
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f2920f5bc2e5c9a0800000000000000
+      internalID: -6213310747787488519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_20
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 137
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02f869eaa527800f0800000000000000
+      internalID: -1150543970991436000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_21
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 10
+        width: 21
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2959d511c36ccbb00800000000000000
+      internalID: 845768791330493842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_22
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 11
+        width: 59
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8304d8285be9edca0800000000000000
+      internalID: -5990175951939616712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: milky_sad_23
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 10
+        width: 33
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f07984b2580b8ac0800000000000000
+      internalID: -3851975904976080648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      milky_sad_0: 4458719544897561499
+      milky_sad_1: -9121512512114623346
+      milky_sad_10: -9193814217922890766
+      milky_sad_11: 5582492010175072076
+      milky_sad_12: -2807643741562185101
+      milky_sad_13: 5123430194005787113
+      milky_sad_14: 2538315419984424183
+      milky_sad_15: 8098154897910110412
+      milky_sad_16: -1925923893203705765
+      milky_sad_17: -1979139166538020059
+      milky_sad_18: -8591043732593625968
+      milky_sad_19: -6213310747787488519
+      milky_sad_2: -3050183612690061525
+      milky_sad_20: -1150543970991436000
+      milky_sad_21: 845768791330493842
+      milky_sad_22: -5990175951939616712
+      milky_sad_23: -3851975904976080648
+      milky_sad_3: -1178196823245461272
+      milky_sad_4: 7221884406574474236
+      milky_sad_5: -3632088317875492853
+      milky_sad_6: 1514542018019939298
+      milky_sad_7: 7022845091916530074
+      milky_sad_8: -456920263099808858
+      milky_sad_9: 2893311038480824738
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

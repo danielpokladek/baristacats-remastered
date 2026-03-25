@@ -7,24 +7,23 @@ using UnityEngine.UI;
 public class CustomerController : MonoBehaviour
 {
     [SerializeField]
-    private Image _emoteImage;
+    GameManager _gameManager;
 
     [SerializeField]
-    private Image _coffeeImage;
+    Image _emoteImage;
+
+    [SerializeField]
+    Image _coffeeImage;
 
     public CoffeeData DesiredCoffee { get; private set; }
 
     public CustomerMovement Movement { get; private set; }
 
     private CharacterEmotes _emotes;
-
-    private ApplicationManager _appManager;
-    private DifficultyController _difficultyController;
-
     private OrderTicketUI _ticket;
 
-    private float _patience = 0f;
-    private float _patienceTimer = 0f;
+    private float _waitTime = 0f;
+    private float _waitTimer = 0f;
 
     private void Awake()
     {
@@ -33,22 +32,19 @@ public class CustomerController : MonoBehaviour
 
     private void Update()
     {
-        _patienceTimer -= Time.deltaTime;
-        _ticket.SetPatienceBarFill(_patienceTimer / _patience);
+        _waitTimer -= Time.deltaTime;
+        _ticket.SetPatienceBarFill(_waitTimer / _waitTime);
 
-        if (_patienceTimer <= 0)
+        if (_waitTimer <= 0)
         {
             enabled = false;
 
-            Events.CustomerEvents.RanOutOfPatience.Invoke(this);
+            Events.CustomerEvents.OnOutOfTime.Invoke(this);
         }
     }
 
-    public void Setup(ApplicationManager appManager, DifficultyController difficultyController)
+    public void Setup()
     {
-        _appManager = appManager;
-        _difficultyController = difficultyController;
-
         _emotes = CharacterEmotes.Instance;
 
         Movement = GetComponent<CustomerMovement>();
@@ -59,12 +55,11 @@ public class CustomerController : MonoBehaviour
         DesiredCoffee = new();
     }
 
-    public void Initialize(OrderTicketUI ticket)
+    public void Initialize(OrderData orderData)
     {
-        _patience = CalculatePatience();
-        _patienceTimer = _patience;
-
-        _ticket = ticket;
+        _ticket = orderData.Ticket;
+        _waitTime = orderData.MaxWaitTime;
+        _waitTimer = orderData.MaxWaitTime;
     }
 
     public void StartTimer()
@@ -105,14 +100,5 @@ public class CustomerController : MonoBehaviour
         await Tween.Delay(1.5f);
 
         await Sequence.Create().Group(Tween.Alpha(_emoteImage, 0f, 0.5f));
-    }
-
-    private float CalculatePatience()
-    {
-        var difficultySettings = _appManager.CurrentDifficulty;
-        var currentDifficulty = _difficultyController.CurrentDifficulty;
-
-        return difficultySettings.CustomerPatience.GetRandomValue()
-            / (1f + currentDifficulty * difficultySettings.CustomerPatienceScaling);
     }
 }

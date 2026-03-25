@@ -22,6 +22,9 @@ public class AudioManager : MonoBehaviour
     AudioSource _rushMusicSource;
 
     [SerializeField]
+    AudioSource _rushAlarmSource;
+
+    [SerializeField]
     AudioSource _ambientSource;
 
     private float _volume = 0.3f;
@@ -37,6 +40,8 @@ public class AudioManager : MonoBehaviour
 
         Events.RushStart.AddListener(TransitionToRush);
         Events.RushEnd.AddListener(TransitionToNormal);
+
+        Events.OnGameOver.AddListener(HandleGameOver);
     }
 
     private void SetupSources()
@@ -61,9 +66,11 @@ public class AudioManager : MonoBehaviour
         var rushClip = GetRushClip();
 
         _rushMusicSource.clip = rushClip;
+        _rushAlarmSource.Play();
 
         Sequence
             .Create()
+            .Chain(Tween.Delay(2f - transitionDuration))
             .Group(Tween.AudioVolume(_backgroundMusicSource, 0f, duration: transitionDuration))
             .Group(Tween.AudioVolume(_ambientSource, 0f, duration: transitionDuration))
             .Chain(Tween.Delay(0.5f))
@@ -107,5 +114,13 @@ public class AudioManager : MonoBehaviour
     private AudioClip GetAmbientClip()
     {
         return _ambience[Random.Range(0, _ambience.Length)];
+    }
+
+    private void HandleGameOver()
+    {
+        _ambientSource.Stop();
+        _rushAlarmSource.Stop();
+        _rushMusicSource.Stop();
+        _backgroundMusicSource.Stop();
     }
 }

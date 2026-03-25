@@ -4,12 +4,47 @@ using UnityEngine;
 [Serializable]
 public class MinMax
 {
-    public float MinimumValue;
-    public float MaximumValue;
+    [SerializeField]
+    private float _minimum;
 
+    [SerializeField]
+    private float _maximum;
+
+    [SerializeField]
+    private AnimationCurve _curve;
+
+    public float Max => _maximum;
+    public float Min => _minimum;
+
+    /// <summary>
+    /// Gets value based on progress.
+    /// </summary>
+    /// <param name="progress">Progress used to get value.</param>
+    /// <returns>A value between min and max by evaluating it against animation curve.</returns>
+    public float GetValue(float progress)
+    {
+        float curveValue = _curve.Evaluate(Mathf.Clamp01(progress));
+        return Mathf.Lerp(_minimum, _maximum, curveValue);
+    }
+
+    /// <summary>
+    /// Gets reversed value based on progress.
+    /// </summary>
+    /// <param name="progress">Progress used to get value.</param>
+    /// <returns>A value between max and min by evaluating it against the animation curve.</returns>
+    public float GetValueReversed(float progress)
+    {
+        float curveValue = _curve.Evaluate(Mathf.Clamp01(progress));
+        return Mathf.Lerp(_maximum, _minimum, curveValue);
+    }
+
+    /// <summary>
+    /// Gets a random value.
+    /// </summary>
+    /// <returns>A random value between the min and max.</returns>
     public float GetRandomValue()
     {
-        return UnityEngine.Random.Range(MinimumValue, MaximumValue);
+        return UnityEngine.Random.Range(_minimum, _maximum);
     }
 }
 
@@ -21,17 +56,16 @@ public class MinMax
 public class DifficultySettingsSO : ScriptableObject
 {
     [Header("Difficulty Increase Settings")]
-    public float DifficultyRampDuration;
+    public MinMax RushModeWaitTime;
+    public MinMax RushModeDuration;
 
     [Header("Customer Difficulty Settings")]
     public MinMax CustomerSpawnInterval;
-    public float CustomerSpawnScaling;
-
     public MinMax CustomerPatience;
-    public float CustomerPatienceScaling;
 
     [Header("Queue Settings")]
-    public int MaxOrdersQueued;
+    public int MaxOrdersRegular;
+    public int MaxOrdersRush;
 
     [Header("Drinks Difficulty Settings")]
     public int BaseDrinkComplexity;
@@ -41,5 +75,5 @@ public class DifficultySettingsSO : ScriptableObject
     public float StartingSanity;
     public float SanityLossPerCustomer;
     public float SanityGainPerCustomer;
-    public float SanityScaling;
+    public AnimationCurve SanityLossCurve;
 }
