@@ -25,7 +25,13 @@ public class CoffeeMachineInteractable : Interactable
         foreach (var slot in _slots)
         {
             slot.BrewDuration = _brewDuration;
-            slot.OnCoffeeBrewed.AddListener(() => _brewedCoffee++);
+            slot.OnCoffeeBrewed.AddListener(() =>
+            {
+                _brewedCoffee++;
+
+                if (PlayerInRange)
+                    ShowInteractionPrompt();
+            });
         }
     }
 
@@ -43,7 +49,7 @@ public class CoffeeMachineInteractable : Interactable
 
         if (!inventory.IsHoldingItem && isAnyCoffeeReady)
         {
-            var completedSlot = GetBrewedSlot();
+            var completedSlot = GetReadySlot();
 
             if (completedSlot)
             {
@@ -53,33 +59,27 @@ public class CoffeeMachineInteractable : Interactable
                     Quality = 100,
                 };
 
-                completedSlot.Reset();
                 _brewedCoffee--;
+
+                completedSlot.Reset();
+
                 return;
             }
         }
 
-        if (inventory.IsHoldingBeans)
-        {
-            CoffeeMachineSlot? emptySlot = GetEmptySlot();
+        CoffeeMachineSlot? freeSlot = GetFreeSlot();
 
-            if (emptySlot)
-            {
-                emptySlot.StartBrewing();
-                player.Inventory.IsHoldingBeans = false;
-            }
-            else
-            {
-                // TODO DP: Show a 'no empty slot' image here.
-                Debug.LogWarning("No empty slots in coffee machine");
-            }
+        if (inventory.IsHoldingBeans && freeSlot != null)
+        {
+            player.Inventory.IsHoldingBeans = false;
+            _ = freeSlot.StartBrewing();
 
             return;
         }
 
         if (inventory.MilkInHand != MilkType.NONE && isAnyCoffeeReady)
         {
-            var completedSlot = GetBrewedSlot();
+            var completedSlot = GetReadySlot();
 
             if (completedSlot)
             {
@@ -98,13 +98,10 @@ public class CoffeeMachineInteractable : Interactable
         }
 
         if (!inventory.IsHoldingBeans)
-        {
             ShowNoBeans();
-            return;
-        }
     }
 
-    private CoffeeMachineSlot? GetEmptySlot()
+    private CoffeeMachineSlot? GetFreeSlot()
     {
         foreach (CoffeeMachineSlot slot in _slots)
         {
@@ -115,11 +112,11 @@ public class CoffeeMachineInteractable : Interactable
         return null;
     }
 
-    private CoffeeMachineSlot? GetBrewedSlot()
+    private CoffeeMachineSlot? GetReadySlot()
     {
         foreach (CoffeeMachineSlot slot in _slots)
         {
-            if (!slot.IsFree && slot.IsDone)
+            if (!slot.IsFree && !slot.IsBrewing)
                 return slot;
         }
 
@@ -136,17 +133,13 @@ public class CoffeeMachineInteractable : Interactable
             .Chain(Tween.Alpha(_noBeansCanvasGroup, 1, 0.5f))
             .Chain(Tween.Delay(1.5f))
             .Chain(Tween.Alpha(_noBeansCanvasGroup, 0, 0.5f))
-            .ChainCallback(
-                (System.Action)(
-                    () =>
-                    {
-                        if (!PlayerInRange)
-                            return;
+            .ChainCallback(() =>
+            {
+                if (!PlayerInRange)
+                    return;
 
-                        _interactionPrompt?.ShowPrompt();
-                    }
-                )
-            );
+                _interactionPrompt?.ShowPrompt();
+            });
 
         CanInteract = true;
     }

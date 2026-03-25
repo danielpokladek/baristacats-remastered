@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -26,22 +28,10 @@ public class CoffeeMachineSlot : MonoBehaviour
     [SerializeField]
     private AudioClip _brewingSound;
 
-    private float _brewTimer;
-    private bool _isBrewing;
-
     private AudioSource _audioSource;
 
-    public bool IsBrewing
-    {
-        get { return _isBrewing; }
-        set
-        {
-            _brewTimer = 0;
-            _isBrewing = value;
-        }
-    }
-    public bool IsFree { get; set; }
-    public bool IsDone { get; set; }
+    public bool IsBrewing { get; private set; }
+    public bool IsFree { get; private set; }
 
     private void Start()
     {
@@ -50,32 +40,27 @@ public class CoffeeMachineSlot : MonoBehaviour
         Reset();
     }
 
-    private void Update()
-    {
-        if (!IsBrewing)
-            return;
-
-        _brewTimer += Time.deltaTime;
-        _progressImage.fillAmount = 1 - (_brewTimer / BrewDuration);
-
-        if (_brewTimer >= BrewDuration)
-        {
-            CompleteBrewing();
-        }
-    }
-
-    public void StartBrewing()
+    public async Task StartBrewing()
     {
         IsFree = false;
         IsBrewing = true;
 
-        _progressImage.fillAmount = 1;
+        _progressImage.fillAmount = 0;
         _progressImage.enabled = true;
 
         gameObject.SetActive(true);
-        enabled = true;
 
         _audioSource.PlayOneShot(_brewingSound);
+
+        await Tween.Custom(
+            0f,
+            BrewDuration,
+            BrewDuration,
+            (val) => _progressImage.fillAmount = val / BrewDuration,
+            Ease.Linear
+        );
+
+        CompleteBrewing();
     }
 
     public void Reset()
@@ -86,9 +71,7 @@ public class CoffeeMachineSlot : MonoBehaviour
         _completeImage.enabled = false;
 
         _progressImage.enabled = false;
-        _progressImage.fillAmount = 1;
-
-        _brewTimer = 0;
+        _progressImage.fillAmount = 0;
 
         gameObject.SetActive(false);
     }
@@ -103,8 +86,6 @@ public class CoffeeMachineSlot : MonoBehaviour
         OnCoffeeBrewed.Invoke();
 
         IsBrewing = false;
-        IsDone = true;
-
-        enabled = false;
+        IsFree = false;
     }
 }

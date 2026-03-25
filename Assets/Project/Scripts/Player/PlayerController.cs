@@ -40,6 +40,14 @@ public class PlayerController : MonoBehaviour
         Inventory.OnInventoryUpdate.AddListener(HandleInventoryUpdate);
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("Enable Controls")]
+    public void EnableControls()
+    {
+        ControlsManager.EnablePlayerControls();
+    }
+#endif
+
     public PlayerInventory Inventory { get; private set; }
 
     private void HandleInventoryUpdate()

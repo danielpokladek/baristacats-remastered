@@ -64,7 +64,7 @@ public abstract class Interactable : MonoBehaviour
 
     protected void ShowOutline()
     {
-        if (!_material)
+        if (!_material || _material.GetFloat("_Strength") == 1)
             return;
 
         Tween.Custom(
@@ -77,7 +77,7 @@ public abstract class Interactable : MonoBehaviour
 
     protected void HideOutline()
     {
-        if (!_material)
+        if (!_material || _material.GetFloat("_Strength") == 0)
             return;
 
         Tween.Custom(
