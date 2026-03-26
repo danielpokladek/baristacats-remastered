@@ -255,8 +255,6 @@ public class OrderController : MonoBehaviour
     private CoffeeData GenerateOrder()
     {
         var maxComplexity = GetMaxOrderComplexity();
-        print($"Max Complexity: {maxComplexity}");
-
         return BuildOrderBasedOnComplexity(maxComplexity);
     }
 
@@ -271,12 +269,8 @@ public class OrderController : MonoBehaviour
             var maxMilkIndex = Math.Min(complexity, availableMilk.Count());
             var milkIndex = UnityEngine.Random.Range(0, maxMilkIndex);
 
-            print($"Milk Index: {milkIndex}");
-
             var milk = availableMilk[milkIndex];
             coffeeData.Milk = milk;
-
-            print($"Order Milk: {milk}");
         }
 
         return coffeeData;

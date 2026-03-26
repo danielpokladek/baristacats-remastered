@@ -37,9 +37,13 @@ public class GameManager : MonoBehaviour
 
             ControlsManager.EnablePlayerControls();
             enabled = true;
+
+            RushController.StartTimer();
         });
         Events.OnGameOver.AddListener(() =>
         {
+            RushController.StopTimer();
+
             ControlsManager.DisablePlayerControls();
             ControlsManager.DisableFrothingControls();
             enabled = false;
@@ -71,10 +75,10 @@ public class GameManager : MonoBehaviour
         enabled = false;
     }
 
-    private void Update()
-    {
-        RushController.Update();
-    }
+    // private void Update()
+    // {
+    //     RushController.Update();
+    // }
 
     public int CoffeeCompleted { get; private set; }
 

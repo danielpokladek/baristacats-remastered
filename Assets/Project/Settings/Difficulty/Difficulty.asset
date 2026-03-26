@@ -41,7 +41,7 @@ MonoBehaviour:
       m_RotationOrder: 4
   RushModeDuration:
     _minimum: 30
-    _maximum: 180
+    _maximum: 90
     _curve:
       serializedVersion: 2
       m_Curve:

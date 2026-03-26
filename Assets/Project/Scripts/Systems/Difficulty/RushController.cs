@@ -1,4 +1,5 @@
 #nullable enable
+using PrimeTween;
 using UnityEngine;
 
 public class RushController
@@ -6,11 +7,11 @@ public class RushController
     private float _timeToStart;
     private float _duration;
 
-    private float _timer;
-
     private bool _rushActive;
 
     private DifficultySettingsSO _difficultySettings;
+
+    private Tween? _currentTimer;
 
     public RushController(DifficultySettingsSO difficultySettings)
     {
@@ -19,52 +20,49 @@ public class RushController
         _timeToStart = _difficultySettings.RushModeWaitTime.Max;
         _duration = _difficultySettings.RushModeDuration.Min;
 
-        _timer = 0f;
         _rushActive = false;
     }
 
     public bool IsRushActive => _rushActive;
-    public float ProgressToRush => Mathf.Clamp01(_timer / _timeToStart);
+    public float ProgressToRush => _currentTimer?.progressTotal ?? 0;
 
-    public void Update()
+    public void StartTimer()
     {
-        _timer += Time.deltaTime;
+        var duration = _rushActive ? _duration : _timeToStart;
 
-        if (_rushActive)
-        {
-            if (_timer > _duration)
+        _currentTimer = Tween
+            .Custom(0, duration, duration, (_) => { })
+            .OnComplete(() =>
             {
-                EndRush();
-                return;
-            }
-        }
-        else
-        {
-            if (_timer > _timeToStart)
-            {
-                StartRush();
-                return;
-            }
-        }
+                if (_rushActive)
+                    EndRush();
+                else
+                    StartRush();
+            });
+    }
+
+    public void StopTimer()
+    {
+        _currentTimer?.Stop();
     }
 
     private void StartRush()
     {
-        _timer = 0;
         _duration = _difficultySettings.RushModeDuration.GetRandomValue();
 
         _rushActive = true;
 
         Events.RushStart.Invoke();
+        StartTimer();
     }
 
     private void EndRush()
     {
-        _timer = 0;
         _timeToStart = _difficultySettings.RushModeWaitTime.GetRandomValue();
 
         _rushActive = false;
 
         Events.RushEnd.Invoke();
+        StartTimer();
     }
 }
