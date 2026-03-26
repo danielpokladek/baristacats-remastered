@@ -36,6 +36,9 @@ public class MainMenuUI : MonoBehaviour
         playButton.RegisterCallback<MouseUpEvent>(HandlePlayButtonPressed);
         quitButton.RegisterCallback<MouseUpEvent>(HandleQuitButtonPressed);
 
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+            quitButton.style.display = DisplayStyle.None;
+
         Events.OnShowMenu.AddListener(() => ShowMenu());
     }
 
