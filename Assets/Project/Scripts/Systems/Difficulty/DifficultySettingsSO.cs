@@ -47,6 +47,8 @@ public class DifficultySettingsSO : ScriptableObject
     [Header("Difficulty Increase Settings")]
     public MinMax RushModeWaitTime;
     public MinMax RushModeDuration;
+    public float RushModeScaling;
+    public float RushModeModifier;
 
     [Header("Customer Difficulty Settings")]
     public MinMax CustomerSpawnInterval;

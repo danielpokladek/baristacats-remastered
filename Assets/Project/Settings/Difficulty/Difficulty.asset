@@ -66,6 +66,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+  RushModeScaling: 2
+  RushModeModifier: 1.15
   CustomerSpawnInterval:
     _minimum: 5
     _maximum: 15
@@ -134,8 +136,8 @@ MonoBehaviour:
   BaseDrinkComplexity: 0
   DrinkComplexityScaling: 6
   StartingSanity: 1
-  SanityLossPerCustomer: 0.15
-  SanityGainPerCustomer: 0.05
+  SanityLossPerCustomer: 0.2
+  SanityGainPerCustomer: 0.025
   SanityLossCurve:
     serializedVersion: 2
     m_Curve:

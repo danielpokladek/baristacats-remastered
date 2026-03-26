@@ -1,23 +1,26 @@
 #nullable enable
 using PrimeTween;
+using UnityEngine;
 
 public class RushController
 {
+    private readonly DifficultySettingsSO _difficulty;
+    private readonly GameManager _gameManager;
+
     private float _timeToStart;
     private float _duration;
 
     private bool _rushActive;
 
-    private DifficultySettingsSO _difficultySettings;
-
     private Tween? _currentTimer;
 
-    public RushController(DifficultySettingsSO difficultySettings)
+    public RushController(DifficultySettingsSO difficultySettings, GameManager gameManager)
     {
-        _difficultySettings = difficultySettings;
+        _difficulty = difficultySettings;
+        _gameManager = gameManager;
 
-        _timeToStart = _difficultySettings.RushModeWaitTime.Max;
-        _duration = _difficultySettings.RushModeDuration.Min;
+        _timeToStart = _difficulty.RushModeWaitTime.Max;
+        _duration = _difficulty.RushModeDuration.Min;
 
         _rushActive = false;
     }
@@ -47,7 +50,12 @@ public class RushController
 
     private void StartRush()
     {
-        _duration = _difficultySettings.RushModeDuration.GetRandomValue();
+        var baseDuration = _difficulty.RushModeDuration.GetRandomValue();
+        var modifier = _gameManager.RushHourComplete / _difficulty.RushModeScaling;
+        modifier = Mathf.Max(1, modifier);
+        modifier = _difficulty.RushModeModifier * modifier;
+
+        _duration = baseDuration * modifier;
 
         _rushActive = true;
 
@@ -57,7 +65,12 @@ public class RushController
 
     private void EndRush()
     {
-        _timeToStart = _difficultySettings.RushModeWaitTime.GetRandomValue();
+        var baseDuration = _difficulty.RushModeWaitTime.GetRandomValue();
+        var modifier = _gameManager.RushHourComplete / _difficulty.RushModeScaling;
+        modifier = Mathf.Max(1, modifier);
+        modifier = _difficulty.RushModeModifier * modifier;
+
+        _timeToStart = Mathf.Max(baseDuration / modifier, 10);
 
         _rushActive = false;
 

@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         }
 
         SanityController = new(appManager.CurrentDifficulty);
-        RushController = new(appManager.CurrentDifficulty);
+        RushController = new(appManager.CurrentDifficulty, this);
 
         Events.OnGameStart.AddListener(() =>
         {
