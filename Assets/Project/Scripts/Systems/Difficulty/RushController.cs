@@ -1,6 +1,5 @@
 #nullable enable
 using PrimeTween;
-using UnityEngine;
 
 public class RushController
 {

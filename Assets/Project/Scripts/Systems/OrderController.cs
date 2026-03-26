@@ -195,8 +195,11 @@ public class OrderController : MonoBehaviour
             return;
         }
 
-        var order = _payQueue[0];
-        _payQueue.RemoveAt(0);
+        var order = _payQueue.First((o) => o.CoffeeData.Milk == servedCoffee.Milk);
+        order ??= _payQueue[0];
+
+        var indexInQueue = _payQueue.IndexOf(order);
+        _payQueue.RemoveAt(indexInQueue);
 
         _ = _orderUI.DiscardTicket(order.Ticket);
 
@@ -208,7 +211,7 @@ public class OrderController : MonoBehaviour
             Events.CustomerEvents.OnOrderFailed.Invoke(order.Owner);
 
         order.Owner.StopTimer();
-        await order.Owner.ShowEmote(wasSuccessful);
+        _ = order.Owner.ShowEmote(wasSuccessful);
 
         _ = _queue.MoveToExit(order.Owner);
 
@@ -235,7 +238,7 @@ public class OrderController : MonoBehaviour
             return;
         }
 
-        await customer.ShowEmote(false);
+        _ = customer.ShowEmote(false);
 
         var queue = isInOrderQueue ? _orderQueue : _payQueue;
         var otherQueue = isInOrderQueue ? _payQueue : _orderQueue;
