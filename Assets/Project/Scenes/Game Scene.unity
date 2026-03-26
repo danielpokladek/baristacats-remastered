@@ -19060,6 +19060,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 496149900}
     m_Modifications:
+    - target: {fileID: 18347329616120085, guid: bec756252d4701a69a5580af0f0b4e39, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1187727706897169064, guid: bec756252d4701a69a5580af0f0b4e39, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4684917440502612015, guid: bec756252d4701a69a5580af0f0b4e39, type: 3}
       propertyPath: m_Name
       value: Frothing
@@ -19143,6 +19151,10 @@ PrefabInstance:
     - target: {fileID: 7194518026209925454, guid: bec756252d4701a69a5580af0f0b4e39, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8478734743631599885, guid: bec756252d4701a69a5580af0f0b4e39, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
