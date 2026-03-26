@@ -250,7 +250,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &6845338385025255441
 MonoBehaviour:
@@ -339,9 +339,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25ebdf23f7695b2f9bd575c468978e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerMovement
-  OnArrived:
-    m_PersistentCalls:
-      m_Calls: []
   _movementSpeed: 5
 --- !u!114 &1503840626093151076
 MonoBehaviour:
@@ -355,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ef2dfd0393e394b8b907f6e4a103c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerController
+  _gameManager: {fileID: 0}
   _emoteImage: {fileID: 8648464273181359960}
   _coffeeImage: {fileID: 1126820354169759237}
 --- !u!1 &8365230830385660609
