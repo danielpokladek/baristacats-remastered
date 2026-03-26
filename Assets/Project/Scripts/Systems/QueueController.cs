@@ -110,6 +110,7 @@ public class QueueController : MonoBehaviour
 
     private void OnReleaseCustomer(CustomerController customer)
     {
+        customer.StopTimer();
         customer.gameObject.SetActive(false);
         customer.enabled = false;
     }

@@ -20,6 +20,9 @@ public class GameUI : MonoBehaviour
     CanvasGroup _rushHour;
 
     [SerializeField]
+    CanvasGroup _rushOver;
+
+    [SerializeField]
     CanvasGroup _failVideoCanvasGroup;
 
     [SerializeField]
@@ -53,6 +56,7 @@ public class GameUI : MonoBehaviour
         _failVideoPlayer.loopPointReached += HandleFailVideoFinished;
 
         Events.RushStart.AddListener(ShowRush);
+        Events.RushEnd.AddListener(ShowRushOver);
 
         Events.OnGameStart.AddListener(HandleGameStart);
         Events.OnGameOver.AddListener(HandleGameOver);
@@ -139,6 +143,15 @@ public class GameUI : MonoBehaviour
         await Tween.Alpha(_rushHour, 0f, 0.15f);
     }
 
+    private async void ShowRushOver()
+    {
+        await Tween.Alpha(_rushOver, 1f, 0.15f);
+
+        await Tween.Delay(2f);
+
+        await Tween.Alpha(_rushOver, 0f, 0.15f);
+    }
+
     private void HandleGameStart()
     {
         _failVideoCanvasGroup.alpha = 0;
@@ -157,6 +170,6 @@ public class GameUI : MonoBehaviour
 
     private void HandleFailVideoFinished(VideoPlayer _)
     {
-        Events.OnShowMenu.Invoke();
+        Events.OnShowCredits.Invoke();
     }
 }

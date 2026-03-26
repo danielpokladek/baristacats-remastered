@@ -8,10 +8,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameUI _gameUI;
 
-    private int _failedBrews = 0;
-    private int _drinksCompleted = 0;
+    private int _failedCoffee = 0;
+    private int _totalCoffee = 0;
     private int _customersQuit = 0;
-    private int _successfulBrews = 0;
+    private int _successfulCoffee = 0;
     private int _rushHourCompleted = 0;
 
     private void Start()
@@ -29,10 +29,10 @@ public class GameManager : MonoBehaviour
 
         Events.OnGameStart.AddListener(() =>
         {
-            _failedBrews = 0;
+            _failedCoffee = 0;
             _customersQuit = 0;
-            _successfulBrews = 0;
-            _drinksCompleted = 0;
+            _successfulCoffee = 0;
+            _totalCoffee = 0;
             _rushHourCompleted = 0;
 
             ControlsManager.EnablePlayerControls();
@@ -47,26 +47,21 @@ public class GameManager : MonoBehaviour
             ControlsManager.DisablePlayerControls();
             ControlsManager.DisableFrothingControls();
             enabled = false;
-
-            Debug.Log("Milky has served:");
-            Debug.Log($"{_successfulBrews} happy customers!");
-            Debug.Log($"{_failedBrews} not so happy customers.");
-            Debug.Log($"{_customersQuit} customers probably won't come back.");
         });
 
         Events.CustomerEvents.OnOutOfTime.AddListener((_) => _customersQuit++);
         Events.CustomerEvents.OnOrderFailed.AddListener(
             (_) =>
             {
-                _failedBrews++;
-                _drinksCompleted++;
+                _failedCoffee++;
+                _totalCoffee++;
             }
         );
         Events.CustomerEvents.OnOrderSuccessful.AddListener(
             (_) =>
             {
-                _successfulBrews++;
-                _drinksCompleted++;
+                _successfulCoffee++;
+                _totalCoffee++;
             }
         );
 
@@ -85,6 +80,11 @@ public class GameManager : MonoBehaviour
     public SanityController SanityController { get; private set; }
     public RushController RushController { get; private set; }
 
+    public int CoffeeFailed => _failedCoffee;
+    public int CoffeeSuccessful => _successfulCoffee;
+    public int CoffeeTotal => _totalCoffee;
+    public int CustomerQuit => _customersQuit;
+
     public int RushHourComplete => _rushHourCompleted;
-    public int DrinksCompleted => _drinksCompleted;
+    public int DrinksCompleted => _totalCoffee;
 }

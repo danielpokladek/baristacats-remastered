@@ -27,6 +27,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     AudioSource _ambientSource;
 
+    [SerializeField]
+    AudioSource _creditsMusic;
+
     private float _volume = 0.3f;
 
     private void Start()
@@ -43,6 +46,8 @@ public class AudioManager : MonoBehaviour
 
         Events.OnGameStart.AddListener(HandleGameStart);
         Events.OnGameOver.AddListener(HandleGameOver);
+
+        Events.OnShowCredits.AddListener(_creditsMusic.Play);
     }
 
     private void SetupSources()

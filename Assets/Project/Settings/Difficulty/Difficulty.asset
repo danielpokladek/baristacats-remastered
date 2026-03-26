@@ -67,7 +67,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   RushModeScaling: 2
-  RushModeModifier: 1.15
+  RushModeModifier: 1.1
   CustomerSpawnInterval:
     _minimum: 5
     _maximum: 15

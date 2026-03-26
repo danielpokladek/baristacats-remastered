@@ -41,12 +41,20 @@ public class ApplicationManager : MonoBehaviour
         Events.OnGameOver.AddListener(() => Cursor.lockState = CursorLockMode.None);
     }
 
+#if UNITY_EDITOR
     [ContextMenu("Start Game")]
     public void StartGame()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Events.OnGameStart.Invoke();
     }
+
+    [ContextMenu("Instant Fail")]
+    public void FailGame()
+    {
+        Events.OnGameOver.Invoke();
+    }
+#endif
 
     public List<DifficultyOption> DifficultyOptions => _difficultyOptions;
     public DifficultySettingsSO CurrentDifficulty => _appSettings.CurrentDifficulty;

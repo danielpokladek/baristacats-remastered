@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PrimeTween;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -85,6 +86,8 @@ public class OrderController : MonoBehaviour
         Events.OnGameOver.AddListener(() =>
         {
             enabled = false;
+
+            Reset();
         });
 
         enabled = false;
@@ -338,5 +341,22 @@ public class OrderController : MonoBehaviour
         }
 
         return _difficultySettings.CustomerSpawnInterval.GetValue(_rushController.ProgressToRush);
+    }
+
+    private void Reset()
+    {
+        foreach (var order in _orderQueue)
+            ResetOrder(order);
+
+        foreach (var order in _payQueue)
+            ResetOrder(order);
+    }
+
+    private void ResetOrder(OrderData order)
+    {
+        order.Owner.StopTimer();
+
+        _queue.ReturnCustomer(order.Owner);
+        _orderUI.DiscardTicket(order.Ticket);
     }
 }
